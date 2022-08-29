@@ -19,10 +19,10 @@ class WeekDateTimePicker extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: List.generate(
-        date.getDaysOfWeek().length,
+        date.daysOfWeek().length,
         (index) => GestureDetector(
           onTap: () {
-            dateTimePickerController.onTapDay(date.getDaysOfWeek()[index]);
+            dateTimePickerController.onTapDay(date.daysOfWeek()[index]);
           },
           child: SizedBox(
             width: 40,
@@ -31,9 +31,11 @@ class WeekDateTimePicker extends StatelessWidget {
               children: [
                 const Spacer(),
                 Text(
-                  DateFormat('EEEE').format(
-                    date.getDaysOfWeek().elementAt(index),
-                  )[0],
+                  DateFormat.E()
+                      .format(
+                        date.daysOfWeek().elementAt(index),
+                      )
+                      .toUpperCase()[0],
                   style: Theme.of(context).textTheme.titleSmall,
                 ),
                 const Spacer(),
@@ -52,7 +54,7 @@ class WeekDateTimePicker extends StatelessWidget {
                     children: [
                       Center(
                         child: Text(
-                          date.getDaysOfWeek().elementAt(index).day.toString(),
+                          date.daysOfWeek().elementAt(index).day.toString(),
                           style:
                               Theme.of(context).textTheme.bodyMedium!.copyWith(
                                     color: shouldHighlight(index)
@@ -87,7 +89,7 @@ class WeekDateTimePicker extends StatelessWidget {
   }
 
   bool shouldHighlight(int index) {
-    return date.getDaysOfWeek().elementAt(index).isSameDayAs(
+    return date.daysOfWeek().elementAt(index).sameDayAs(
           dateTimePickerController.highlightToday
               ? DateTime.now()
               : dateTimePickerController.selectedDate,
@@ -96,20 +98,20 @@ class WeekDateTimePicker extends StatelessWidget {
 
   bool isSelected(int index) {
     return date
-        .getDaysOfWeek()
+        .daysOfWeek()
         .elementAt(index)
-        .isSameDayAs(dateTimePickerController.selectedDate);
+        .sameDayAs(dateTimePickerController.selectedDate);
   }
 
   bool shouldMark(int index) {
-    return !date.getDaysOfWeek().elementAt(index).isSameDayAs(
+    return !date.daysOfWeek().elementAt(index).sameDayAs(
               dateTimePickerController.highlightToday
                   ? DateTime.now()
                   : dateTimePickerController.selectedDate,
             ) &&
         date
-            .getDaysOfWeek()
+            .daysOfWeek()
             .elementAt(index)
-            .isDayPartOf(dateTimePickerController.markedDates ?? []);
+            .isContainedIn(dateTimePickerController.markedDates ?? []);
   }
 }

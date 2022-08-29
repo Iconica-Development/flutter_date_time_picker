@@ -16,7 +16,7 @@ class WeekDateTimePickerSheet extends StatelessWidget {
 
   String getDateHeader() {
     List<DateTime> weekDays =
-        dateTimePickerController.browsingDate.getDaysOfWeek();
+        dateTimePickerController.browsingDate.daysOfWeek();
 
     String firstDay = weekDays.first.day.toString();
 

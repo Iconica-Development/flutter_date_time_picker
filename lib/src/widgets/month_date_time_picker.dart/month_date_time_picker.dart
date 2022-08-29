@@ -21,21 +21,24 @@ class MonthDateTimePicker extends StatelessWidget {
       12,
     ).weekday;
 
-    return SizedBox(
+    return Container(
       width: MediaQuery.of(context).size.width,
-      height: 300,
+      margin: const EdgeInsets.symmetric(horizontal: 30),
       child: Center(
-        child: Wrap(
-          spacing: 10,
+        child: GridView.count(
+          crossAxisSpacing: 5,
+          crossAxisCount: 7,
           children: List.generate(
-            DateTime(date.year, date.month).getDaysInMonth() + daysToSkip,
+            DateTime(date.year, date.month).daysInMonth() + daysToSkip,
             (index) {
               if (index < daysToSkip) {
                 return Container(
                   decoration: BoxDecoration(
-                      color: Colors.red.withOpacity(0.4),
-                      border: Border.all(color: Colors.black, width: 1.5)),
-                  margin: const EdgeInsets.symmetric(vertical: 5),
+                    color: Colors.red.withOpacity(0.4),
+                    border: Border.all(color: Colors.black, width: 1.5),
+                  ),
+                  margin:
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
                   height: 45,
                   width: 45,
                   child: Center(
@@ -50,6 +53,7 @@ class MonthDateTimePicker extends StatelessWidget {
               }
 
               return GestureDetector(
+
                 onTap: () async {
                   // await dateTimePickerController.getDragController().animateTo(
                   //       0.26,
@@ -69,10 +73,16 @@ class MonthDateTimePicker extends StatelessWidget {
                   ));
                 },
                 child: Container(
-                  margin: const EdgeInsets.symmetric(vertical: 5),
+                  margin:
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
                   decoration: BoxDecoration(
                     color:
+                        // isDisabled()
+                        //     ? Theme.of(context).disabledColor
+                        //     : Colors.transparent,
                         // isSelected(index, daysToSkip)
+                        //     ? Theme.of(context).primaryColor.withOpacity(0.2)
+                        //     : Colors.transparent,
                         shouldHighlight(index, daysToSkip)
                             ? Theme.of(context).primaryColor
                             : Colors.transparent,
@@ -90,7 +100,12 @@ class MonthDateTimePicker extends StatelessWidget {
                           style:
                               Theme.of(context).textTheme.bodyText1!.copyWith(
                                     color:
+                                        // isDisabled()
+                                        //     ? Colors.white
+                                        //     : Colors.transparent,
                                         // isSelected(index, daysToSkip)
+                                        //     ? Theme.of(context).primaryColor
+                                        //     : Colors.black,
                                         shouldHighlight(index, daysToSkip)
                                             ? Colors.white
                                             : Colors.black,
@@ -126,11 +141,15 @@ class MonthDateTimePicker extends StatelessWidget {
       date.year,
       date.month,
       index + 1 - daysToSkip,
-    ).isSameDayAs(
+    ).sameDayAs(
       dateTimePickerController.highlightToday
           ? DateTime.now()
           : dateTimePickerController.selectedDate,
     );
+  }
+
+  bool isDisabled() {
+    return true;
   }
 
   bool isSelected(int index, int daysToSkip) {
@@ -138,7 +157,7 @@ class MonthDateTimePicker extends StatelessWidget {
       date.year,
       date.month,
       index + 1 - daysToSkip,
-    ).isSameDayAs(dateTimePickerController.selectedDate);
+    ).sameDayAs(dateTimePickerController.selectedDate);
   }
 
   bool shouldMark(int index, int daysToSkip) {
@@ -146,7 +165,7 @@ class MonthDateTimePicker extends StatelessWidget {
           date.year,
           date.month,
           index + 1 - daysToSkip,
-        ).isSameDayAs(
+        ).sameDayAs(
           dateTimePickerController.highlightToday
               ? DateTime.now()
               : dateTimePickerController.selectedDate,
@@ -155,7 +174,7 @@ class MonthDateTimePicker extends StatelessWidget {
           date.year,
           date.month,
           index + 1 - daysToSkip,
-        ).isDayPartOf(
+        ).isContainedIn(
           dateTimePickerController.markedDates ?? [],
         );
   }

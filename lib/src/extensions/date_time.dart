@@ -1,46 +1,54 @@
 extension DatePickerUtil on DateTime {
-  bool isSameDayAs(DateTime selectedDate) {
+  // Check if the current date is the same as the given date
+  bool sameDayAs(DateTime selectedDate) {
     return selectedDate.day == day &&
         selectedDate.month == month &&
         selectedDate.year == year;
   }
 
-  bool isDayPartOf(List<DateTime> dates) {
-    return dates.any((element) => element.isSameDayAs(this));
+  // Check if the current date is contained in the given list
+  bool isContainedIn(List<DateTime> dates) {
+    return dates.any((element) => element.sameDayAs(this));
   }
 
-  List<DateTime> getDaysOfWeek() {
+  List<DateTime> daysOfWeek() {
     var startFrom = subtract(Duration(days: weekday));
     return List.generate(
       7,
       (i) => startFrom.add(
         Duration(days: i + 1),
       ),
+      growable: false,
     );
   }
 
-  int getDaysInMonth() {
-    if (month == DateTime.february) {
-      final bool isLeapYear =
-          (year % 4 == 0) && (year % 100 != 0) || (year % 400 == 0);
-      return isLeapYear ? 29 : 28;
+  bool get isLeapYear =>
+      (year % 4 == 0) && (year % 100 != 0) || (year % 400 == 0);
+
+  int daysInMonth() {
+    late int amountOfDays;
+
+    switch (month) {
+      case DateTime.january:
+      case DateTime.march:
+      case DateTime.may:
+      case DateTime.july:
+      case DateTime.august:
+      case DateTime.october:
+      case DateTime.december:
+        amountOfDays = 31;
+        break;
+      case DateTime.april:
+      case DateTime.june:
+      case DateTime.september:
+      case DateTime.november:
+        amountOfDays = 30;
+        break;
+      case DateTime.february:
+        amountOfDays = isLeapYear ? 29 : 28;
+        break;
     }
 
-    const List<int> daysInMonth = <int>[
-      31,
-      -1,
-      31,
-      30,
-      31,
-      30,
-      31,
-      31,
-      30,
-      31,
-      30,
-      31
-    ];
-
-    return daysInMonth[month - 1];
+    return amountOfDays;
   }
 }

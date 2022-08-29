@@ -25,7 +25,7 @@ class MonthDateTimePickerSheet extends StatelessWidget {
           height: 10,
         ),
         Text(
-          DateFormat("MMMM yyyy").format(
+          DateFormat.yMMMM().format(
             dateTimePickerController.browsingDate,
           ),
           style: Theme.of(context)
@@ -45,7 +45,7 @@ class MonthDateTimePickerSheet extends StatelessWidget {
                     Duration(
                       days: DateTime(dateTimePickerController.browsingDate.year,
                               dateTimePickerController.browsingDate.month)
-                          .getDaysInMonth(),
+                          .daysInMonth(),
                     ),
                   ),
                 );
@@ -55,7 +55,7 @@ class MonthDateTimePickerSheet extends StatelessWidget {
                     Duration(
                       days: DateTime(dateTimePickerController.browsingDate.year,
                               dateTimePickerController.browsingDate.month)
-                          .getDaysInMonth(),
+                          .daysInMonth(),
                     ),
                   ),
                 );

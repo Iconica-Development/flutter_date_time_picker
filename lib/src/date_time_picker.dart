@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_date_time_picker/src/utils/date_time_picker_controller.dart';
 import 'package:flutter_date_time_picker/src/widgets/month_date_time_picker.dart/month_date_time_picker_sheet.dart';
 import 'package:flutter_date_time_picker/src/widgets/week_date_time_picker/week_date_time_picker_sheet.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 /// A widget that displays a date picker from a sheet form the top of the screen.
 /// This sheet displays initialy displays a week of days but can be dragged down to show full months.
@@ -134,6 +135,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
   @override
   void initState() {
     super.initState();
+    initializeDateFormatting();
 
     _dateTimePickerController = DateTimePickerController(
       highlightToday: widget.highlightToday,
