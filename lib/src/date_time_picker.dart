@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_date_time_picker/src/enums/date_box_shape.dart';
 import 'package:flutter_date_time_picker/src/utils/date_time_picker_controller.dart';
 import 'package:flutter_date_time_picker/src/widgets/month_date_time_picker.dart/month_date_time_picker_sheet.dart';
 import 'package:flutter_date_time_picker/src/widgets/week_date_time_picker/week_date_time_picker_sheet.dart';
@@ -108,22 +111,40 @@ import 'package:intl/date_symbol_data_local.dart';
 /// ),
 ///```
 class DateTimePicker extends StatefulWidget {
-  const DateTimePicker({
+  DateTimePicker({
     required this.child,
+    this.weekDateBoxSize = 12,
+    this.monthDateBoxSize = 45,
     this.header,
     this.onTapDay,
     this.highlightToday = true,
+    bool? use24HourFormat,
+    this.pickTime = false,
+    this.dateBoxSize,
+    this.dateBoxShape = DateBoxShape.roundedRectangle,
     this.initialDate,
     this.markedDates,
-    Key? key,
-  }) : super(key: key);
+    this.disabledDates,
+    this.disabledTimes,
+    super.key,
+  }) {
+    alwaysUse24HourFormat = use24HourFormat ?? useTimeFormatBasedOnLocale();
+  }
 
   final Widget child;
   final Widget? header;
   final Function(DateTime)? onTapDay;
   final bool highlightToday;
+  late final bool alwaysUse24HourFormat;
+  final bool pickTime;
+  final double? dateBoxSize;
+  final DateBoxShape dateBoxShape;
+  final double? weekDateBoxSize;
+  final double? monthDateBoxSize;
   final DateTime? initialDate;
   final List<DateTime>? markedDates;
+  final List<DateTime>? disabledDates;
+  final List<TimeOfDay>? disabledTimes;
 
   @override
   State<StatefulWidget> createState() => _DateTimePickerState();
@@ -139,8 +160,13 @@ class _DateTimePickerState extends State<DateTimePicker> {
 
     _dateTimePickerController = DateTimePickerController(
       highlightToday: widget.highlightToday,
+      alwaysUse24HourFormat: widget.alwaysUse24HourFormat,
+      pickTime: widget.pickTime,
+      dateBoxShape: widget.dateBoxShape,
       header: widget.header,
       markedDates: widget.markedDates,
+      disabledDates: widget.disabledDates,
+      disabledTimes: widget.disabledTimes,
       onTapDayCallBack: widget.onTapDay,
       browsingDate: widget.initialDate ?? DateTime.now(),
       selectedDate: widget.initialDate ?? DateTime.now(),
@@ -204,10 +230,13 @@ class _DateTimePickerState extends State<DateTimePicker> {
                               ? WeekDateTimePickerSheet(
                                   dateTimePickerController:
                                       _dateTimePickerController,
+                                      weekDateBoxSize: widget.weekDateBoxSize ?? 12,
                                 )
                               : MonthDateTimePickerSheet(
                                   dateTimePickerController:
                                       _dateTimePickerController,
+                                  monthDateBoxSize:
+                                      widget.monthDateBoxSize ?? 45,
                                 ),
                         ),
                       ),
@@ -220,5 +249,26 @@ class _DateTimePickerState extends State<DateTimePicker> {
         ),
       ],
     );
+  }
+}
+
+bool useTimeFormatBasedOnLocale() {
+  // Get LocaleName of current platform and split language- and countryCode in 2 List values.
+  var deviceLocale = Platform.localeName.split('_');
+
+  // Make LocaleName of current platform in a Locale Object
+  Locale defaultLocale = Locale.fromSubtags(
+    languageCode: deviceLocale[0],
+    countryCode: deviceLocale[1],
+  );
+
+  // Determine Country.
+  switch (defaultLocale.countryCode) {
+    case 'NL':
+      return true;
+    case 'US':
+      return false;
+    default:
+      return true;
   }
 }

@@ -90,13 +90,11 @@ class MyHomePage extends StatelessWidget {
         //     ],
         //   ),
         // ),
-        markedDates: [DateTime(2022, 8, 26)],
-        child: Container(
-          margin: const EdgeInsets.only(
-            top: 195,
-          ),
-          child: Container(),
-        ),
+        disabledDates: [DateTime(2022, 8, 26), DateTime(2022, 8, 27)],
+        markedDates: [DateTime(2022, 8, 28), DateTime(2022, 8, 29)],
+        disabledTimes: const [TimeOfDay(hour: 12, minute: 0)],
+        pickTime: true,
+        child: Container(),
       ),
     );
   }

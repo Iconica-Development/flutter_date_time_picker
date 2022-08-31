@@ -7,12 +7,14 @@ import 'package:intl/intl.dart';
 class WeekDateTimePickerSheet extends StatelessWidget {
   const WeekDateTimePickerSheet({
     required this.dateTimePickerController,
+    required this.weekDateBoxSize,
     this.showHeader = false,
     Key? key,
   }) : super(key: key);
 
   final DateTimePickerController dateTimePickerController;
   final bool showHeader;
+  final double weekDateBoxSize;
 
   String getDateHeader() {
     List<DateTime> weekDays =
@@ -75,16 +77,19 @@ class WeekDateTimePickerSheet extends StatelessWidget {
                 date: dateTimePickerController.browsingDate.subtract(
                   const Duration(days: 7),
                 ),
+                weekDateBoxSize: weekDateBoxSize,
               ),
               WeekDateTimePicker(
                 dateTimePickerController: dateTimePickerController,
                 date: dateTimePickerController.browsingDate,
+                weekDateBoxSize: weekDateBoxSize,
               ),
               WeekDateTimePicker(
                 dateTimePickerController: dateTimePickerController,
                 date: dateTimePickerController.browsingDate.add(
                   const Duration(days: 7),
                 ),
+                weekDateBoxSize: weekDateBoxSize,
               ),
             ],
           ),

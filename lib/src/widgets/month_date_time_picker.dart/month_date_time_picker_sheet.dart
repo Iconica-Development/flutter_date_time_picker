@@ -7,10 +7,12 @@ import 'package:intl/intl.dart';
 class MonthDateTimePickerSheet extends StatelessWidget {
   const MonthDateTimePickerSheet({
     required this.dateTimePickerController,
+    required this.monthDateBoxSize,
     Key? key,
   }) : super(key: key);
 
   final DateTimePickerController dateTimePickerController;
+  final double monthDateBoxSize;
 
   @override
   Widget build(BuildContext context) {
@@ -68,10 +70,16 @@ class MonthDateTimePickerSheet extends StatelessWidget {
                           dateTimePickerController.browsingDate.year - 1, 12, 1)
                       : DateTime(dateTimePickerController.browsingDate.year,
                           dateTimePickerController.browsingDate.month - 1, 1),
+                          monthDateBoxSize: monthDateBoxSize,
                   dateTimePickerController: dateTimePickerController),
               MonthDateTimePicker(
-                  date: dateTimePickerController.browsingDate,
-                  dateTimePickerController: dateTimePickerController),
+                  date: DateTime(
+                    dateTimePickerController.browsingDate.year,
+                    dateTimePickerController.browsingDate.month,
+                    1,
+                  ),
+                  dateTimePickerController: dateTimePickerController,
+                  monthDateBoxSize: monthDateBoxSize),
               MonthDateTimePicker(
                 date: dateTimePickerController.browsingDate.month == 12
                     ? DateTime(
@@ -82,6 +90,7 @@ class MonthDateTimePickerSheet extends StatelessWidget {
                     : DateTime(dateTimePickerController.browsingDate.year,
                         dateTimePickerController.browsingDate.month + 1, 1),
                 dateTimePickerController: dateTimePickerController,
+                monthDateBoxSize: monthDateBoxSize
               ),
             ],
           ),

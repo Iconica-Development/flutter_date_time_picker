@@ -1,4 +1,4 @@
-extension DatePickerUtil on DateTime {
+extension DateTimeExtension on DateTime {
   // Check if the current date is the same as the given date
   bool sameDayAs(DateTime selectedDate) {
     return selectedDate.day == day &&
@@ -7,7 +7,7 @@ extension DatePickerUtil on DateTime {
   }
 
   // Check if the current date is contained in the given list
-  bool isContainedIn(List<DateTime> dates) {
+  bool dateContainedIn(List<DateTime> dates) {
     return dates.any((element) => element.sameDayAs(this));
   }
 
