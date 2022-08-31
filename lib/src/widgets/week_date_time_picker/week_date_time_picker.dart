@@ -235,7 +235,7 @@ class WeekDateTimePicker extends StatelessWidget {
       case DateBoxShape.rectangle:
         return BorderRadius.zero;
       case DateBoxShape.roundedRectangle:
-        return BorderRadius.circular(weekDateBoxSize / 4.5);
+        return BorderRadius.circular(weekDateBoxSize / 1.5);
     }
   }
 }
