@@ -39,7 +39,7 @@ class MonthDateTimePickerSheet extends StatelessWidget {
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height * 0.33,
           child: PageView(
-            controller: dateTimePickerController.getPageController(),
+            controller: dateTimePickerController.pageController,
             onPageChanged: (i) {
               if (i == 0) {
                 dateTimePickerController.onPageChanged(

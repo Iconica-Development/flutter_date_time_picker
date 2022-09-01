@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_date_time_picker/src/enums/date_box_shape.dart';
 import 'package:flutter_date_time_picker/src/extensions/date_time.dart';
 import 'package:flutter_date_time_picker/src/extensions/time_of_day.dart';
+import 'package:flutter_date_time_picker/src/models/date_box_current_theme.dart';
+import 'package:flutter_date_time_picker/src/models/date_time_picker_theme.dart';
 import 'package:flutter_date_time_picker/src/utils/date_time_picker_controller.dart';
 
 class MonthDateTimePicker extends StatelessWidget {
@@ -37,7 +39,7 @@ class MonthDateTimePicker extends StatelessWidget {
             DateTime(date.year, date.month).daysInMonth() +
                 (daysToSkip >= 7 ? 0 : daysToSkip),
             (index) {
-              late Map<String, Color> calendarColors;
+              late DateBoxCurrentTheme currentDateBoxTheme;
 
               int addedIndex = index;
 
@@ -48,11 +50,8 @@ class MonthDateTimePicker extends StatelessWidget {
                 return const SizedBox.shrink();
               }
 
-              calendarColors = determineColors(
-                context,
-                addedIndex,
-                daysToSkip,
-              );
+              currentDateBoxTheme = determineCurrentDateBoxTheme(context,
+                  addedIndex, daysToSkip, dateTimePickerController.theme);
 
               return GestureDetector(
                 onTap: isDisabled(
@@ -76,6 +75,8 @@ class MonthDateTimePicker extends StatelessWidget {
                           addedIndex + 1 - daysToSkip,
                         );
 
+                        timeOfDay = const TimeOfDay(hour: 0, minute: 0);
+
                         if (dateTimePickerController.pickTime) {
                           timeOfDay = await displayTimePicker(
                               context, dateTimePickerController);
@@ -84,15 +85,35 @@ class MonthDateTimePicker extends StatelessWidget {
                         if (timeOfDay != null &&
                             timeOfDay.timeContainedIn(
                                 dateTimePickerController.disabledTimes ?? [])) {
-                        } else {
-                          timeOfDay = const TimeOfDay(hour: 0, minute: 0);
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+      title: const Text('Verkeerde tijd gekozen'),
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: const <Widget>[
+            Text(
+                'De tijd die u wilt kiezen, is niet mogelijk, maak een andere keuze.'),
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          child: const Text('OK'),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ],
+    ),
+                          );
                         }
 
                         DateTime selectedDateTime = DateTime(
                           selectedDate.year,
                           selectedDate.month,
                           selectedDate.day,
-                          timeOfDay.hour,
+                          timeOfDay!.hour,
                           timeOfDay.minute,
                         );
 
@@ -102,7 +123,7 @@ class MonthDateTimePicker extends StatelessWidget {
                   margin:
                       const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
                   decoration: BoxDecoration(
-                    color: calendarColors['backgroundColor'],
+                    color: currentDateBoxTheme.backgroundColor,
                     borderRadius:
                         _determineBorderRadius(dateTimePickerController),
                   ),
@@ -111,13 +132,8 @@ class MonthDateTimePicker extends StatelessWidget {
                   child: Stack(
                     children: [
                       Center(
-                        child: Text(
-                          (addedIndex + 1 - daysToSkip).toString(),
-                          style:
-                              Theme.of(context).textTheme.bodyText1!.copyWith(
-                                    color: calendarColors['textColor'],
-                                  ),
-                        ),
+                        child: Text((addedIndex + 1 - daysToSkip).toString(),
+                            style: currentDateBoxTheme.textStyle),
                       ),
                       if (shouldMark(
                         addedIndex,
@@ -161,32 +177,39 @@ class MonthDateTimePicker extends StatelessWidget {
     );
   }
 
-  determineColors(context, index, daysToSkip) {
-    Map<String, Color> calendarColors = {
-      'backgroundColor': Colors.transparent,
-      'textColor': Colors.black
-    };
+  DateBoxCurrentTheme determineCurrentDateBoxTheme(
+    BuildContext context,
+    int index,
+    int daysToSkip,
+    DateTimePickerTheme theme,
+  ) {
+    DateBoxCurrentTheme determinedTheme = DateBoxCurrentTheme(
+      theme.baseTheme.backgroundColor ?? Colors.transparent,
+      theme.baseTheme.textStyle ?? const TextStyle(color: Colors.black),
+    );
 
     if (isDisabled(index, daysToSkip)) {
-      calendarColors = {
-        'backgroundColor': Theme.of(context).disabledColor,
-        'textColor': Colors.white
-      };
+      determinedTheme = DateBoxCurrentTheme(
+        theme.disabledTheme.backgroundColor ?? Theme.of(context).disabledColor,
+        theme.disabledTheme.textStyle ?? const TextStyle(color: Colors.white),
+      );
     }
     if (isSelected(index, daysToSkip)) {
-      calendarColors = {
-        'backgroundColor': Theme.of(context).primaryColor.withOpacity(0.3),
-        'textColor': Theme.of(context).primaryColor
-      };
+      determinedTheme = DateBoxCurrentTheme(
+          theme.selectedTheme.backgroundColor ??
+              Theme.of(context).primaryColor.withOpacity(0.3),
+          theme.selectedTheme.textStyle ??
+              TextStyle(color: Theme.of(context).primaryColor));
     }
     if (shouldHighlight(index, daysToSkip)) {
-      calendarColors = {
-        'backgroundColor': Theme.of(context).primaryColor,
-        'textColor': Colors.white
-      };
+      determinedTheme = DateBoxCurrentTheme(
+          theme.highlightTheme.backgroundColor ??
+              Theme.of(context).primaryColor,
+          theme.highlightTheme.textStyle ??
+              const TextStyle(color: Colors.white));
     }
 
-    return calendarColors;
+    return determinedTheme;
   }
 
   bool isDisabled(int index, int daysToSkip) {
@@ -228,7 +251,7 @@ class MonthDateTimePicker extends StatelessWidget {
 
   BorderRadius _determineBorderRadius(
       DateTimePickerController dateTimePickerController) {
-    switch (dateTimePickerController.dateBoxShape) {
+    switch (dateTimePickerController.theme.dateBoxShape) {
       case DateBoxShape.circle:
         return BorderRadius.circular(monthDateBoxSize * 2);
       case DateBoxShape.rectangle:
@@ -239,39 +262,9 @@ class MonthDateTimePicker extends StatelessWidget {
   }
 }
 
-class WrongTimeDialog extends StatelessWidget {
-  const WrongTimeDialog({required this.dateTimePickerController, Key? key})
-      : super(key: key);
-
-  final DateTimePickerController dateTimePickerController;
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: const Text('Verkeerde tijd gekozen'),
-      content: SingleChildScrollView(
-        child: ListBody(
-          children: const <Widget>[
-            Text(
-                'De tijd die u wilt kiezen, is niet mogelijk, maak een andere keuze.'),
-          ],
-        ),
-      ),
-      actions: <Widget>[
-        TextButton(
-          child: const Text('OK'),
-          onPressed: () {
-            displayTimePicker(context, dateTimePickerController);
-          },
-        ),
-      ],
-    );
-  }
-}
-
 displayTimePicker(BuildContext context,
     DateTimePickerController dateTimePickerController) async {
-  await showTimePicker(
+  return await showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
       builder: (BuildContext context, Widget? child) {

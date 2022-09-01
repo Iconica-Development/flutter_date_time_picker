@@ -55,7 +55,7 @@ class WeekDateTimePickerSheet extends StatelessWidget {
           width: MediaQuery.of(context).size.width,
           height: 60,
           child: PageView(
-            controller: dateTimePickerController.getPageController(),
+            controller: dateTimePickerController.pageController,
             onPageChanged: (i) {
               if (i == 0) {
                 dateTimePickerController.onPageChanged(

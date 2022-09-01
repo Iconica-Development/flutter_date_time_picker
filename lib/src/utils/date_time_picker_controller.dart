@@ -1,23 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_date_time_picker/src/enums/date_box_shape.dart';
+import 'package:flutter_date_time_picker/src/models/date_time_picker_theme.dart';
 
 class DateTimePickerController extends ChangeNotifier {
   DateTimePickerController({
+    required this.theme,
     required this.highlightToday,
     required this.alwaysUse24HourFormat,
     required this.pickTime,
-    required this.dateBoxShape,
-    
+    required this.browsingDate,
+    required this.selectedDate,
     this.header,
     this.markedDates,
     this.disabledDates,
     this.disabledTimes,
     this.onTapDayCallBack,
-    required this.browsingDate,
-    required this.selectedDate,
   });
 
-  
   final PageController _pageController = PageController(initialPage: 1);
 
   final bool highlightToday;
@@ -25,7 +23,7 @@ class DateTimePickerController extends ChangeNotifier {
 
   final Widget? header;
 
-  final DateBoxShape dateBoxShape;
+  final DateTimePickerTheme theme;
 
   final List<DateTime>? markedDates;
   final List<DateTime>? disabledDates;
@@ -56,7 +54,7 @@ class DateTimePickerController extends ChangeNotifier {
     );
   }
 
-  void onTapDay(date) {
+  void onTapDay(DateTime date) {
     browsingDate = date;
     selectedDate = date;
 
@@ -69,9 +67,7 @@ class DateTimePickerController extends ChangeNotifier {
     }
   }
 
-  PageController getPageController() {
-    return _pageController;
-  }
+  PageController get pageController => _pageController;
 
   void setBrowsingDate(DateTime date) {
     browsingDate = date;

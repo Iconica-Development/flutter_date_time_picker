@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_date_time_picker/flutter_date_time_picker.dart';
 import 'package:flutter_date_time_picker/src/extensions/date_time.dart';
 import 'package:flutter_date_time_picker/src/extensions/time_of_day.dart';
+import 'package:flutter_date_time_picker/src/models/date_box_current_theme.dart';
+import 'package:flutter_date_time_picker/src/models/date_time_picker_theme.dart';
 import 'package:flutter_date_time_picker/src/utils/date_time_picker_controller.dart';
 import 'package:intl/intl.dart';
 
@@ -26,12 +28,10 @@ class WeekDateTimePicker extends StatelessWidget {
       children: List.generate(
         date.daysOfWeek().length,
         (index) {
-          late Map<String, Color> calendarColors;
+          late DateBoxCurrentTheme currentDateBoxTheme;
 
-          calendarColors = determineColors(
-            context,
-            index,
-          );
+          currentDateBoxTheme = determineCurrentDateBoxTheme(
+              context, index, dateTimePickerController.theme);
           return GestureDetector(
             onTap: isDisabled(
               index,
@@ -50,18 +50,8 @@ class WeekDateTimePicker extends StatelessWidget {
                     DateTime selectedDate = date.daysOfWeek()[index];
 
                     if (dateTimePickerController.pickTime) {
-                      timeOfDay = await showTimePicker(
-                          context: context,
-                          initialTime: TimeOfDay.now(),
-                          builder: (BuildContext context, Widget? child) {
-                            return MediaQuery(
-                              data: MediaQuery.of(context).copyWith(
-                                  alwaysUse24HourFormat:
-                                      dateTimePickerController
-                                          .alwaysUse24HourFormat),
-                              child: child!,
-                            );
-                          });
+                      timeOfDay = await displayTimePicker(
+                          context, dateTimePickerController);
                     }
 
                     if (timeOfDay != null &&
@@ -76,7 +66,7 @@ class WeekDateTimePicker extends StatelessWidget {
                                 child: ListBody(
                                   children: const <Widget>[
                                     Text(
-                                        'De tijd die u wilt kiezen, is niet mogelijk, makke een andere keuze.'),
+                                        'De tijd die u wilt kiezen, is niet mogelijk, maak een andere keuze.'),
                                   ],
                                 ),
                               ),
@@ -84,14 +74,14 @@ class WeekDateTimePicker extends StatelessWidget {
                                 TextButton(
                                   child: const Text('OK'),
                                   onPressed: () {
-                                    Navigator.of(context).pop();
+                                    Navigator.pop(context);
                                   },
                                 ),
                               ],
                             );
                           });
                     } else {
-                      timeOfDay = TimeOfDay(
+                      timeOfDay = const TimeOfDay(
                         hour: 0,
                         minute: 0,
                       );
@@ -126,7 +116,7 @@ class WeekDateTimePicker extends StatelessWidget {
                     height: weekDateBoxSize,
                     width: weekDateBoxSize,
                     decoration: BoxDecoration(
-                      color: calendarColors['backgroundColor'],
+                      color: currentDateBoxTheme.backgroundColor,
                       borderRadius:
                           _determineBorderRadius(dateTimePickerController),
                     ),
@@ -135,10 +125,7 @@ class WeekDateTimePicker extends StatelessWidget {
                         Center(
                           child: Text(
                             date.daysOfWeek().elementAt(index).day.toString(),
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium!
-                                .copyWith(color: calendarColors['textColor']),
+                            style: currentDateBoxTheme.textStyle,
                           ),
                         ),
                         if (shouldMark(index)) ...[
@@ -148,7 +135,9 @@ class WeekDateTimePicker extends StatelessWidget {
                               width: weekDateBoxSize / 3,
                               height: weekDateBoxSize / 3,
                               decoration: BoxDecoration(
-                                color: Theme.of(context).indicatorColor,
+                                color: dateTimePickerController
+                                        .theme.markedIndicatorColor ??
+                                    Theme.of(context).indicatorColor,
                                 borderRadius:
                                     BorderRadius.circular(weekDateBoxSize * 2),
                               ),
@@ -168,32 +157,38 @@ class WeekDateTimePicker extends StatelessWidget {
     );
   }
 
-  determineColors(context, index) {
-    Map<String, Color> calendarColors = {
-      'backgroundColor': Colors.transparent,
-      'textColor': Colors.black
-    };
+  DateBoxCurrentTheme determineCurrentDateBoxTheme(
+    BuildContext context,
+    int index,
+    DateTimePickerTheme theme,
+  ) {
+    DateBoxCurrentTheme determinedTheme = DateBoxCurrentTheme(
+      theme.baseTheme.backgroundColor ?? Colors.transparent,
+      theme.baseTheme.textStyle ?? const TextStyle(color: Colors.black),
+    );
 
     if (isDisabled(index)) {
-      calendarColors = {
-        'backgroundColor': Theme.of(context).disabledColor,
-        'textColor': Colors.white
-      };
+      determinedTheme = DateBoxCurrentTheme(
+        theme.disabledTheme.backgroundColor ?? Theme.of(context).disabledColor,
+        theme.disabledTheme.textStyle ?? const TextStyle(color: Colors.white),
+      );
     }
     if (isSelected(index)) {
-      calendarColors = {
-        'backgroundColor': Theme.of(context).primaryColor.withOpacity(0.3),
-        'textColor': Theme.of(context).primaryColor
-      };
+      determinedTheme = DateBoxCurrentTheme(
+          theme.selectedTheme.backgroundColor ??
+              Theme.of(context).primaryColor.withOpacity(0.3),
+          theme.selectedTheme.textStyle ??
+              TextStyle(color: Theme.of(context).primaryColor));
     }
     if (shouldHighlight(index)) {
-      calendarColors = {
-        'backgroundColor': Theme.of(context).primaryColor,
-        'textColor': Colors.white
-      };
+      determinedTheme = DateBoxCurrentTheme(
+          theme.highlightTheme.backgroundColor ??
+              Theme.of(context).primaryColor,
+          theme.highlightTheme.textStyle ??
+              const TextStyle(color: Colors.white));
     }
 
-    return calendarColors;
+    return determinedTheme;
   }
 
   bool shouldHighlight(int index) {
@@ -232,7 +227,7 @@ class WeekDateTimePicker extends StatelessWidget {
 
   BorderRadius _determineBorderRadius(
       DateTimePickerController dateTimePickerController) {
-    switch (dateTimePickerController.dateBoxShape) {
+    switch (dateTimePickerController.theme.dateBoxShape) {
       case DateBoxShape.circle:
         return BorderRadius.circular(weekDateBoxSize * 2);
       case DateBoxShape.rectangle:
@@ -240,5 +235,20 @@ class WeekDateTimePicker extends StatelessWidget {
       case DateBoxShape.roundedRectangle:
         return BorderRadius.circular(weekDateBoxSize / 4.5);
     }
+  }
+
+  displayTimePicker(BuildContext context,
+      DateTimePickerController dateTimePickerController) async {
+    return await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.now(),
+        builder: (BuildContext context, Widget? child) {
+          return MediaQuery(
+            data: MediaQuery.of(context).copyWith(
+                alwaysUse24HourFormat:
+                    dateTimePickerController.alwaysUse24HourFormat),
+            child: child!,
+          );
+        });
   }
 }

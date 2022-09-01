@@ -1,12 +1,17 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:flutter_date_time_picker/flutter_date_time_picker.dart';
 
 void main() {
-  test('adds one to input values', () {
-    final calculator = Calculator();
-    expect(calculator.addOne(2), 3);
-    expect(calculator.addOne(-7), -6);
-    expect(calculator.addOne(0), 1);
+  testWidgets('MyWidget has a title and message', (tester) async {
+    // Create the widget by telling the tester to build it.
+    await tester.pumpWidget(Scaffold(
+      appBar: AppBar(),
+      body: DateTimePicker(
+        pickTime: false,
+        child: Container(),
+      ),
+    ));
   });
 }

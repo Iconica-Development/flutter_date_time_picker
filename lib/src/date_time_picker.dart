@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_date_time_picker/src/enums/date_box_shape.dart';
+import 'package:flutter_date_time_picker/src/models/date_time_picker_theme.dart';
 import 'package:flutter_date_time_picker/src/utils/date_time_picker_controller.dart';
 import 'package:flutter_date_time_picker/src/widgets/month_date_time_picker.dart/month_date_time_picker_sheet.dart';
 import 'package:flutter_date_time_picker/src/widgets/week_date_time_picker/week_date_time_picker_sheet.dart';
@@ -9,27 +9,42 @@ import 'package:intl/date_symbol_data_local.dart';
 
 /// A widget that displays a date picker from a sheet form the top of the screen.
 /// This sheet displays initialy displays a week of days but can be dragged down to show full months.
-/// Both views can be dragged sideways to show the next or previous wweek/month.
+/// Both views can be dragged sideways to show the next or previous week/month.
 ///
 /// The child will be the [Widget] that is displayed underneath the date picker in the stack.
 ///
+///
+/// [initialDate] indicates the starting date. Default is [DateTime.now()
+///
+/// [pickTime] is a [bool] that determines if the user is able to pick a time after picking a date.
+/// true will always tirgger a [TimePickerDialog].
+/// false will nvever trigger a [TimePickerDialog]. This is default.
+///
+/// [use24HourFormat] is a [bool] to set de clock on [TimePickerDialog] to a fixed 24 or 12-hour format.
+/// By default this gets determined by the [Locale] on the device.
+///
+/// [dateTimePickerTheme] is used the set the global theme of the [DateTimePicker]
+///
 /// The header [Widget] will be displayed above the date picker in the modal sheet in a column.
 ///
-/// onTapDay is a callback that provides the taped date as a [DateTime] object.
+/// [onTapDay] is a callback that provides the taped date as a [DateTime] object.
 ///
-/// highlightToday is a [bool] that determines which day shall we highlighted.
+/// [highlightToday] is a [bool] that determines which day shall we highlighted.
 /// true will always highlight the current date. This is standard.
 /// false will highlight the currently selected date by either the initial date or the one chosen by the user.
-/// [highlighColor] is used as background for the highlighted day.
-/// [toggleableActiveColor] is used for the text color when highlighted.
-/// [disabledColor] is used for the text color when not highlighted.
+/// final Widget? child;
 ///
-/// markedDates contain the dates [DateTime] that will be marked in the picker by a small dot.
-/// [indicatorColor] is used for the color of the dot.
+/// [markedDates] contain the dates [DateTime] that will be marked in the picker by a small dot.
+///
+/// [disabledDates] contain the dates [DateTime] that will be disabled and cannot be interacted with whatsoever.
+///
+/// [disabledTimes] contain the time [TimeOfDay] that cannot be picked in the [TimePickerDialog].
+///
 ///
 /// Example:
 /// ```dart
-/// ShellDatePicker(
+/// DatePicker(
+///   dateTimePickerTheme: const DateTimePickerTheme()
 ///   initialDate: selectedDate,
 ///   highlightToday: false,
 ///   onTapDay: (date) {
@@ -112,35 +127,29 @@ import 'package:intl/date_symbol_data_local.dart';
 ///```
 class DateTimePicker extends StatefulWidget {
   DateTimePicker({
-    required this.child,
-    this.weekDateBoxSize = 35,
-    this.monthDateBoxSize = 45,
+    this.dateTimePickerTheme = const DateTimePickerTheme(),
     this.header,
     this.onTapDay,
     this.highlightToday = true,
     bool? use24HourFormat,
     this.pickTime = false,
-    this.dateBoxSize,
-    this.dateBoxShape = DateBoxShape.roundedRectangle,
     this.initialDate,
     this.markedDates,
     this.disabledDates,
     this.disabledTimes,
+    this.child,
     super.key,
   }) {
     alwaysUse24HourFormat = use24HourFormat ?? useTimeFormatBasedOnLocale();
   }
 
-  final Widget child;
+  final Widget? child;
+  final DateTimePickerTheme dateTimePickerTheme;
   final Widget? header;
   final Function(DateTime)? onTapDay;
   final bool highlightToday;
   late final bool alwaysUse24HourFormat;
   final bool pickTime;
-  final double? dateBoxSize;
-  final DateBoxShape dateBoxShape;
-  final double weekDateBoxSize;
-  final double monthDateBoxSize;
   final DateTime? initialDate;
   final List<DateTime>? markedDates;
   final List<DateTime>? disabledDates;
@@ -165,7 +174,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
       highlightToday: widget.highlightToday,
       alwaysUse24HourFormat: widget.alwaysUse24HourFormat,
       pickTime: widget.pickTime,
-      dateBoxShape: widget.dateBoxShape,
+      theme: widget.dateTimePickerTheme,
       header: widget.header,
       markedDates: widget.markedDates,
       disabledDates: widget.disabledDates,
@@ -176,8 +185,6 @@ class _DateTimePickerState extends State<DateTimePicker> {
     );
 
     _dateTimePickerController.addListener(() {
-      print('BROWSING DATE: ${_dateTimePickerController.browsingDate}');
-      print('SELECTED DATE: ${_dateTimePickerController.selectedDate}');
       setState(() {});
     });
   }
@@ -193,7 +200,9 @@ class _DateTimePickerState extends State<DateTimePicker> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        widget.child,
+        if (widget.child != null) ...[
+          widget.child!,
+        ],
         RotatedBox(
           quarterTurns: 2,
           child: DraggableScrollableSheet(
@@ -201,7 +210,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
             snap: true,
             minChildSize: 0.2,
             initialChildSize: 0.2,
-            maxChildSize: 0.68,
+            maxChildSize: 0.6,
             builder: (context, scrollController) {
               double dragSize =
                   _dragController.isAttached ? _dragController.size : 0;
@@ -233,12 +242,14 @@ class _DateTimePickerState extends State<DateTimePicker> {
                               ? WeekDateTimePickerSheet(
                                   dateTimePickerController:
                                       _dateTimePickerController,
-                                  weekDateBoxSize: widget.weekDateBoxSize,
+                                  weekDateBoxSize: widget
+                                      .dateTimePickerTheme.weekDateBoxSize,
                                 )
                               : MonthDateTimePickerSheet(
                                   dateTimePickerController:
                                       _dateTimePickerController,
-                                  monthDateBoxSize: widget.monthDateBoxSize,
+                                  monthDateBoxSize: widget
+                                      .dateTimePickerTheme.monthDateBoxSize,
                                 ),
                         ),
                       ),
