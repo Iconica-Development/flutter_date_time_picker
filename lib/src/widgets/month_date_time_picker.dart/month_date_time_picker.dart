@@ -106,8 +106,8 @@ class MonthDateTimePicker extends StatelessWidget {
                     borderRadius:
                         _determineBorderRadius(dateTimePickerController),
                   ),
-                  height: 45,
-                  width: 45,
+                  height: monthDateBoxSize,
+                  width: monthDateBoxSize,
                   child: Stack(
                     children: [
                       Center(

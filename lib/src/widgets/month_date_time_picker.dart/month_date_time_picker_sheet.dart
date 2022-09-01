@@ -37,7 +37,7 @@ class MonthDateTimePickerSheet extends StatelessWidget {
         ),
         SizedBox(
           width: MediaQuery.of(context).size.width,
-          height: 300,
+          height: MediaQuery.of(context).size.height * 0.33,
           child: PageView(
             controller: dateTimePickerController.getPageController(),
             onPageChanged: (i) {
@@ -70,7 +70,7 @@ class MonthDateTimePickerSheet extends StatelessWidget {
                           dateTimePickerController.browsingDate.year - 1, 12, 1)
                       : DateTime(dateTimePickerController.browsingDate.year,
                           dateTimePickerController.browsingDate.month - 1, 1),
-                          monthDateBoxSize: monthDateBoxSize,
+                  monthDateBoxSize: monthDateBoxSize,
                   dateTimePickerController: dateTimePickerController),
               MonthDateTimePicker(
                   date: DateTime(
@@ -81,17 +81,16 @@ class MonthDateTimePickerSheet extends StatelessWidget {
                   dateTimePickerController: dateTimePickerController,
                   monthDateBoxSize: monthDateBoxSize),
               MonthDateTimePicker(
-                date: dateTimePickerController.browsingDate.month == 12
-                    ? DateTime(
-                        dateTimePickerController.browsingDate.year + 1,
-                        1,
-                        1,
-                      )
-                    : DateTime(dateTimePickerController.browsingDate.year,
-                        dateTimePickerController.browsingDate.month + 1, 1),
-                dateTimePickerController: dateTimePickerController,
-                monthDateBoxSize: monthDateBoxSize
-              ),
+                  date: dateTimePickerController.browsingDate.month == 12
+                      ? DateTime(
+                          dateTimePickerController.browsingDate.year + 1,
+                          1,
+                          1,
+                        )
+                      : DateTime(dateTimePickerController.browsingDate.year,
+                          dateTimePickerController.browsingDate.month + 1, 1),
+                  dateTimePickerController: dateTimePickerController,
+                  monthDateBoxSize: monthDateBoxSize),
             ],
           ),
         ),

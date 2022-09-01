@@ -91,7 +91,10 @@ class WeekDateTimePicker extends StatelessWidget {
                             );
                           });
                     } else {
-                      timeOfDay = TimeOfDay(hour: 0, minute: 0);
+                      timeOfDay = TimeOfDay(
+                        hour: 0,
+                        minute: 0,
+                      );
                     }
 
                     DateTime selectedDateTime = DateTime(
@@ -120,8 +123,8 @@ class WeekDateTimePicker extends StatelessWidget {
                   ),
                   const Spacer(),
                   Container(
-                    height: 35,
-                    width: 35,
+                    height: weekDateBoxSize,
+                    width: weekDateBoxSize,
                     decoration: BoxDecoration(
                       color: calendarColors['backgroundColor'],
                       borderRadius:
@@ -142,8 +145,8 @@ class WeekDateTimePicker extends StatelessWidget {
                           Align(
                             alignment: Alignment.bottomRight,
                             child: Container(
-                              width: weekDateBoxSize,
-                              height: weekDateBoxSize,
+                              width: weekDateBoxSize / 3,
+                              height: weekDateBoxSize / 3,
                               decoration: BoxDecoration(
                                 color: Theme.of(context).indicatorColor,
                                 borderRadius:
@@ -235,7 +238,7 @@ class WeekDateTimePicker extends StatelessWidget {
       case DateBoxShape.rectangle:
         return BorderRadius.zero;
       case DateBoxShape.roundedRectangle:
-        return BorderRadius.circular(weekDateBoxSize / 1.5);
+        return BorderRadius.circular(weekDateBoxSize / 4.5);
     }
   }
 }

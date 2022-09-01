@@ -17,8 +17,7 @@ class DateTimePickerController extends ChangeNotifier {
     required this.selectedDate,
   });
 
-  final DraggableScrollableController _dragController =
-      DraggableScrollableController();
+  
   final PageController _pageController = PageController(initialPage: 1);
 
   final bool highlightToday;
@@ -41,7 +40,6 @@ class DateTimePickerController extends ChangeNotifier {
   @override
   void dispose() {
     _pageController.dispose();
-    _dragController.dispose();
     super.dispose();
   }
 
@@ -69,10 +67,6 @@ class DateTimePickerController extends ChangeNotifier {
         date,
       );
     }
-  }
-
-  DraggableScrollableController getDragController() {
-    return _dragController;
   }
 
   PageController getPageController() {

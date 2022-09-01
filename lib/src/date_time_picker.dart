@@ -113,7 +113,7 @@ import 'package:intl/date_symbol_data_local.dart';
 class DateTimePicker extends StatefulWidget {
   DateTimePicker({
     required this.child,
-    this.weekDateBoxSize = 12,
+    this.weekDateBoxSize = 35,
     this.monthDateBoxSize = 45,
     this.header,
     this.onTapDay,
@@ -139,8 +139,8 @@ class DateTimePicker extends StatefulWidget {
   final bool pickTime;
   final double? dateBoxSize;
   final DateBoxShape dateBoxShape;
-  final double? weekDateBoxSize;
-  final double? monthDateBoxSize;
+  final double weekDateBoxSize;
+  final double monthDateBoxSize;
   final DateTime? initialDate;
   final List<DateTime>? markedDates;
   final List<DateTime>? disabledDates;
@@ -152,6 +152,9 @@ class DateTimePicker extends StatefulWidget {
 
 class _DateTimePickerState extends State<DateTimePicker> {
   late DateTimePickerController _dateTimePickerController;
+
+  final DraggableScrollableController _dragController =
+      DraggableScrollableController();
 
   @override
   void initState() {
@@ -182,6 +185,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
   @override
   void dispose() {
     _dateTimePickerController.dispose();
+    _dragController.dispose();
     super.dispose();
   }
 
@@ -193,12 +197,14 @@ class _DateTimePickerState extends State<DateTimePicker> {
         RotatedBox(
           quarterTurns: 2,
           child: DraggableScrollableSheet(
-            controller: _dateTimePickerController.getDragController(),
+            controller: _dragController,
             snap: true,
-            minChildSize: 0.26,
-            initialChildSize: 0.26,
+            minChildSize: 0.2,
+            initialChildSize: 0.2,
             maxChildSize: 0.68,
             builder: (context, scrollController) {
+              double dragSize =
+                  _dragController.isAttached ? _dragController.size : 0;
               return RotatedBox(
                 quarterTurns: 2,
                 child: Stack(
@@ -223,20 +229,16 @@ class _DateTimePickerState extends State<DateTimePicker> {
                               ),
                             ],
                           ),
-                          child: _dateTimePickerController
-                                      .getDragController()
-                                      .size <
-                                  0.3
+                          child: dragSize < 0.3
                               ? WeekDateTimePickerSheet(
                                   dateTimePickerController:
                                       _dateTimePickerController,
-                                      weekDateBoxSize: widget.weekDateBoxSize ?? 12,
+                                  weekDateBoxSize: widget.weekDateBoxSize,
                                 )
                               : MonthDateTimePickerSheet(
                                   dateTimePickerController:
                                       _dateTimePickerController,
-                                  monthDateBoxSize:
-                                      widget.monthDateBoxSize ?? 45,
+                                  monthDateBoxSize: widget.monthDateBoxSize,
                                 ),
                         ),
                       ),
