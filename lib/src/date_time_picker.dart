@@ -267,7 +267,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
 
 bool useTimeFormatBasedOnLocale() {
   // Get LocaleName of current platform and split language- and countryCode in 2 List values.
-  var deviceLocale = Platform.localeName.split('_');
+  List<String> deviceLocale = Platform.localeName.split('_');
 
   // Make LocaleName of current platform in a Locale Object
   Locale defaultLocale = Locale.fromSubtags(
