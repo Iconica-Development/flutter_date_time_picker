@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_date_time_picker/flutter_date_time_picker.dart';
-import 'package:flutter_date_time_picker/src/models/date_box_base_theme.dart';
-import 'package:flutter_date_time_picker/src/models/date_box_disabled_theme.dart';
-import 'package:flutter_date_time_picker/src/models/date_box_highlight_theme.dart';
-import 'package:flutter_date_time_picker/src/models/date_box_selected_theme.dart';
 
 class DateTimePickerTheme {
   /// The [DateTimePickerTheme] to style [DateTimePicker] in. Define a custom shape for the dates and specifically style

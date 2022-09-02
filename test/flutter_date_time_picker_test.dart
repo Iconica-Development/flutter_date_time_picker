@@ -1,17 +1,48 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_date_time_picker/flutter_date_time_picker.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:flutter_date_time_picker/flutter_date_time_picker.dart';
-
 void main() {
-  testWidgets('MyWidget has a title and message', (tester) async {
-    // Create the widget by telling the tester to build it.
-    await tester.pumpWidget(Scaffold(
-      appBar: AppBar(),
-      body: DateTimePicker(
-        pickTime: false,
-        child: Container(),
+  testWidgets('Render App with DateTimePicker Widget', (tester) async {
+    // Render App
+    await tester.pumpWidget(MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(),
+        body: DateTimePicker(
+          pickTime: false,
+          child: Container(),
+        ),
       ),
     ));
+    await tester.pump();
+  });
+
+  testWidgets('Test if DateTimePicker Widget swipes', (tester) async {
+    // Render App
+    await tester.pumpWidget(MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(),
+        body: DateTimePicker(
+          pickTime: false,
+          child: Container(),
+        ),
+      ),
+    ));
+    await tester.pump();
+
+    // Forward
+    await tester.drag(
+        find.byType(SingleChildScrollView), const Offset(500.0, 0.0));
+    await tester.pumpAndSettle();
+
+    // Return
+    await tester.drag(
+        find.byType(SingleChildScrollView), const Offset(-500.0, 0.0));
+    await tester.pumpAndSettle();
+
+    // Backward
+    await tester.drag(
+        find.byType(SingleChildScrollView), const Offset(-500.0, 0.0));
+    await tester.pumpAndSettle();
   });
 }
