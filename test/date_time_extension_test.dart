@@ -3,16 +3,16 @@ import 'package:flutter_date_time_picker/src/extensions/date_time.dart';
 
 void main() {
   group('DateTimeExtension', () {
-    test('sameDayAs() should return true if the same date, if not false', () {
-      expect(DateTime(2022, 01, 01).sameDayAs(DateTime(2022, 01, 01)), true);
-      expect(DateTime(2022, 01, 01).sameDayAs(DateTime(2022, 01, 02)), false);
+    test('equals() should return true if the same date, if not false', () {
+      expect(DateTime(2022, 01, 01).equals(DateTime(2022, 01, 01)), true);
+      expect(DateTime(2022, 01, 01).equals(DateTime(2022, 01, 02)), false);
     });
 
     test(
-        'dateContainedIn() should return a boolean if the date is found in a list of dates or not',
+        'containsAny() should return a boolean if the date is found in a list of dates or not',
         () {
       expect(
-          DateTime(2022, 01, 01).dateContainedIn([
+          DateTime(2022, 01, 01).containsAny([
             DateTime(2022, 01, 01),
             DateTime(2022, 01, 02),
             DateTime(2022, 01, 03)
@@ -20,7 +20,7 @@ void main() {
           true);
 
       expect(
-          DateTime(2022, 01, 01).dateContainedIn([
+          DateTime(2022, 01, 01).containsAny([
             DateTime(2022, 01, 02),
             DateTime(2022, 01, 03),
             DateTime(2022, 01, 04)

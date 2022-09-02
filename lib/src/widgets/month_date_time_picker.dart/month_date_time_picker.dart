@@ -82,31 +82,34 @@ class MonthDateTimePicker extends StatelessWidget {
                               context, dateTimePickerController);
                         }
 
-                        if (timeOfDay != null &&
-                            timeOfDay.timeContainedIn(
-                                dateTimePickerController.disabledTimes ?? [])) {
-                          showDialog(
-                            context: context,
-                            builder: (context) => AlertDialog(
-      title: const Text('Verkeerde tijd gekozen'),
-      content: SingleChildScrollView(
-        child: ListBody(
-          children: const <Widget>[
-            Text(
-                'De tijd die u wilt kiezen, is niet mogelijk, maak een andere keuze.'),
-          ],
-        ),
-      ),
-      actions: <Widget>[
-        TextButton(
-          child: const Text('OK'),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      ],
-    ),
-                          );
+                        if (dateTimePickerController.wrongTimeDialog != null) {
+                          if (timeOfDay != null &&
+                              timeOfDay.containsAny(
+                                dateTimePickerController.disabledTimes ?? [],
+                              )) {
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: const Text('Verkeerde tijd gekozen'),
+                                content: SingleChildScrollView(
+                                  child: ListBody(
+                                    children: const <Widget>[
+                                      Text(
+                                          'De tijd die u wilt kiezen, is niet mogelijk, maak een andere keuze.'),
+                                    ],
+                                  ),
+                                ),
+                                actions: <Widget>[
+                                  TextButton(
+                                    child: const Text('OK'),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ],
+                              ),
+                            );
+                          }
                         }
 
                         DateTime selectedDateTime = DateTime(
@@ -170,7 +173,7 @@ class MonthDateTimePicker extends StatelessWidget {
       date.year,
       date.month,
       index + 1 - daysToSkip,
-    ).sameDayAs(
+    ).equals(
       dateTimePickerController.highlightToday
           ? DateTime.now()
           : dateTimePickerController.selectedDate,
@@ -217,7 +220,7 @@ class MonthDateTimePicker extends StatelessWidget {
       date.year,
       date.month,
       index + 1 - daysToSkip,
-    ).dateContainedIn(
+    ).containsAny(
       dateTimePickerController.disabledDates ?? [],
     );
   }
@@ -227,7 +230,7 @@ class MonthDateTimePicker extends StatelessWidget {
       date.year,
       date.month,
       index + 1 - daysToSkip,
-    ).sameDayAs(dateTimePickerController.selectedDate);
+    ).equals(dateTimePickerController.selectedDate);
   }
 
   bool shouldMark(int index, int daysToSkip) {
@@ -235,7 +238,7 @@ class MonthDateTimePicker extends StatelessWidget {
           date.year,
           date.month,
           index + 1 - daysToSkip,
-        ).sameDayAs(
+        ).equals(
           dateTimePickerController.highlightToday
               ? DateTime.now()
               : dateTimePickerController.selectedDate,
@@ -244,7 +247,7 @@ class MonthDateTimePicker extends StatelessWidget {
           date.year,
           date.month,
           index + 1 - daysToSkip,
-        ).dateContainedIn(
+        ).containsAny(
           dateTimePickerController.markedDates ?? [],
         );
   }

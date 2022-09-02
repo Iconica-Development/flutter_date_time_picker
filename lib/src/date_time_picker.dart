@@ -8,52 +8,22 @@ import 'package:flutter_date_time_picker/src/widgets/week_date_time_picker/week_
 import 'package:intl/date_symbol_data_local.dart';
 
 /// A widget that displays a date picker from a sheet form the top of the screen.
-/// This sheet displays initialy displays a week of days but can be dragged down to show full months.
+/// This sheet displays initially displays a week but can be dragged down to show a full month.
 /// Both views can be dragged sideways to show the next or previous week/month.
-///
-/// The child will be the [Widget] that is displayed underneath the date picker in the stack.
-///
-///
-/// [initialDate] indicates the starting date. Default is [DateTime.now()
-///
-/// [pickTime] is a [bool] that determines if the user is able to pick a time after picking a date.
-/// true will always tirgger a [TimePickerDialog].
-/// false will nvever trigger a [TimePickerDialog]. This is default.
-///
-/// [use24HourFormat] is a [bool] to set de clock on [TimePickerDialog] to a fixed 24 or 12-hour format.
-/// By default this gets determined by the [Locale] on the device.
-///
-/// [dateTimePickerTheme] is used the set the global theme of the [DateTimePicker]
-///
-/// The header [Widget] will be displayed above the date picker in the modal sheet in a column.
-///
-/// [onTapDay] is a callback that provides the taped date as a [DateTime] object.
-///
-/// [highlightToday] is a [bool] that determines which day shall we highlighted.
-/// true will always highlight the current date. This is standard.
-/// false will highlight the currently selected date by either the initial date or the one chosen by the user.
-/// final Widget? child;
-///
-/// [markedDates] contain the dates [DateTime] that will be marked in the picker by a small dot.
-///
-/// [disabledDates] contain the dates [DateTime] that will be disabled and cannot be interacted with whatsoever.
-///
-/// [disabledTimes] contain the time [TimeOfDay] that cannot be picked in the [TimePickerDialog].
-///
 ///
 /// Example:
 /// ```dart
 /// DatePicker(
 ///   dateTimePickerTheme: const DateTimePickerTheme()
 ///   initialDate: selectedDate,
-///   highlightToday: false,
+///   highlightToday: true,
 ///   onTapDay: (date) {
 ///     setState(() {
 ///       selectedDate = date;
 ///     });
 ///   },
 ///   markedDates: [
-///     DateTime(2022, 7, 22),
+///     DateTime(2022, 3, 14),
 ///   ],
 ///   header: Container(
 ///     height: 100,
@@ -68,7 +38,7 @@ import 'package:intl/date_symbol_data_local.dart';
 ///           height: 34,
 ///           child: Center(
 ///             child: Text(
-///               'Persoonlijk',
+///               'Personal calendar',
 ///               style: TextStyle(
 ///                 fontSize: 16,
 ///                 fontWeight: FontWeight.w900,
@@ -97,7 +67,7 @@ import 'package:intl/date_symbol_data_local.dart';
 ///           ),
 ///           child: const Center(
 ///             child: Text(
-///               'Teamplanning',
+///               'Work calendar',
 ///               style: TextStyle(
 ///                 color: Colors.white,
 ///                 fontSize: 16,
@@ -113,15 +83,7 @@ import 'package:intl/date_symbol_data_local.dart';
 ///     margin: const EdgeInsets.only(
 ///       top: 195,
 ///     ),
-///     child: ShellRoster(
-///       startHour: 0,
-///       endHour: 24,
-///       blocks: [
-///         for (Map<String, TimeOfDay> block in blocks) ...[
-///           getBlock(block),
-///         ],
-///       ],
-///     ),
+///     child: HolidayRoster(),
 ///   ),
 /// ),
 ///```
@@ -131,6 +93,7 @@ class DateTimePicker extends StatefulWidget {
     this.header,
     this.onTapDay,
     this.highlightToday = true,
+    this.wrongTimeDialog,
     bool? use24HourFormat,
     this.pickTime = false,
     this.initialDate,
@@ -140,19 +103,44 @@ class DateTimePicker extends StatefulWidget {
     this.child,
     super.key,
   }) {
-    alwaysUse24HourFormat = use24HourFormat ?? useTimeFormatBasedOnLocale();
+    alwaysUse24HourFormat = use24HourFormat ?? _useTimeFormatBasedOnLocale();
   }
 
+  /// The child contained by the DatePicker.
   final Widget? child;
+
+  /// A [Widget] to display when the user picks a disabled time in the [TimePickerDialog]
+  final Widget? wrongTimeDialog;
+
+  /// Visual properties for the [DateTimePicker]
   final DateTimePickerTheme dateTimePickerTheme;
+
+  /// Widget shown at the top of the [DateTimePicker]
   final Widget? header;
+
+  /// Callback that provides the date tapped on as a [DateTime] object.
   final Function(DateTime)? onTapDay;
+
+  /// Whether the current day should be highlighted in the [DateTimePicker]
   final bool highlightToday;
+
+  /// a [bool] to set de clock on [TimePickerDialog] to a fixed 24 or 12-hour format.
+  /// By default this gets determined by the [Locale] on the device.
   late final bool alwaysUse24HourFormat;
+
+  /// [pickTime] is a [bool] that determines if the user is able to pick a time after picking a date usring the [TimePickerDialog].
   final bool pickTime;
+
+  /// indicates the starting date. Default is [DateTime.now()]
   final DateTime? initialDate;
+
+  /// [markedDates] contain the dates [DateTime] that will be marked in the [DateTimePicker] by a small dot.
   final List<DateTime>? markedDates;
+
+  /// a [List] of [DateTime] objects that will be disabled and cannot be interacted with whatsoever.
   final List<DateTime>? disabledDates;
+
+  /// a [List] of [TimeOfDay] objects that cannot be picked in the [TimePickerDialog].
   final List<TimeOfDay>? disabledTimes;
 
   @override
@@ -265,7 +253,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
   }
 }
 
-bool useTimeFormatBasedOnLocale() {
+bool _useTimeFormatBasedOnLocale() {
   // Get LocaleName of current platform and split language- and countryCode in 2 List values.
   List<String> deviceLocale = Platform.localeName.split('_');
 

@@ -48,49 +48,48 @@ class WeekDateTimePicker extends StatelessWidget {
 
                     DateTime selectedDate = date.daysOfWeek()[index];
 
+                    timeOfDay = const TimeOfDay(hour: 0, minute: 0);
+
                     if (dateTimePickerController.pickTime) {
                       timeOfDay = await displayTimePicker(
                           context, dateTimePickerController);
                     }
 
-                    if (timeOfDay != null &&
-                        timeOfDay.timeContainedIn(
-                            dateTimePickerController.disabledTimes ?? [])) {
-                      showDialog(
+                    if (dateTimePickerController.wrongTimeDialog != null) {
+                      if (timeOfDay != null &&
+                          timeOfDay.containsAny(
+                            dateTimePickerController.disabledTimes ?? [],
+                          )) {
+                        showDialog(
                           context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title: const Text('Verkeerde tijd gekozen'),
-                              content: SingleChildScrollView(
-                                child: ListBody(
-                                  children: const <Widget>[
-                                    Text(
-                                        'De tijd die u wilt kiezen, is niet mogelijk, maak een andere keuze.'),
-                                  ],
-                                ),
+                          builder: (context) => AlertDialog(
+                            title: const Text('Verkeerde tijd gekozen'),
+                            content: SingleChildScrollView(
+                              child: ListBody(
+                                children: const <Widget>[
+                                  Text(
+                                      'De tijd die u wilt kiezen, is niet mogelijk, maak een andere keuze.'),
+                                ],
                               ),
-                              actions: <Widget>[
-                                TextButton(
-                                  child: const Text('OK'),
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                              ],
-                            );
-                          });
-                    } else {
-                      timeOfDay = const TimeOfDay(
-                        hour: 0,
-                        minute: 0,
-                      );
+                            ),
+                            actions: <Widget>[
+                              TextButton(
+                                child: const Text('OK'),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                            ],
+                          ),
+                        );
+                      }
                     }
 
                     DateTime selectedDateTime = DateTime(
                       selectedDate.year,
                       selectedDate.month,
                       selectedDate.day,
-                      timeOfDay.hour,
+                      timeOfDay!.hour,
                       timeOfDay.minute,
                     );
 
@@ -191,7 +190,7 @@ class WeekDateTimePicker extends StatelessWidget {
   }
 
   bool shouldHighlight(int index) {
-    return date.daysOfWeek().elementAt(index).sameDayAs(
+    return date.daysOfWeek().elementAt(index).equals(
           dateTimePickerController.highlightToday
               ? DateTime.now()
               : dateTimePickerController.selectedDate,
@@ -202,18 +201,18 @@ class WeekDateTimePicker extends StatelessWidget {
     return date
         .daysOfWeek()
         .elementAt(index)
-        .sameDayAs(dateTimePickerController.selectedDate);
+        .equals(dateTimePickerController.selectedDate);
   }
 
   bool isDisabled(int index) {
     return date
         .daysOfWeek()
         .elementAt(index)
-        .dateContainedIn(dateTimePickerController.disabledDates ?? []);
+        .containsAny(dateTimePickerController.disabledDates ?? []);
   }
 
   bool shouldMark(int index) {
-    return !date.daysOfWeek().elementAt(index).sameDayAs(
+    return !date.daysOfWeek().elementAt(index).equals(
               dateTimePickerController.highlightToday
                   ? DateTime.now()
                   : dateTimePickerController.selectedDate,
@@ -221,7 +220,7 @@ class WeekDateTimePicker extends StatelessWidget {
         date
             .daysOfWeek()
             .elementAt(index)
-            .dateContainedIn(dateTimePickerController.markedDates ?? []);
+            .containsAny(dateTimePickerController.markedDates ?? []);
   }
 
   BorderRadius _determineBorderRadius(

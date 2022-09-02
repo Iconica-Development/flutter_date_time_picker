@@ -10,6 +10,7 @@ class DateTimePickerController extends ChangeNotifier {
     required this.browsingDate,
     required this.selectedDate,
     this.header,
+    this.wrongTimeDialog,
     this.markedDates,
     this.disabledDates,
     this.disabledTimes,
@@ -22,6 +23,8 @@ class DateTimePickerController extends ChangeNotifier {
   final bool? alwaysUse24HourFormat;
 
   final Widget? header;
+
+  final Widget? wrongTimeDialog;
 
   final DateTimePickerTheme theme;
 

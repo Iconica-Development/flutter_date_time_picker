@@ -28,9 +28,10 @@ class MyApp extends StatelessWidget {
 
 class DatePickerDemo extends StatelessWidget {
   const DatePickerDemo({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
-    return DateTimePicker(dateTimePickerTheme: const DateTimePickerTheme(),);
+    return DateTimePicker(
+      dateTimePickerTheme: const DateTimePickerTheme(),
+    );
   }
 }
