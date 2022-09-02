@@ -88,27 +88,9 @@ class MonthDateTimePicker extends StatelessWidget {
                                 dateTimePickerController.disabledTimes ?? [],
                               )) {
                             showDialog(
-                              context: context,
-                              builder: (context) => AlertDialog(
-                                title: const Text('Verkeerde tijd gekozen'),
-                                content: SingleChildScrollView(
-                                  child: ListBody(
-                                    children: const <Widget>[
-                                      Text(
-                                          'De tijd die u wilt kiezen, is niet mogelijk, maak een andere keuze.'),
-                                    ],
-                                  ),
-                                ),
-                                actions: <Widget>[
-                                  TextButton(
-                                    child: const Text('OK'),
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                  ),
-                                ],
-                              ),
-                            );
+                                context: context,
+                                builder: (context) =>
+                                    dateTimePickerController.wrongTimeDialog!);
                           }
                         }
 

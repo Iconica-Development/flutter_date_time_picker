@@ -25,6 +25,26 @@ import 'package:intl/date_symbol_data_local.dart';
 ///   markedDates: [
 ///     DateTime(2022, 3, 14),
 ///   ],
+///   wrongTimeDialog:
+///   AlertDialog(
+///     title: const Text('Invalid Time'),
+///     content: SingleChildScrollView(
+///     child: ListBody(
+///     children: const <Widget>[
+///     Text(
+///       'The time you try to choose is diabled, try to pick another time.'),
+///     ],
+///    ),
+///   ),
+///     actions: <Widget>[
+///       TextButton(
+///         child: const Text('OK'),
+///          onPressed: () {
+///           Navigator.pop(context);
+///          },
+///         ),
+///       ],
+///      ),
 ///   header: Container(
 ///     height: 100,
 ///     width: MediaQuery.of(context).size.width,
