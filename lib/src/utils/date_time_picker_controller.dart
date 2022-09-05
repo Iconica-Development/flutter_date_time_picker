@@ -1,24 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_date_time_picker/src/models/date_time_picker_theme.dart';
 
 class DateTimePickerController extends ChangeNotifier {
   DateTimePickerController({
+    required this.theme,
     required this.highlightToday,
-    this.header,
-    this.markedDates,
-    this.onTapDayCallBack,
+    required this.alwaysUse24HourFormat,
+    required this.pickTime,
     required this.browsingDate,
     required this.selectedDate,
+    this.header,
+    this.wrongTimeDialog,
+    this.markedDates,
+    this.disabledDates,
+    this.disabledTimes,
+    this.onTapDayCallBack,
   });
 
-  final DraggableScrollableController _dragController =
-      DraggableScrollableController();
   final PageController _pageController = PageController(initialPage: 1);
 
   final bool highlightToday;
+  final bool? alwaysUse24HourFormat;
 
   final Widget? header;
 
+  final Widget? wrongTimeDialog;
+
+  final DateTimePickerTheme theme;
+
   final List<DateTime>? markedDates;
+  final List<DateTime>? disabledDates;
+  final List<TimeOfDay>? disabledTimes;
+  final bool pickTime;
 
   final Function(DateTime)? onTapDayCallBack;
 
@@ -28,7 +41,6 @@ class DateTimePickerController extends ChangeNotifier {
   @override
   void dispose() {
     _pageController.dispose();
-    _dragController.dispose();
     super.dispose();
   }
 
@@ -45,7 +57,7 @@ class DateTimePickerController extends ChangeNotifier {
     );
   }
 
-  void onTapDay(date) {
+  void onTapDay(DateTime date) {
     browsingDate = date;
     selectedDate = date;
 
@@ -58,13 +70,7 @@ class DateTimePickerController extends ChangeNotifier {
     }
   }
 
-  DraggableScrollableController getDragController() {
-    return _dragController;
-  }
-
-  PageController getPageController() {
-    return _pageController;
-  }
+  PageController get pageController => _pageController;
 
   void setBrowsingDate(DateTime date) {
     browsingDate = date;

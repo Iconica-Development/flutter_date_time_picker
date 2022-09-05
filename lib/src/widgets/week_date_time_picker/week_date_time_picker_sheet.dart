@@ -7,12 +7,14 @@ import 'package:intl/intl.dart';
 class WeekDateTimePickerSheet extends StatelessWidget {
   const WeekDateTimePickerSheet({
     required this.dateTimePickerController,
+    required this.weekDateBoxSize,
     this.showHeader = false,
     Key? key,
   }) : super(key: key);
 
   final DateTimePickerController dateTimePickerController;
   final bool showHeader;
+  final double weekDateBoxSize;
 
   String getDateHeader() {
     List<DateTime> weekDays =
@@ -43,7 +45,8 @@ class WeekDateTimePickerSheet extends StatelessWidget {
         if (showHeader) ...[
           Text(
             getDateHeader(),
-            style: Theme.of(context).textTheme.headlineSmall,
+            style: dateTimePickerController.theme.baseTheme.textStyle!
+                .copyWith(fontSize: 9),
           ),
           const SizedBox(
             height: 10,
@@ -53,7 +56,7 @@ class WeekDateTimePickerSheet extends StatelessWidget {
           width: MediaQuery.of(context).size.width,
           height: 60,
           child: PageView(
-            controller: dateTimePickerController.getPageController(),
+            controller: dateTimePickerController.pageController,
             onPageChanged: (i) {
               if (i == 0) {
                 dateTimePickerController.onPageChanged(
@@ -75,16 +78,19 @@ class WeekDateTimePickerSheet extends StatelessWidget {
                 date: dateTimePickerController.browsingDate.subtract(
                   const Duration(days: 7),
                 ),
+                weekDateBoxSize: weekDateBoxSize,
               ),
               WeekDateTimePicker(
                 dateTimePickerController: dateTimePickerController,
                 date: dateTimePickerController.browsingDate,
+                weekDateBoxSize: weekDateBoxSize,
               ),
               WeekDateTimePicker(
                 dateTimePickerController: dateTimePickerController,
                 date: dateTimePickerController.browsingDate.add(
                   const Duration(days: 7),
                 ),
+                weekDateBoxSize: weekDateBoxSize,
               ),
             ],
           ),

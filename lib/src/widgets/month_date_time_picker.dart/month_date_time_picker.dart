@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_date_time_picker/src/enums/date_box_shape.dart';
 import 'package:flutter_date_time_picker/src/extensions/date_time.dart';
+import 'package:flutter_date_time_picker/src/extensions/time_of_day.dart';
+import 'package:flutter_date_time_picker/src/models/date_box_current_theme.dart';
+import 'package:flutter_date_time_picker/src/models/date_time_picker_theme.dart';
 import 'package:flutter_date_time_picker/src/utils/date_time_picker_controller.dart';
 
 class MonthDateTimePicker extends StatelessWidget {
   const MonthDateTimePicker({
     required this.date,
     required this.dateTimePickerController,
+    required this.monthDateBoxSize,
     Key? key,
   }) : super(key: key);
 
   final DateTime date;
   final DateTimePickerController dateTimePickerController;
+  final double monthDateBoxSize;
 
   @override
   Widget build(BuildContext context) {
@@ -26,101 +32,104 @@ class MonthDateTimePicker extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 30),
       child: Center(
         child: GridView.count(
+          physics: const NeverScrollableScrollPhysics(),
           crossAxisSpacing: 5,
           crossAxisCount: 7,
           children: List.generate(
-            DateTime(date.year, date.month).daysInMonth() + daysToSkip,
+            DateTime(date.year, date.month).daysInMonth() +
+                (daysToSkip >= 7 ? 0 : daysToSkip),
             (index) {
-              if (index < daysToSkip) {
-                return Container(
-                  decoration: BoxDecoration(
-                    color: Colors.red.withOpacity(0.4),
-                    border: Border.all(color: Colors.black, width: 1.5),
-                  ),
-                  margin:
-                      const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                  height: 45,
-                  width: 45,
-                  child: Center(
-                    child: Text(
-                      (index + 1 - daysToSkip).toString(),
-                      style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                            color: Colors.black,
-                          ),
-                    ),
-                  ),
-                );
+              late DateBoxCurrentTheme currentDateBoxTheme;
+
+              int addedIndex = index;
+
+              if (daysToSkip >= 7) {
+                addedIndex = index + 7;
+              }
+              if (addedIndex < daysToSkip) {
+                return const SizedBox.shrink();
               }
 
+              currentDateBoxTheme = determineCurrentDateBoxTheme(context,
+                  addedIndex, daysToSkip, dateTimePickerController.theme);
+
               return GestureDetector(
+                onTap: isDisabled(
+                  addedIndex,
+                  daysToSkip,
+                )
+                    ? null
+                    : () async {
+                        TimeOfDay? timeOfDay;
 
-                onTap: () async {
-                  // await dateTimePickerController.getDragController().animateTo(
-                  //       0.26,
-                  //       duration: const Duration(
-                  //         milliseconds: 350,
-                  //       ),
-                  //       curve: Curves.ease,
-                  //     );
+                        DateTime selectedDate = DateTime(
+                          date.year,
+                          date.month,
+                          addedIndex + 1 - daysToSkip,
+                        );
 
-                  dateTimePickerController.onTapDay(DateTime(
-                    date.year,
-                    date.month,
-                    index + 1 - daysToSkip,
-                    date.hour,
-                    date.minute,
-                    date.second,
-                  ));
-                },
+                        timeOfDay = const TimeOfDay(hour: 0, minute: 0);
+
+                        if (dateTimePickerController.pickTime) {
+                          timeOfDay = await displayTimePicker(
+                              context, dateTimePickerController);
+                        }
+
+                        if (dateTimePickerController.wrongTimeDialog != null) {
+                          if (timeOfDay != null &&
+                              timeOfDay.containsAny(
+                                dateTimePickerController.disabledTimes ?? [],
+                              )) {
+                            showDialog(
+                                context: context,
+                                builder: (context) =>
+                                    dateTimePickerController.wrongTimeDialog!);
+                          }
+                        }
+
+                        DateTime selectedDateTime = DateTime(
+                          selectedDate.year,
+                          selectedDate.month,
+                          selectedDate.day,
+                          timeOfDay!.hour,
+                          timeOfDay.minute,
+                        );
+
+                        dateTimePickerController.onTapDay(selectedDateTime);
+                      },
                 child: Container(
                   margin:
                       const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
                   decoration: BoxDecoration(
-                    color:
-                        // isDisabled()
-                        //     ? Theme.of(context).disabledColor
-                        //     : Colors.transparent,
-                        // isSelected(index, daysToSkip)
-                        //     ? Theme.of(context).primaryColor.withOpacity(0.2)
-                        //     : Colors.transparent,
-                        shouldHighlight(index, daysToSkip)
-                            ? Theme.of(context).primaryColor
-                            : Colors.transparent,
-                    borderRadius: BorderRadius.circular(
-                      10,
-                    ),
+                    color: currentDateBoxTheme.backgroundColor,
+                    borderRadius:
+                        _determineBorderRadius(dateTimePickerController),
                   ),
-                  height: 45,
-                  width: 45,
+                  height: monthDateBoxSize,
+                  width: monthDateBoxSize,
                   child: Stack(
                     children: [
                       Center(
-                        child: Text(
-                          (index + 1 - daysToSkip).toString(),
-                          style:
-                              Theme.of(context).textTheme.bodyText1!.copyWith(
-                                    color:
-                                        // isDisabled()
-                                        //     ? Colors.white
-                                        //     : Colors.transparent,
-                                        // isSelected(index, daysToSkip)
-                                        //     ? Theme.of(context).primaryColor
-                                        //     : Colors.black,
-                                        shouldHighlight(index, daysToSkip)
-                                            ? Colors.white
-                                            : Colors.black,
-                                  ),
-                        ),
+                        child: Text((addedIndex + 1 - daysToSkip).toString(),
+                            style: currentDateBoxTheme.textStyle),
                       ),
-                      if (shouldMark(index, daysToSkip)) ...[
+                      if (shouldMark(
+                        addedIndex,
+                        daysToSkip,
+                      )) ...[
                         Align(
                           alignment: Alignment.bottomRight,
-                          child: Container(
-                            width: 12,
-                            height: 12,
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).indicatorColor,
-                              borderRadius: BorderRadius.circular(45),
+                          child: IgnorePointer(
+                            child: Container(
+                              width: monthDateBoxSize / 4,
+                              height: monthDateBoxSize / 4,
+                              decoration: BoxDecoration(
+                                color: dateTimePickerController
+                                        .theme.markedIndicatorColor ??
+                                    Theme.of(context).indicatorColor,
+                                borderRadius: BorderRadius.circular(
+                                    (monthDateBoxSize / 4) * 2),
+                              ),
                             ),
                           ),
                         ),
@@ -141,15 +150,56 @@ class MonthDateTimePicker extends StatelessWidget {
       date.year,
       date.month,
       index + 1 - daysToSkip,
-    ).sameDayAs(
+    ).equals(
       dateTimePickerController.highlightToday
           ? DateTime.now()
           : dateTimePickerController.selectedDate,
     );
   }
 
-  bool isDisabled() {
-    return true;
+  DateBoxCurrentTheme determineCurrentDateBoxTheme(
+    BuildContext context,
+    int index,
+    int daysToSkip,
+    DateTimePickerTheme theme,
+  ) {
+    DateBoxCurrentTheme determinedTheme = DateBoxCurrentTheme(
+      theme.baseTheme.backgroundColor ?? Colors.transparent,
+      theme.baseTheme.textStyle ?? const TextStyle(color: Colors.black),
+    );
+
+    if (isDisabled(index, daysToSkip)) {
+      determinedTheme = DateBoxCurrentTheme(
+        theme.disabledTheme.backgroundColor ?? Theme.of(context).disabledColor,
+        theme.disabledTheme.textStyle ?? const TextStyle(color: Colors.white),
+      );
+    }
+    if (isSelected(index, daysToSkip)) {
+      determinedTheme = DateBoxCurrentTheme(
+          theme.selectedTheme.backgroundColor ??
+              Theme.of(context).primaryColor.withOpacity(0.3),
+          theme.selectedTheme.textStyle ??
+              TextStyle(color: Theme.of(context).primaryColor));
+    }
+    if (shouldHighlight(index, daysToSkip)) {
+      determinedTheme = DateBoxCurrentTheme(
+          theme.highlightTheme.backgroundColor ??
+              Theme.of(context).primaryColor,
+          theme.highlightTheme.textStyle ??
+              const TextStyle(color: Colors.white));
+    }
+
+    return determinedTheme;
+  }
+
+  bool isDisabled(int index, int daysToSkip) {
+    return DateTime(
+      date.year,
+      date.month,
+      index + 1 - daysToSkip,
+    ).containsAny(
+      dateTimePickerController.disabledDates ?? [],
+    );
   }
 
   bool isSelected(int index, int daysToSkip) {
@@ -157,7 +207,7 @@ class MonthDateTimePicker extends StatelessWidget {
       date.year,
       date.month,
       index + 1 - daysToSkip,
-    ).sameDayAs(dateTimePickerController.selectedDate);
+    ).equals(dateTimePickerController.selectedDate);
   }
 
   bool shouldMark(int index, int daysToSkip) {
@@ -165,7 +215,7 @@ class MonthDateTimePicker extends StatelessWidget {
           date.year,
           date.month,
           index + 1 - daysToSkip,
-        ).sameDayAs(
+        ).equals(
           dateTimePickerController.highlightToday
               ? DateTime.now()
               : dateTimePickerController.selectedDate,
@@ -174,8 +224,35 @@ class MonthDateTimePicker extends StatelessWidget {
           date.year,
           date.month,
           index + 1 - daysToSkip,
-        ).isContainedIn(
+        ).containsAny(
           dateTimePickerController.markedDates ?? [],
         );
   }
+
+  BorderRadius _determineBorderRadius(
+      DateTimePickerController dateTimePickerController) {
+    switch (dateTimePickerController.theme.dateBoxShape) {
+      case DateBoxShape.circle:
+        return BorderRadius.circular(monthDateBoxSize * 2);
+      case DateBoxShape.rectangle:
+        return BorderRadius.zero;
+      case DateBoxShape.roundedRectangle:
+        return BorderRadius.circular(monthDateBoxSize / 4.5);
+    }
+  }
+}
+
+displayTimePicker(BuildContext context,
+    DateTimePickerController dateTimePickerController) async {
+  return await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+      builder: (BuildContext context, Widget? child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(
+              alwaysUse24HourFormat:
+                  dateTimePickerController.alwaysUse24HourFormat),
+          child: child!,
+        );
+      });
 }
