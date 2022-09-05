@@ -30,10 +30,8 @@ class MonthDateTimePickerSheet extends StatelessWidget {
           DateFormat.yMMMM().format(
             dateTimePickerController.browsingDate,
           ),
-          style: Theme.of(context)
-              .textTheme
-              .headlineMedium!
-              .copyWith(color: Colors.black),
+          style: dateTimePickerController.theme.baseTheme.textStyle!
+              .copyWith(fontSize: 25),
         ),
         SizedBox(
           width: MediaQuery.of(context).size.width,

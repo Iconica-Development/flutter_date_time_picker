@@ -7,107 +7,107 @@ import 'package:flutter_date_time_picker/src/widgets/month_date_time_picker.dart
 import 'package:flutter_date_time_picker/src/widgets/week_date_time_picker/week_date_time_picker_sheet.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
-/// A widget that displays a date picker from a sheet form the top of the screen.
-/// This sheet displays initially displays a week but can be dragged down to show a full month.
-/// Both views can be dragged sideways to show the next or previous week/month.
-///
-/// Example:
-/// ```dart
-/// DatePicker(
-///   dateTimePickerTheme: const DateTimePickerTheme()
-///   initialDate: selectedDate,
-///   highlightToday: true,
-///   onTapDay: (date) {
-///     setState(() {
-///       selectedDate = date;
-///     });
-///   },
-///   markedDates: [
-///     DateTime(2022, 3, 14),
-///   ],
-///   wrongTimeDialog:
-///   AlertDialog(
-///     title: const Text('Invalid Time'),
-///     content: SingleChildScrollView(
-///     child: ListBody(
-///     children: const <Widget>[
-///     Text(
-///       'The time you try to choose is diabled, try to pick another time.'),
-///     ],
-///    ),
-///   ),
-///     actions: <Widget>[
-///       TextButton(
-///         child: const Text('OK'),
-///          onPressed: () {
-///           Navigator.pop(context);
-///          },
-///         ),
-///       ],
-///      ),
-///   header: Container(
-///     height: 100,
-///     width: MediaQuery.of(context).size.width,
-///     padding: const EdgeInsets.only(bottom: 10),
-///     child: Row(
-///       crossAxisAlignment: CrossAxisAlignment.end,
-///       mainAxisAlignment: MainAxisAlignment.center,
-///       children: [
-///         const SizedBox(
-///           width: 160,
-///           height: 34,
-///           child: Center(
-///             child: Text(
-///               'Personal calendar',
-///               style: TextStyle(
-///                 fontSize: 16,
-///                 fontWeight: FontWeight.w900,
-///               ),
-///             ),
-///           ),
-///         ),
-///         const SizedBox(
-///           width: 4,
-///         ),
-///         Container(
-///           width: 160,
-///           height: 34,
-///           decoration: BoxDecoration(
-///             color: const Color(0xFF00273D),
-///             borderRadius: const BorderRadius.all(
-///               Radius.circular(10),
-///             ),
-///             boxShadow: [
-///               BoxShadow(
-///                 color: const Color(0xFF000000).withOpacity(0.50),
-///                 offset: const Offset(0, 6),
-///                 blurRadius: 9,
-///               ),
-///             ],
-///           ),
-///           child: const Center(
-///             child: Text(
-///               'Work calendar',
-///               style: TextStyle(
-///                 color: Colors.white,
-///                 fontSize: 16,
-///                 fontWeight: FontWeight.w900,
-///               ),
-///             ),
-///           ),
-///         ),
-///       ],
-///     ),
-///   ),
-///   child: Container(
-///     margin: const EdgeInsets.only(
-///       top: 195,
-///     ),
-///     child: HolidayRoster(),
-///   ),
-/// ),
-///```
 class DateTimePicker extends StatefulWidget {
+  /// A widget that displays a date picker from a sheet form the top of the screen.
+  /// This sheet displays initially displays a week but can be dragged down to show a full month.
+  /// Both views can be dragged sideways to show the next or previous week/month.
+  ///
+  /// Example:
+  /// ```dart
+  /// DatePicker(
+  ///   dateTimePickerTheme: const DateTimePickerTheme()
+  ///   initialDate: selectedDate,
+  ///   highlightToday: true,
+  ///   onTapDay: (date) {
+  ///     setState(() {
+  ///       selectedDate = date;
+  ///     });
+  ///   },
+  ///   markedDates: [
+  ///     DateTime(2022, 3, 14),
+  ///   ],
+  ///   wrongTimeDialog:
+  ///   AlertDialog(
+  ///     title: const Text('Invalid Time'),
+  ///     content: SingleChildScrollView(
+  ///     child: ListBody(
+  ///     children: const <Widget>[
+  ///     Text(
+  ///       'The time you try to choose is diabled, try to pick another time.'),
+  ///     ],
+  ///    ),
+  ///   ),
+  ///     actions: <Widget>[
+  ///       TextButton(
+  ///         child: const Text('OK'),
+  ///          onPressed: () {
+  ///           Navigator.pop(context);
+  ///          },
+  ///         ),
+  ///       ],
+  ///      ),
+  ///   header: Container(
+  ///     height: 100,
+  ///     width: MediaQuery.of(context).size.width,
+  ///     padding: const EdgeInsets.only(bottom: 10),
+  ///     child: Row(
+  ///       crossAxisAlignment: CrossAxisAlignment.end,
+  ///       mainAxisAlignment: MainAxisAlignment.center,
+  ///       children: [
+  ///         const SizedBox(
+  ///           width: 160,
+  ///           height: 34,
+  ///           child: Center(
+  ///             child: Text(
+  ///               'Personal calendar',
+  ///               style: TextStyle(
+  ///                 fontSize: 16,
+  ///                 fontWeight: FontWeight.w900,
+  ///               ),
+  ///             ),
+  ///           ),
+  ///         ),
+  ///         const SizedBox(
+  ///           width: 4,
+  ///         ),
+  ///         Container(
+  ///           width: 160,
+  ///           height: 34,
+  ///           decoration: BoxDecoration(
+  ///             color: const Color(0xFF00273D),
+  ///             borderRadius: const BorderRadius.all(
+  ///               Radius.circular(10),
+  ///             ),
+  ///             boxShadow: [
+  ///               BoxShadow(
+  ///                 color: const Color(0xFF000000).withOpacity(0.50),
+  ///                 offset: const Offset(0, 6),
+  ///                 blurRadius: 9,
+  ///               ),
+  ///             ],
+  ///           ),
+  ///           child: const Center(
+  ///             child: Text(
+  ///               'Work calendar',
+  ///               style: TextStyle(
+  ///                 color: Colors.white,
+  ///                 fontSize: 16,
+  ///                 fontWeight: FontWeight.w900,
+  ///               ),
+  ///             ),
+  ///           ),
+  ///         ),
+  ///       ],
+  ///     ),
+  ///   ),
+  ///   child: Container(
+  ///     margin: const EdgeInsets.only(
+  ///       top: 195,
+  ///     ),
+  ///     child: HolidayRoster(),
+  ///   ),
+  /// ),
+  ///```
   DateTimePicker({
     this.dateTimePickerTheme = const DateTimePickerTheme(),
     this.header,

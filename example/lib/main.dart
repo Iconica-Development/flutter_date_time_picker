@@ -31,7 +31,21 @@ class DatePickerDemo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DateTimePicker(
-      dateTimePickerTheme: const DateTimePickerTheme(),
+      dateTimePickerTheme: const DateTimePickerTheme(
+          markedIndicatorColor: Colors.red,
+          selectedTheme: DateBoxSelectedTheme(
+            Color(0x4BF44336),
+            TextStyle(
+              color: Colors.red,
+            ),
+          ),
+          highlightTheme: DateBoxHighlightTheme(
+            Colors.red,
+            TextStyle(
+              color: Colors.white,
+            ),
+          )),
+      markedDates: [DateTime(2022, 9, 6)],
     );
   }
 }

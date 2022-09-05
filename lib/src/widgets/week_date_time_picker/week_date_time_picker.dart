@@ -38,13 +38,6 @@ class WeekDateTimePicker extends StatelessWidget {
                 ? null
                 : () async {
                     TimeOfDay? timeOfDay;
-                    // await dateTimePickerController.getDragController().animateTo(
-                    //       0.26,
-                    //       duration: const Duration(
-                    //         milliseconds: 350,
-                    //       ),
-                    //       curve: Curves.ease,
-                    //     );
 
                     DateTime selectedDate = date.daysOfWeek()[index];
 
@@ -62,7 +55,8 @@ class WeekDateTimePicker extends StatelessWidget {
                           )) {
                         showDialog(
                           context: context,
-                          builder: (context) => dateTimePickerController.wrongTimeDialog!,
+                          builder: (context) =>
+                              dateTimePickerController.wrongTimeDialog!,
                         );
                       }
                     }
@@ -89,7 +83,7 @@ class WeekDateTimePicker extends StatelessWidget {
                           date.daysOfWeek().elementAt(index),
                         )
                         .toUpperCase()[0],
-                    style: Theme.of(context).textTheme.titleSmall,
+                    style: dateTimePickerController.theme.baseTheme.textStyle,
                   ),
                   const Spacer(),
                   Container(

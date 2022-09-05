@@ -45,7 +45,8 @@ class WeekDateTimePickerSheet extends StatelessWidget {
         if (showHeader) ...[
           Text(
             getDateHeader(),
-            style: Theme.of(context).textTheme.headlineSmall,
+            style: dateTimePickerController.theme.baseTheme.textStyle!
+                .copyWith(fontSize: 9),
           ),
           const SizedBox(
             height: 10,

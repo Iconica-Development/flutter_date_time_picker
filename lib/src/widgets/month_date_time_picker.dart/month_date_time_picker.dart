@@ -61,13 +61,6 @@ class MonthDateTimePicker extends StatelessWidget {
                     ? null
                     : () async {
                         TimeOfDay? timeOfDay;
-                        // await dateTimePickerController.getDragController().animateTo(
-                        //       0.26,
-                        //       duration: const Duration(
-                        //         milliseconds: 350,
-                        //       ),
-                        //       curve: Curves.ease,
-                        //     );
 
                         DateTime selectedDate = DateTime(
                           date.year,
@@ -131,7 +124,9 @@ class MonthDateTimePicker extends StatelessWidget {
                               width: monthDateBoxSize / 4,
                               height: monthDateBoxSize / 4,
                               decoration: BoxDecoration(
-                                color: Theme.of(context).indicatorColor,
+                                color: dateTimePickerController
+                                        .theme.markedIndicatorColor ??
+                                    Theme.of(context).indicatorColor,
                                 borderRadius: BorderRadius.circular(
                                     (monthDateBoxSize / 4) * 2),
                               ),
