@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2022 Iconica
+//
+// SPDX-License-Identifier: BSD-3-Clause
+
 extension DateTimeExtension on DateTime {
   /// Check if the current [DateTime] is the same as the given [selectedDate]
   bool equals(DateTime selectedDate) {

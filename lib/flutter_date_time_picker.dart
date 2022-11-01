@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2022 Iconica
+//
+// SPDX-License-Identifier: BSD-3-Clause
+
 library flutter_date_time_picker;
 
 export 'src/date_time_picker.dart' show DateTimePicker;
