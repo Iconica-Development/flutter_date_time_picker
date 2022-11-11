@@ -5,7 +5,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_date_time_picker/src/extensions/date_time.dart';
 import 'package:flutter_date_time_picker/src/utils/date_time_picker_controller.dart';
-import 'package:flutter_date_time_picker/src/widgets/month_date_time_picker.dart/month_date_time_picker.dart';
+import 'package:flutter_date_time_picker/src/widgets/month_date_time_picker/month_date_time_picker.dart';
 import 'package:intl/intl.dart';
 
 class MonthDateTimePickerSheet extends StatelessWidget {
@@ -20,6 +20,8 @@ class MonthDateTimePickerSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var theme = dateTimePickerController.theme;
+
     return Column(
       children: [
         if (dateTimePickerController.header != null)
@@ -34,7 +36,7 @@ class MonthDateTimePickerSheet extends StatelessWidget {
           DateFormat.yMMMM().format(
             dateTimePickerController.browsingDate,
           ),
-          style: dateTimePickerController.theme.baseTheme.textStyle!
+          style: theme.baseTheme.textStyle!
               .copyWith(fontSize: 25),
         ),
         SizedBox(
@@ -97,11 +99,13 @@ class MonthDateTimePickerSheet extends StatelessWidget {
           ),
         ),
         Container(
-          height: 3,
-          width: 50,
+          height: theme.barTheme.barHeight,
+          width: theme.barTheme.barWidth,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
-            color: Colors.grey.withOpacity(0.3),
+            color: theme.barTheme.barColor.withOpacity(
+              theme.barTheme.barOpacity,
+            ),
           ),
         ),
         const SizedBox(

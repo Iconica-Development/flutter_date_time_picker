@@ -36,6 +36,8 @@ class WeekDateTimePickerSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var theme = dateTimePickerController.theme;
+
     return Column(
       children: [
         if (dateTimePickerController.header != null)
@@ -49,8 +51,7 @@ class WeekDateTimePickerSheet extends StatelessWidget {
         if (showHeader) ...[
           Text(
             getDateHeader(),
-            style: dateTimePickerController.theme.baseTheme.textStyle!
-                .copyWith(fontSize: 9),
+            style: theme.baseTheme.textStyle!.copyWith(fontSize: 9),
           ),
           const SizedBox(
             height: 10,
@@ -103,11 +104,13 @@ class WeekDateTimePickerSheet extends StatelessWidget {
           height: 10,
         ),
         Container(
-          height: 3,
-          width: 50,
+          height: theme.barTheme.barHeight,
+          width: theme.barTheme.barWidth,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
-            color: Colors.grey.withOpacity(0.3),
+            color: theme.barTheme.barColor.withOpacity(
+              theme.barTheme.barOpacity,
+            ),
           ),
         ),
         const SizedBox(

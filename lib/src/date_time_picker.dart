@@ -238,7 +238,8 @@ class _DateTimePickerState extends State<DateTimePicker> {
                         padding: const EdgeInsets.only(bottom: 12.5),
                         child: Container(
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color:
+                                _dateTimePickerController.theme.backgroundColor,
                             borderRadius: const BorderRadius.only(
                               bottomLeft: Radius.circular(20),
                               bottomRight: Radius.circular(20),
