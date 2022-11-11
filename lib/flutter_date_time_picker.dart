@@ -11,3 +11,4 @@ export 'src/models/date_box_disabled_theme.dart';
 export 'src/models/date_box_highlight_theme.dart';
 export 'src/models/date_box_selected_theme.dart';
 export 'src/models/date_time_picker_theme.dart';
+export 'src/models/date_time_picker_bar_theme.dart';
