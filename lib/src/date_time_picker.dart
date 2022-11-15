@@ -220,9 +220,9 @@ class _DateTimePickerState extends State<DateTimePicker> {
           child: DraggableScrollableSheet(
             controller: _dragController,
             snap: true,
-            minChildSize: 0.25,
-            initialChildSize: 0.25,
-            maxChildSize: 0.7,
+            minChildSize: _dateTimePickerController.theme.weekViewSize,
+            initialChildSize: _dateTimePickerController.theme.weekViewSize,
+            maxChildSize: _dateTimePickerController.theme.monthViewSize,
             builder: (context, scrollController) {
               double dragSize =
                   _dragController.isAttached ? _dragController.size : 0;
@@ -251,7 +251,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
                               ),
                             ],
                           ),
-                          child: dragSize < 0.3
+                          child: dragSize < _dateTimePickerController.theme.weekMonthTriggerSize
                               ? WeekDateTimePickerSheet(
                                   dateTimePickerController:
                                       _dateTimePickerController,

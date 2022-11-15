@@ -1,3 +1,6 @@
+## 1.2.0
+* Made date time picker height customizable
+
 ## 1.1.0
 
 * Added option to change background color of date picker.
