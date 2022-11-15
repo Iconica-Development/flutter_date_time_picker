@@ -4,7 +4,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_date_time_picker/flutter_date_time_picker.dart';
-import 'package:flutter_date_time_picker/src/models/date_time_picker_bar_theme.dart';
 
 class DateTimePickerTheme {
   /// The [DateTimePickerTheme] to style [DateTimePicker] in. Define a custom shape for the dates and specifically style
@@ -15,6 +14,9 @@ class DateTimePickerTheme {
     this.markedIndicatorColor,
     this.dateBoxShape = DateBoxShape.roundedRectangle,
     this.backgroundColor = Colors.white,
+    this.weekViewSize = 0.2,
+    this.monthViewSize = 0.6,
+    this.weekMonthTriggerSize = 0.3,
     this.baseTheme = const DateBoxBaseTheme(
       Colors.white,
       TextStyle(color: Colors.black),
@@ -64,4 +66,13 @@ class DateTimePickerTheme {
 
   /// The color used for a background of the date picker.
   final Color backgroundColor;
+
+  /// The size of the week view of the date picker. Enter a value between 0 and 1.
+  final double weekViewSize;
+
+  /// The size of the month view of the date picker. Enter a value between 0 and 1 that's bigger than the weekViewSize.
+  final double monthViewSize;
+
+  /// The position where the week view changes to month view and the other way around. Enter a value between 0 and 1 that's between the weekViewSize and the monthViewSize.
+  final double weekMonthTriggerSize;
 }
