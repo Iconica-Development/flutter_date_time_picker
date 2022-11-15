@@ -220,9 +220,9 @@ class _DateTimePickerState extends State<DateTimePicker> {
           child: DraggableScrollableSheet(
             controller: _dragController,
             snap: true,
-            minChildSize: 0.2,
-            initialChildSize: 0.2,
-            maxChildSize: 0.6,
+            minChildSize: 0.25,
+            initialChildSize: 0.25,
+            maxChildSize: 0.7,
             builder: (context, scrollController) {
               double dragSize =
                   _dragController.isAttached ? _dragController.size : 0;
