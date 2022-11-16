@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_date_time_picker/flutter_date_time_picker.dart';
 
 class DateTimePickerTheme {
-  /// The [DateTimePickerTheme] to style [DateTimePicker] in. Define a custom shape for the dates and specifically style
+  /// The [DateTimePickerTheme] to style [DragDownDateTimePicker] in. Define a custom shape for the dates and specifically style
   /// a basic, hightlighted, selected and disabled date.
   const DateTimePickerTheme({
     this.weekDateBoxSize = 35,

@@ -16,13 +16,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Demo drag down date time picker',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Roster'),
+          title: const Text('Demo'),
         ),
         body: const DatePickerDemo(),
       ),
@@ -34,32 +34,95 @@ class DatePickerDemo extends StatelessWidget {
   const DatePickerDemo({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return DateTimePicker(
-      dateTimePickerTheme: const DateTimePickerTheme(
-        backgroundColor: Colors.white,
-        markedIndicatorColor: Colors.red,
-        baseTheme: DateBoxBaseTheme(
-          Colors.white,
-          TextStyle(color: Colors.black),
-        ),
-        selectedTheme: DateBoxSelectedTheme(
-          Color(0x4BF44336),
-          TextStyle(
-            color: Colors.red,
-          ),
-        ),
-        highlightTheme: DateBoxHighlightTheme(
-          Colors.red,
-          TextStyle(
-            color: Colors.white,
-          ),
-        ),
-        barTheme: DateTimePickerBarTheme(
-          barColor: Colors.black,
-          barOpacity: 1,
+    const dateTimePickerTheme = DateTimePickerTheme(
+      dateBoxShape: DateBoxShape.roundedRectangle,
+      backgroundColor: Colors.white,
+      markedIndicatorColor: Colors.red,
+      baseTheme: DateBoxBaseTheme(
+        Colors.white,
+        TextStyle(color: Colors.black),
+      ),
+      selectedTheme: DateBoxSelectedTheme(
+        Color(0x4BF44336),
+        TextStyle(
+          color: Colors.red,
         ),
       ),
-      markedDates: [DateTime(2022, 9, 6)],
+      highlightTheme: DateBoxHighlightTheme(
+        Colors.red,
+        TextStyle(
+          color: Colors.white,
+        ),
+      ),
+      barTheme: DateTimePickerBarTheme(
+        barColor: Colors.black,
+        barOpacity: 1,
+      ),
+    );
+
+    return Stack(
+      children: [
+        Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              OverlayDateTimePicker(
+                theme: dateTimePickerTheme,
+                alignment: Alignment.bottomCenter,
+                child: const Text("Select Day"),
+                onTapDay: (date) {},
+              ),
+              OverlayDateTimePicker(
+                theme: dateTimePickerTheme,
+                alignment: Alignment.center,
+                buttonBuilder: (key, onPressed) => TextButton(
+                  key: key,
+                  onPressed: onPressed,
+                  child: const Text("Select Day"),
+                ),
+              ),
+              OverlayDateTimePicker(
+                theme: dateTimePickerTheme,
+                alignment: Alignment.topCenter,
+                buttonBuilder: (key, onPressed) => IconButton(
+                  key: key,
+                  onPressed: onPressed,
+                  icon: const Icon(
+                    Icons.schedule,
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+        DragDownDateTimePicker(
+          dateTimePickerTheme: const DateTimePickerTheme(
+            backgroundColor: Colors.white,
+            markedIndicatorColor: Colors.red,
+            baseTheme: DateBoxBaseTheme(
+              Colors.white,
+              TextStyle(color: Colors.black),
+            ),
+            selectedTheme: DateBoxSelectedTheme(
+              Color(0x4BF44336),
+              TextStyle(
+                color: Colors.red,
+              ),
+            ),
+            highlightTheme: DateBoxHighlightTheme(
+              Colors.red,
+              TextStyle(
+                color: Colors.white,
+              ),
+            ),
+            barTheme: DateTimePickerBarTheme(
+              barColor: Colors.black,
+              barOpacity: 1,
+            ),
+          ),
+          markedDates: [DateTime(2022, 9, 6)],
+        )
+      ],
     );
   }
 }

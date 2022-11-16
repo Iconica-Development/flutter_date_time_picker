@@ -12,7 +12,7 @@ void main() {
     await tester.pumpWidget(MaterialApp(
       home: Scaffold(
         appBar: AppBar(),
-        body: DateTimePicker(
+        body: DragDownDateTimePicker(
           pickTime: false,
           child: Container(),
         ),
@@ -26,7 +26,7 @@ void main() {
     await tester.pumpWidget(MaterialApp(
       home: Scaffold(
         appBar: AppBar(),
-        body: DateTimePicker(
+        body: DragDownDateTimePicker(
           pickTime: false,
           child: Container(),
         ),
