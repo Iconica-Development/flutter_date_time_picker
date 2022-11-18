@@ -1,0 +1,82 @@
+// SPDX-FileCopyrightText: 2022 Iconica
+//
+// SPDX-License-Identifier: BSD-3-Clause
+
+import 'package:flutter/material.dart';
+import 'package:flutter_date_time_picker/flutter_date_time_picker.dart';
+
+class PickableDate extends StatelessWidget {
+  const PickableDate({
+    super.key,
+    required this.isSelected,
+    required this.isDisabled,
+    required this.theme,
+    required this.onPressed,
+    required this.date,
+    required this.isOffMonth,
+    required this.isToday,
+  });
+
+  final bool isSelected;
+  final bool isDisabled;
+  final bool isToday;
+  final bool isOffMonth;
+  final DateTime date;
+  final DateTimePickerTheme theme;
+  final void Function(DateTime date) onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () {
+        if (isDisabled) return;
+        onPressed.call(date);
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: getColor(
+            isToday,
+            isSelected,
+          ),
+          borderRadius: getBorder(theme.dateBoxShape),
+        ),
+        child: Center(
+          child: Opacity(
+            opacity: (isDisabled || isOffMonth) ? 0.5 : 1,
+            child: Text(
+              date.day.toString(),
+              style: getStyle(
+                isToday,
+                isSelected,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  BorderRadiusGeometry? getBorder(DateBoxShape shape) {
+    switch (shape) {
+      case DateBoxShape.circle:
+        return BorderRadius.all(Radius.circular(theme.monthDateBoxSize));
+      case DateBoxShape.roundedRectangle:
+        return const BorderRadius.all(Radius.circular(10));
+      case DateBoxShape.rectangle:
+        return null;
+    }
+  }
+
+  Color? getColor(bool isToday, bool isSelected) {
+    if (isToday) return theme.highlightTheme.backgroundColor;
+    if (isSelected) return theme.selectedTheme.backgroundColor;
+    return null;
+  }
+
+  TextStyle? getStyle(bool isToday, bool isSelected) {
+    if (isToday) return theme.highlightTheme.textStyle;
+    if (isSelected) return theme.selectedTheme.textStyle;
+    return null;
+  }
+}

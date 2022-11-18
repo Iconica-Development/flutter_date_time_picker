@@ -11,7 +11,7 @@ import 'package:flutter_date_time_picker/src/widgets/month_date_time_picker/mont
 import 'package:flutter_date_time_picker/src/widgets/week_date_time_picker/week_date_time_picker_sheet.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
-class DateTimePicker extends StatefulWidget {
+class DragDownDateTimePicker extends StatefulWidget {
   /// A widget that displays a date picker from a sheet form the top of the screen.
   /// This sheet displays initially displays a week but can be dragged down to show a full month.
   /// Both views can be dragged sideways to show the next or previous week/month.
@@ -37,7 +37,7 @@ class DateTimePicker extends StatefulWidget {
   ///     child: ListBody(
   ///     children: const <Widget>[
   ///     Text(
-  ///       'The time you try to choose is diabled, try to pick another time.'),
+  ///       'The time you try to choose is disabled, try to pick another time.'),
   ///     ],
   ///    ),
   ///   ),
@@ -112,7 +112,7 @@ class DateTimePicker extends StatefulWidget {
   ///   ),
   /// ),
   ///```
-  DateTimePicker({
+  DragDownDateTimePicker({
     this.dateTimePickerTheme = const DateTimePickerTheme(),
     this.header,
     this.onTapDay,
@@ -136,29 +136,29 @@ class DateTimePicker extends StatefulWidget {
   /// A [Widget] to display when the user picks a disabled time in the [TimePickerDialog]
   final Widget? wrongTimeDialog;
 
-  /// Visual properties for the [DateTimePicker]
+  /// Visual properties for the [DragDownDateTimePicker]
   final DateTimePickerTheme dateTimePickerTheme;
 
-  /// Widget shown at the top of the [DateTimePicker]
+  /// Widget shown at the top of the [DragDownDateTimePicker]
   final Widget? header;
 
   /// Callback that provides the date tapped on as a [DateTime] object.
   final Function(DateTime)? onTapDay;
 
-  /// Whether the current day should be highlighted in the [DateTimePicker]
+  /// Whether the current day should be highlighted in the [DragDownDateTimePicker]
   final bool highlightToday;
 
   /// a [bool] to set de clock on [TimePickerDialog] to a fixed 24 or 12-hour format.
   /// By default this gets determined by the [Locale] on the device.
   late final bool alwaysUse24HourFormat;
 
-  /// [pickTime] is a [bool] that determines if the user is able to pick a time after picking a date usring the [TimePickerDialog].
+  /// [pickTime] is a [bool] that determines if the user is able to pick a time after picking a date using the [TimePickerDialog].
   final bool pickTime;
 
   /// indicates the starting date. Default is [DateTime.now()]
   final DateTime? initialDate;
 
-  /// [markedDates] contain the dates [DateTime] that will be marked in the [DateTimePicker] by a small dot.
+  /// [markedDates] contain the dates [DateTime] that will be marked in the [DragDownDateTimePicker] by a small dot.
   final List<DateTime>? markedDates;
 
   /// a [List] of [DateTime] objects that will be disabled and cannot be interacted with whatsoever.
@@ -168,10 +168,10 @@ class DateTimePicker extends StatefulWidget {
   final List<TimeOfDay>? disabledTimes;
 
   @override
-  State<StatefulWidget> createState() => _DateTimePickerState();
+  State<StatefulWidget> createState() => _DragDownDateTimePickerState();
 }
 
-class _DateTimePickerState extends State<DateTimePicker> {
+class _DragDownDateTimePickerState extends State<DragDownDateTimePicker> {
   late DateTimePickerController _dateTimePickerController;
 
   final DraggableScrollableController _dragController =
@@ -251,7 +251,9 @@ class _DateTimePickerState extends State<DateTimePicker> {
                               ),
                             ],
                           ),
-                          child: dragSize < _dateTimePickerController.theme.weekMonthTriggerSize
+                          child: dragSize <
+                                  _dateTimePickerController
+                                      .theme.weekMonthTriggerSize
                               ? WeekDateTimePickerSheet(
                                   dateTimePickerController:
                                       _dateTimePickerController,
