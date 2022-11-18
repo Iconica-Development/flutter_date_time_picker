@@ -18,6 +18,7 @@ class DatePicker extends StatelessWidget {
     required this.onSelectDate,
     required this.date,
     required this.showWeekDays,
+    required this.dateTimeConstraint,
   });
 
   final DateTimePickerController controller;
@@ -26,6 +27,7 @@ class DatePicker extends StatelessWidget {
   final void Function(DateTime date) onSelectDate;
   final DateTime date;
   final bool showWeekDays;
+  final DateTimeConstraint dateTimeConstraint;
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +87,8 @@ class DatePicker extends StatelessWidget {
                   padding: const EdgeInsets.all(2.0),
                   child: PickableDate(
                     isOffMonth: date.month != todayDate.month,
-                    isDisabled: isDisabled(addedIndex + index, daysToSkip),
+                    isDisabled:
+                        isDisabled(addedIndex + index, daysToSkip, todayDate),
                     isSelected: controller.selectedDate == todayDate,
                     isToday: isToday(todayDate) && controller.highlightToday,
                     theme: theme,
@@ -108,13 +111,14 @@ class DatePicker extends StatelessWidget {
         date.day == now.day;
   }
 
-  bool isDisabled(int index, int daysToSkip) {
+  bool isDisabled(int index, int daysToSkip, DateTime date) {
     return DateTime(
-      date.year,
-      date.month,
-      index + 1 - daysToSkip,
-    ).containsAny(
-      controller.disabledDates ?? [],
-    );
+          date.year,
+          date.month,
+          index + 1 - daysToSkip,
+        ).containsAny(
+          controller.disabledDates ?? [],
+        ) ||
+        !dateTimeConstraint.inRange(date);
   }
 }
