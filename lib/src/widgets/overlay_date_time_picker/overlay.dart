@@ -12,15 +12,19 @@ class OverlayDateTimeContent extends StatefulWidget {
   const OverlayDateTimeContent({
     super.key,
     required this.theme,
+    required this.textStyle,
     required this.size,
     required this.controller,
+    required this.showWeekDays,
     required this.onNextDate,
     required this.onPreviousDate,
   });
 
   final DateTimePickerTheme theme;
+  final TextStyle textStyle;
   final Size size;
   final DateTimePickerController controller;
+  final bool showWeekDays;
   final void Function() onNextDate;
   final void Function() onPreviousDate;
 
@@ -86,27 +90,33 @@ class _OverlayDateTimeContentState extends State<OverlayDateTimeContent> {
                 controller: widget.controller,
                 onSelectDate: onSelectDate,
                 theme: widget.theme,
+                textStyle: widget.textStyle,
                 date: DateTime(
                   widget.controller.browsingDate.year,
                   widget.controller.browsingDate.month - 1,
                   1,
                 ),
+                showWeekDays: widget.showWeekDays,
               ),
               DatePicker(
                 controller: widget.controller,
                 onSelectDate: onSelectDate,
                 theme: widget.theme,
+                textStyle: widget.textStyle,
                 date: widget.controller.browsingDate,
+                showWeekDays: widget.showWeekDays,
               ),
               DatePicker(
                 controller: widget.controller,
                 onSelectDate: onSelectDate,
                 theme: widget.theme,
+                textStyle: widget.textStyle,
                 date: DateTime(
                   widget.controller.browsingDate.year,
                   widget.controller.browsingDate.month + 1,
                   1,
                 ),
+                showWeekDays: widget.showWeekDays,
               ),
             ],
           ),
