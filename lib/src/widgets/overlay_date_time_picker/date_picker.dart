@@ -38,12 +38,12 @@ class DatePicker extends StatelessWidget {
 
     int addedIndex = 0;
 
-    if (daysToSkip >= 7) {
-      addedIndex = 7;
+    if (daysToSkip >= DateTime.daysPerWeek) {
+      addedIndex = DateTime.daysPerWeek;
     }
 
     int length = DateTime(date.year, date.month).daysInMonth() + daysToSkip;
-    int daysToAdd = 7 - length % 7;
+    int daysToAdd = DateTime.daysPerWeek - length % DateTime.daysPerWeek;
     return Column(
       children: [
         if (showWeekDays) ...[
@@ -72,7 +72,7 @@ class DatePicker extends StatelessWidget {
         Expanded(
           child: GridView.count(
             physics: const NeverScrollableScrollPhysics(),
-            crossAxisCount: 7,
+            crossAxisCount: DateTime.daysPerWeek,
             children: List.generate(
               length + daysToAdd,
               (index) {
