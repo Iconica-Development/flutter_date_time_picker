@@ -11,9 +11,10 @@ import 'package:flutter_date_time_picker/src/widgets/overlay_date_time_picker/ov
 class OverlayDateTimePicker extends StatefulWidget {
   const OverlayDateTimePicker({
     this.theme = const DateTimePickerTheme(),
+    this.textStyle = const TextStyle(),
     this.alignment = Alignment.bottomRight,
     this.initialDate,
-    this.size = const Size(325, 325),
+    this.size = const Size(325, 350),
     this.wrongTimeDialog,
     this.onTapDay,
     this.highlightToday = true,
@@ -26,6 +27,7 @@ class OverlayDateTimePicker extends StatefulWidget {
     super.key,
     this.buttonBuilder,
     this.closeOnSelectDate = true,
+    this.showWeekDays = true,
   }) : assert(child != null || buttonBuilder != null);
 
   /// The child contained by the DatePicker.
@@ -36,6 +38,9 @@ class OverlayDateTimePicker extends StatefulWidget {
 
   /// Visual properties for the [OverlayDateTimePicker]
   final DateTimePickerTheme theme;
+
+  /// Style to base the text on
+  final TextStyle textStyle;
 
   /// Callback that provides the date tapped on as a [DateTime] object.
   final Function(DateTime date)? onTapDay;
@@ -72,6 +77,9 @@ class OverlayDateTimePicker extends StatefulWidget {
 
   /// [closeOnSelectDate] is a bool that indicates if the overlay should be closed if a date has been picked.
   final bool closeOnSelectDate;
+
+  /// [showWeekDays] is a [bool] that determines if day in the week indicators should be shown
+  final bool showWeekDays;
 
   @override
   State<OverlayDateTimePicker> createState() => _OverlayDateTimePickerState();
@@ -208,8 +216,10 @@ class _OverlayDateTimePickerState extends State<OverlayDateTimePicker> {
           padding: const EdgeInsets.all(8.0),
           child: OverlayDateTimeContent(
             theme: widget.theme,
+            textStyle: widget.textStyle,
             size: widget.size,
             controller: _dateTimePickerController,
+            showWeekDays: true,
             onNextDate: nextDate,
             onPreviousDate: previousDate,
           ),
