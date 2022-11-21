@@ -7,8 +7,9 @@ import 'package:flutter_date_time_picker/flutter_date_time_picker.dart';
 
 class DateTimePickerTheme {
   /// The [DateTimePickerTheme] to style [DragDownDateTimePicker] in. Define a custom shape for the dates and specifically style
-  /// a basic, hightlighted, selected and disabled date.
+  /// a basic, highlighted, selected and disabled date.
   const DateTimePickerTheme({
+    this.paginationSize = 25,
     this.weekDateBoxSize = 35,
     this.monthDateBoxSize = 45,
     this.markedIndicatorColor,
@@ -75,4 +76,7 @@ class DateTimePickerTheme {
 
   /// The position where the week view changes to month view and the other way around. Enter a value between 0 and 1 that's between the weekViewSize and the monthViewSize.
   final double weekMonthTriggerSize;
+
+  /// The size of the buttons for navigation the different pages
+  final double paginationSize;
 }

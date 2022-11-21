@@ -32,8 +32,8 @@ class OverlayDateTimeContent extends StatefulWidget {
   final bool showWeekDays;
   final DateTimeConstraint dateTimeConstraint;
 
-  final Widget? onNextPageButtonChild;
-  final Widget? onPreviousPageButtonChild;
+  final Widget Function(void Function()? onPressed)? onNextPageButtonChild;
+  final Widget Function(void Function()? onPressed)? onPreviousPageButtonChild;
 
   final void Function() onNextDate;
   final void Function() onPreviousDate;
@@ -77,28 +77,42 @@ class _OverlayDateTimeContentState extends State<OverlayDateTimeContent> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            IconButton(
-              onPressed: (widget.dateTimeConstraint.inMonthRange(previousDate))
-                  ? _goToPreviousPage
-                  : null,
-              icon: widget.onPreviousPageButtonChild ??
-                  const Icon(Icons.arrow_circle_left_outlined),
-              color: widget.theme.barTheme.barColor,
-            ),
+            (widget.onPreviousPageButtonChild != null)
+                ? widget.onPreviousPageButtonChild!(
+                    (widget.dateTimeConstraint.inMonthRange(previousDate))
+                        ? _goToPreviousPage
+                        : null,
+                  )
+                : IconButton(
+                    onPressed:
+                        (widget.dateTimeConstraint.inMonthRange(previousDate))
+                            ? _goToPreviousPage
+                            : null,
+                    icon: const Icon(Icons.arrow_circle_left_outlined),
+                    color: widget.theme.barTheme.barColor,
+                    iconSize: widget.theme.paginationSize,
+                  ),
             Text(
               DateFormat.yMMMM().format(
                 widget.controller.browsingDate,
               ),
               style: widget.theme.baseTheme.textStyle,
             ),
-            IconButton(
-              onPressed: (widget.dateTimeConstraint.inMonthRange(nextDate))
-                  ? _goToNextPage
-                  : null,
-              icon: widget.onNextPageButtonChild ??
-                  const Icon(Icons.arrow_circle_right_outlined),
-              color: widget.theme.barTheme.barColor,
-            ),
+            (widget.onNextPageButtonChild != null)
+                ? widget.onNextPageButtonChild!(
+                    (widget.dateTimeConstraint.inMonthRange(nextDate))
+                        ? _goToNextPage
+                        : null,
+                  )
+                : IconButton(
+                    onPressed:
+                        (widget.dateTimeConstraint.inMonthRange(nextDate))
+                            ? _goToNextPage
+                            : null,
+                    icon: const Icon(Icons.arrow_circle_right_outlined),
+                    color: widget.theme.barTheme.barColor,
+                    iconSize: widget.theme.paginationSize,
+                  ),
           ],
         ),
         Container(
@@ -158,6 +172,7 @@ class _OverlayDateTimeContentState extends State<OverlayDateTimeContent> {
   }
 
   void _goToNextPage() async {
+    if (!mounted) return;
     setState(() {
       usesButtons = true;
     });
@@ -169,6 +184,7 @@ class _OverlayDateTimeContentState extends State<OverlayDateTimeContent> {
   }
 
   void _goToPreviousPage() async {
+    if (!mounted) return;
     setState(() {
       usesButtons = true;
     });
