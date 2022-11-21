@@ -5,7 +5,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_date_time_picker/src/models/date_time_picker_theme.dart';
 import 'package:flutter_date_time_picker/src/utils/date_time_picker_controller.dart';
+import 'package:flutter_date_time_picker/src/utils/locking_page_scroll_physics.dart';
 import 'package:flutter_date_time_picker/src/widgets/overlay_date_time_picker/date_picker.dart';
+import 'package:flutter_date_time_picker/src/models/date_constraint.dart';
 import 'package:intl/intl.dart';
 
 class OverlayDateTimeContent extends StatefulWidget {
@@ -18,6 +20,9 @@ class OverlayDateTimeContent extends StatefulWidget {
     required this.showWeekDays,
     required this.onNextDate,
     required this.onPreviousDate,
+    required this.dateTimeConstraint,
+    required this.onPreviousPageButtonChild,
+    required this.onNextPageButtonChild,
   });
 
   final DateTimePickerTheme theme;
@@ -25,6 +30,11 @@ class OverlayDateTimeContent extends StatefulWidget {
   final Size size;
   final DateTimePickerController controller;
   final bool showWeekDays;
+  final DateTimeConstraint dateTimeConstraint;
+
+  final Widget? onNextPageButtonChild;
+  final Widget? onPreviousPageButtonChild;
+
   final void Function() onNextDate;
   final void Function() onPreviousDate;
 
@@ -34,10 +44,22 @@ class OverlayDateTimeContent extends StatefulWidget {
 
 class _OverlayDateTimeContentState extends State<OverlayDateTimeContent> {
   bool usesButtons = false;
+  late DateTime nextDate;
+  late DateTime previousDate;
   late final PageController _pageController;
   @override
   void initState() {
     _pageController = PageController(initialPage: 1);
+    nextDate = DateTime(
+      widget.controller.browsingDate.year,
+      widget.controller.browsingDate.month + 1,
+      1,
+    );
+    previousDate = DateTime(
+      widget.controller.browsingDate.year,
+      widget.controller.browsingDate.month - 1,
+      1,
+    );
     super.initState();
   }
 
@@ -56,16 +78,25 @@ class _OverlayDateTimeContentState extends State<OverlayDateTimeContent> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             IconButton(
-              onPressed: goToPreviousPage,
-              icon: const Icon(Icons.arrow_circle_left_outlined),
+              onPressed: (widget.dateTimeConstraint.inMonthRange(previousDate))
+                  ? _goToPreviousPage
+                  : null,
+              icon: widget.onPreviousPageButtonChild ??
+                  const Icon(Icons.arrow_circle_left_outlined),
               color: widget.theme.barTheme.barColor,
             ),
-            Text(DateFormat.yMMMM().format(
-              widget.controller.browsingDate,
-            )),
+            Text(
+              DateFormat.yMMMM().format(
+                widget.controller.browsingDate,
+              ),
+              style: widget.theme.baseTheme.textStyle,
+            ),
             IconButton(
-              onPressed: goToNextPage,
-              icon: const Icon(Icons.arrow_circle_right_outlined),
+              onPressed: (widget.dateTimeConstraint.inMonthRange(nextDate))
+                  ? _goToNextPage
+                  : null,
+              icon: widget.onNextPageButtonChild ??
+                  const Icon(Icons.arrow_circle_right_outlined),
               color: widget.theme.barTheme.barColor,
             ),
           ],
@@ -78,9 +109,15 @@ class _OverlayDateTimeContentState extends State<OverlayDateTimeContent> {
         ),
         Expanded(
           child: PageView(
+            physics: LockingPageScrollPhysics(
+              allowedNextPage: () =>
+                  widget.dateTimeConstraint.inMonthRange(nextDate),
+              allowedPreviousPage: () =>
+                  widget.dateTimeConstraint.inMonthRange(previousDate),
+            ),
             controller: _pageController,
             onPageChanged: (value) {
-              if (!usesButtons) movePage(1 - value);
+              if (!usesButtons) _movePage(1 - value);
             },
             pageSnapping: true,
             scrollDirection: Axis.horizontal,
@@ -88,34 +125,29 @@ class _OverlayDateTimeContentState extends State<OverlayDateTimeContent> {
             children: [
               DatePicker(
                 controller: widget.controller,
-                onSelectDate: onSelectDate,
+                onSelectDate: _onSelectDate,
                 theme: widget.theme,
                 textStyle: widget.textStyle,
-                date: DateTime(
-                  widget.controller.browsingDate.year,
-                  widget.controller.browsingDate.month - 1,
-                  1,
-                ),
+                date: previousDate,
+                dateTimeConstraint: widget.dateTimeConstraint,
                 showWeekDays: widget.showWeekDays,
               ),
               DatePicker(
                 controller: widget.controller,
-                onSelectDate: onSelectDate,
+                onSelectDate: _onSelectDate,
                 theme: widget.theme,
                 textStyle: widget.textStyle,
                 date: widget.controller.browsingDate,
                 showWeekDays: widget.showWeekDays,
+                dateTimeConstraint: widget.dateTimeConstraint,
               ),
               DatePicker(
                 controller: widget.controller,
-                onSelectDate: onSelectDate,
+                onSelectDate: _onSelectDate,
                 theme: widget.theme,
                 textStyle: widget.textStyle,
-                date: DateTime(
-                  widget.controller.browsingDate.year,
-                  widget.controller.browsingDate.month + 1,
-                  1,
-                ),
+                date: nextDate,
+                dateTimeConstraint: widget.dateTimeConstraint,
                 showWeekDays: widget.showWeekDays,
               ),
             ],
@@ -125,7 +157,7 @@ class _OverlayDateTimeContentState extends State<OverlayDateTimeContent> {
     );
   }
 
-  void goToNextPage() async {
+  void _goToNextPage() async {
     setState(() {
       usesButtons = true;
     });
@@ -133,10 +165,10 @@ class _OverlayDateTimeContentState extends State<OverlayDateTimeContent> {
       duration: const Duration(milliseconds: 250),
       curve: Curves.easeInOut,
     );
-    nextPage();
+    _nextPage();
   }
 
-  void goToPreviousPage() async {
+  void _goToPreviousPage() async {
     setState(() {
       usesButtons = true;
     });
@@ -144,41 +176,59 @@ class _OverlayDateTimeContentState extends State<OverlayDateTimeContent> {
       duration: const Duration(milliseconds: 250),
       curve: Curves.easeInOut,
     );
-    previousPage();
+    _previousPage();
   }
 
-  void nextPage() {
+  void _nextPage() {
     widget.onNextDate.call();
     if (!mounted) return;
+    _pageController.jumpToPage(1);
     setState(() {
       usesButtons = false;
     });
-    _pageController.jumpToPage(1);
+    _setDates();
   }
 
-  void previousPage() {
+  void _previousPage() {
     widget.onPreviousDate.call();
     if (!mounted) return;
+    _pageController.jumpToPage(1);
     setState(() {
       usesButtons = false;
     });
-    _pageController.jumpToPage(1);
+    _setDates();
   }
 
-  void movePage(int direction) {
+  void _movePage(int direction) {
     if (direction < 0) {
-      nextPage();
+      _nextPage();
     } else if (direction > 0) {
-      previousPage();
+      _previousPage();
     }
   }
 
-  void onSelectDate(DateTime date) {
+  void _onSelectDate(DateTime date) {
     if (!mounted) return;
     setState(() {
       widget.controller.selectedDate = date;
-      movePage(widget.controller.browsingDate.month - date.month);
+      _movePage(widget.controller.browsingDate.month - date.month);
       widget.controller.onTapDayCallBack?.call(date);
+    });
+  }
+
+  void _setDates() {
+    if (!mounted) return;
+    setState(() {
+      nextDate = DateTime(
+        widget.controller.browsingDate.year,
+        widget.controller.browsingDate.month + 1,
+        1,
+      );
+      previousDate = DateTime(
+        widget.controller.browsingDate.year,
+        widget.controller.browsingDate.month - 1,
+        1,
+      );
     });
   }
 }

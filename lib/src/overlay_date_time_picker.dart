@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_date_time_picker/src/extensions/date_time.dart';
 import 'package:flutter_date_time_picker/src/models/date_time_picker_theme.dart';
 import 'package:flutter_date_time_picker/src/utils/date_time_picker_controller.dart';
+import 'package:flutter_date_time_picker/src/models/date_constraint.dart';
 import 'package:flutter_date_time_picker/src/widgets/overlay_date_time_picker/overlay.dart';
 
 class OverlayDateTimePicker extends StatefulWidget {
@@ -14,8 +15,7 @@ class OverlayDateTimePicker extends StatefulWidget {
     this.textStyle = const TextStyle(),
     this.alignment = Alignment.bottomRight,
     this.initialDate,
-    this.size = const Size(325, 350),
-    this.wrongTimeDialog,
+    this.size = const Size(325, 375),
     this.onTapDay,
     this.highlightToday = true,
     this.alwaysUse24HourFormat = true,
@@ -28,13 +28,13 @@ class OverlayDateTimePicker extends StatefulWidget {
     this.buttonBuilder,
     this.closeOnSelectDate = true,
     this.showWeekDays = true,
+    this.dateTimeConstraint = const DateTimeConstraint(),
+    this.onNextPageButtonChild,
+    this.onPreviousPageButtonChild,
   }) : assert(child != null || buttonBuilder != null);
 
   /// The child contained by the DatePicker.
   final Widget? child;
-
-  /// A [Widget] to display when the user picks a disabled time in the [TimePickerDialog]
-  final Widget? wrongTimeDialog;
 
   /// Visual properties for the [OverlayDateTimePicker]
   final DateTimePickerTheme theme;
@@ -51,13 +51,13 @@ class OverlayDateTimePicker extends StatefulWidget {
   /// a [bool] to set de clock on [TimePickerDialog] to a fixed 24 or 12-hour format.
   final bool alwaysUse24HourFormat;
 
-  /// [pickTime] is a [bool] that determines if the user is able to pick a time after picking a date using the [TimePickerDialog].
+  /// is a [bool] that determines if the user is able to pick a time after picking a date using the [TimePickerDialog].
   final bool pickTime;
 
   /// indicates the starting date. Default is [DateTime.now()]
   final DateTime? initialDate;
 
-  /// [markedDates] contain the dates [DateTime] that will be marked in the [OverlayDateTimePicker] by a small dot.
+  /// contain the dates [DateTime] that will be marked in the [OverlayDateTimePicker] by a small dot.
   final List<DateTime>? markedDates;
 
   /// a [List] of [DateTime] objects that will be disabled and cannot be interacted with whatsoever.
@@ -75,11 +75,20 @@ class OverlayDateTimePicker extends StatefulWidget {
   /// [buttonBuilder] is a method for building the button that can trigger the overlay to appear
   final Widget Function(Key key, void Function() onPressed)? buttonBuilder;
 
-  /// [closeOnSelectDate] is a bool that indicates if the overlay should be closed if a date has been picked.
+  /// is a [bool] that indicates if the overlay should be closed if a date has been picked.
   final bool closeOnSelectDate;
 
   /// [showWeekDays] is a [bool] that determines if day in the week indicators should be shown
   final bool showWeekDays;
+
+  /// a [DateTimeConstraint] that dictates the constraints of the dates that can be picked.
+  final DateTimeConstraint dateTimeConstraint;
+
+  /// a [Widget] that determents the icon of the button for going to the next page
+  final Widget? onNextPageButtonChild;
+
+  /// a [Widget] that determents the icon of the button for going to the previous page
+  final Widget? onPreviousPageButtonChild;
 
   @override
   State<OverlayDateTimePicker> createState() => _OverlayDateTimePickerState();
@@ -222,6 +231,9 @@ class _OverlayDateTimePickerState extends State<OverlayDateTimePicker> {
             showWeekDays: true,
             onNextDate: nextDate,
             onPreviousDate: previousDate,
+            dateTimeConstraint: widget.dateTimeConstraint,
+            onNextPageButtonChild: widget.onNextPageButtonChild,
+            onPreviousPageButtonChild: widget.onPreviousPageButtonChild,
           ),
         ),
       ),

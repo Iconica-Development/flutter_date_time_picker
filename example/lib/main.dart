@@ -80,6 +80,9 @@ class DatePickerDemo extends StatelessWidget {
                   onPressed: onPressed,
                   child: const Text("Select Day"),
                 ),
+                dateTimeConstraint: DateTimeConstraint(
+                  min: DateConstraint(date: DateTime.now()),
+                ),
               ),
               OverlayDateTimePicker(
                 theme: dateTimePickerTheme,
@@ -91,6 +94,18 @@ class DatePickerDemo extends StatelessWidget {
                     Icons.schedule,
                   ),
                 ),
+                dateTimeConstraint: DateTimeConstraint(
+                  min: DateConstraint(date: DateTime.now()),
+                  max: DateConstraint(
+                    date: DateTime(
+                      DateTime.now().year,
+                      DateTime.now().month + 4,
+                      DateTime.now().day,
+                    ),
+                  ),
+                ),
+                onNextPageButtonChild: const Icon(Icons.add),
+                onPreviousPageButtonChild: const Icon(Icons.minimize),
               )
             ],
           ),

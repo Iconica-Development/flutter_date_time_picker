@@ -77,6 +77,6 @@ class PickableDate extends StatelessWidget {
   TextStyle? getStyle(bool isToday, bool isSelected) {
     if (isToday) return theme.highlightTheme.textStyle;
     if (isSelected) return theme.selectedTheme.textStyle;
-    return null;
+    return theme.baseTheme.textStyle;
   }
 }
