@@ -18,6 +18,7 @@ class DateTimePickerTheme {
     this.weekViewSize = 0.2,
     this.monthViewSize = 0.6,
     this.weekMonthTriggerSize = 0.3,
+    this.shapeBorder,
     this.baseTheme = const DateBoxBaseTheme(
       Colors.white,
       TextStyle(color: Colors.black),
@@ -79,4 +80,7 @@ class DateTimePickerTheme {
 
   /// The size of the buttons for navigation the different pages
   final double paginationSize;
+
+  /// The shape of the border using a [ShapeBorder]
+  final ShapeBorder? shapeBorder;
 }
