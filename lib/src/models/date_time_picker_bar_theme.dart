@@ -12,6 +12,7 @@ class DateTimePickerBarTheme {
     this.barOpacity = 0.3,
     this.barWidth = 50,
     this.barHeight = 3,
+    this.textStyle,
   });
 
   /// The color used for the bar shown at the bottom of the date picker.
@@ -25,4 +26,7 @@ class DateTimePickerBarTheme {
 
   /// The width of the bar shown at the bottom of the date picker.
   final double barWidth;
+
+  /// The text style of the text in the bar.
+  final TextStyle? textStyle;
 }
