@@ -96,7 +96,7 @@ class _OverlayDateTimeContentState extends State<OverlayDateTimeContent> {
               DateFormat.yMMMM().format(
                 widget.controller.browsingDate,
               ),
-              style: widget.theme.baseTheme.textStyle,
+              style: widget.theme.barTheme.textStyle,
             ),
             (widget.onNextPageButtonChild != null)
                 ? widget.onNextPageButtonChild!(

@@ -119,6 +119,7 @@ class _OverlayDateTimePickerState extends State<OverlayDateTimePicker> {
         top: offset.dy,
         left: offset.dx,
         child: Material(
+          color: Colors.transparent,
           child: _buildOverlay(context),
         ),
       );
@@ -210,16 +211,27 @@ class _OverlayDateTimePickerState extends State<OverlayDateTimePicker> {
 
   Widget _buildOverlay(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        color: widget.theme.backgroundColor,
-        borderRadius: const BorderRadius.all(Radius.circular(16)),
-        boxShadow: [
-          BoxShadow(
-            blurRadius: 5,
-            color: Colors.black.withOpacity(0.25),
-          ),
-        ],
-      ),
+      decoration: (widget.theme.shapeBorder == null)
+          ? BoxDecoration(
+              color: widget.theme.backgroundColor,
+              borderRadius: const BorderRadius.all(Radius.circular(16)),
+              boxShadow: [
+                BoxShadow(
+                  blurRadius: 5,
+                  color: Colors.black.withOpacity(0.25),
+                ),
+              ],
+            )
+          : ShapeDecoration(
+              shape: widget.theme.shapeBorder!,
+              color: widget.theme.backgroundColor,
+              shadows: [
+                BoxShadow(
+                  blurRadius: 5,
+                  color: Colors.black.withOpacity(0.25),
+                ),
+              ],
+            ),
       child: SizedBox(
         width: widget.size.width,
         height: widget.size.height,

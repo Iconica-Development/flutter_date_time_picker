@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 
+import 'package:datetime_picker_example/shaped_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_date_time_picker/flutter_date_time_picker.dart';
 
@@ -54,6 +55,7 @@ class DatePickerDemo extends StatelessWidget {
         barOpacity: 1,
       ),
       paginationSize: 50,
+      shapeBorder: ArrowedBorder(),
     );
 
     return Scaffold(
