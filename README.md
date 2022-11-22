@@ -1,29 +1,18 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# DateTime Picker
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages).
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages).
--->
-
-# Date Time Picker
-
-The date time picker to be able to input a date.
+Fluter DateTime Picker is a package you can use to implement an Calandar to pick dates and ust them in your Flutter app.
 
 ## Features
 
-### Drag down date time picker
+### DragDownDateTimePicker
 
 A picker that is placed in the top of the screen.
-You are able to select a day at this point.
+You are able to select a day for a given week.
 When it is dragged down you are able to select a day for a given month.
 
-### Overlay date time picker
+![Dragdown date time picker GIF](dragdown_date_time_picker.gif)
+
+### OverlayDateTimePicker
 
 A picker, that when opened using a button, is placed over the screen.
 Then you are able to swipe through the month to select a day.
@@ -31,22 +20,13 @@ It is possible to add a constraint to de picker to limit the choice of day.
 
 ![Overlay date time picker GIF](overlay_date_time_picker.gif)
 
-## Getting started
+## Setup
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+To use this package, add `flutter_date_time_picker` as a dependency in your pubspec.yaml file.
 
-## Usage
+## How to Use
 
-```dart
-OverlayDateTimePicker(
-    alignment: Alignment.bottomCenter,
-    child: const Text("Select Day"),
-    onTapDay: (date) {},
-),
-```
-
-See the [Example Code](example/lib/main.dart) for more example's on how to use this package.
+See the [Example Code](example/lib/main.dart) for an example on how to use this package.
 
 ## Issues
 
