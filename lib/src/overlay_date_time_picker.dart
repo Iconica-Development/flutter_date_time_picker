@@ -29,8 +29,8 @@ class OverlayDateTimePicker extends StatefulWidget {
     this.closeOnSelectDate = true,
     this.showWeekDays = true,
     this.dateTimeConstraint = const DateTimeConstraint(),
-    this.onNextPageButtonChild,
-    this.onPreviousPageButtonChild,
+    this.onNextPageButtonBuilder,
+    this.onPreviousPageButtonBuilder,
   }) : assert(child != null || buttonBuilder != null);
 
   /// The child contained by the DatePicker.
@@ -84,11 +84,12 @@ class OverlayDateTimePicker extends StatefulWidget {
   /// a [DateTimeConstraint] that dictates the constraints of the dates that can be picked.
   final DateTimeConstraint dateTimeConstraint;
 
-  /// a [Widget] that determents the icon of the button for going to the next page
-  final Widget? onNextPageButtonChild;
+  /// a [Function] that determents the icon of the button for going to the next page
+  final Widget Function(void Function()? onPressed)? onNextPageButtonBuilder;
 
-  /// a [Widget] that determents the icon of the button for going to the previous page
-  final Widget? onPreviousPageButtonChild;
+  /// a [Function] that determents the icon of the button for going to the previous page
+  final Widget Function(void Function()? onPressed)?
+      onPreviousPageButtonBuilder;
 
   @override
   State<OverlayDateTimePicker> createState() => _OverlayDateTimePickerState();
@@ -144,14 +145,15 @@ class _OverlayDateTimePickerState extends State<OverlayDateTimePicker> {
 
   @override
   void dispose() {
+    if (_overlay.mounted) _overlay.remove();
     _overlay.dispose();
-    _overlayState?.dispose();
+    _overlayState = null;
     _dateTimePickerController.dispose();
     super.dispose();
   }
 
   void _toggleOverlay() {
-    if (mounted) {
+    if (mounted && (_overlayState?.mounted ?? false)) {
       setState(() {
         if (!_isShown) {
           _overlayState?.insert(_overlay);
@@ -232,8 +234,8 @@ class _OverlayDateTimePickerState extends State<OverlayDateTimePicker> {
             onNextDate: nextDate,
             onPreviousDate: previousDate,
             dateTimeConstraint: widget.dateTimeConstraint,
-            onNextPageButtonChild: widget.onNextPageButtonChild,
-            onPreviousPageButtonChild: widget.onPreviousPageButtonChild,
+            onNextPageButtonChild: widget.onNextPageButtonBuilder,
+            onPreviousPageButtonChild: widget.onPreviousPageButtonBuilder,
           ),
         ),
       ),

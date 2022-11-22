@@ -20,12 +20,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Demo'),
-        ),
-        body: const DatePickerDemo(),
-      ),
+      home: const DatePickerDemo(),
     );
   }
 }
@@ -58,86 +53,99 @@ class DatePickerDemo extends StatelessWidget {
         barColor: Colors.black,
         barOpacity: 1,
       ),
+      paginationSize: 50,
     );
 
-    return Stack(
-      children: [
-        Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              OverlayDateTimePicker(
-                theme: dateTimePickerTheme,
-                alignment: Alignment.bottomCenter,
-                child: const Text("Select Day"),
-                onTapDay: (date) {},
-              ),
-              OverlayDateTimePicker(
-                theme: dateTimePickerTheme,
-                alignment: Alignment.center,
-                buttonBuilder: (key, onPressed) => TextButton(
-                  key: key,
-                  onPressed: onPressed,
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: true,
+        title: const Text('Demo'),
+      ),
+      body: Stack(
+        children: [
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                OverlayDateTimePicker(
+                  theme: dateTimePickerTheme,
+                  alignment: Alignment.bottomCenter,
                   child: const Text("Select Day"),
+                  onTapDay: (date) {},
                 ),
-                dateTimeConstraint: DateTimeConstraint(
-                  min: DateConstraint(date: DateTime.now()),
-                ),
-              ),
-              OverlayDateTimePicker(
-                theme: dateTimePickerTheme,
-                alignment: Alignment.topCenter,
-                buttonBuilder: (key, onPressed) => IconButton(
-                  key: key,
-                  onPressed: onPressed,
-                  icon: const Icon(
-                    Icons.schedule,
+                OverlayDateTimePicker(
+                  theme: dateTimePickerTheme,
+                  alignment: Alignment.center,
+                  buttonBuilder: (key, onPressed) => TextButton(
+                    key: key,
+                    onPressed: onPressed,
+                    child: const Text("Select Day"),
+                  ),
+                  dateTimeConstraint: DateTimeConstraint(
+                    min: DateConstraint(date: DateTime.now()),
                   ),
                 ),
-                dateTimeConstraint: DateTimeConstraint(
-                  min: DateConstraint(date: DateTime.now()),
-                  max: DateConstraint(
-                    date: DateTime(
-                      DateTime.now().year,
-                      DateTime.now().month + 4,
-                      DateTime.now().day,
+                OverlayDateTimePicker(
+                  theme: dateTimePickerTheme,
+                  alignment: Alignment.topCenter,
+                  buttonBuilder: (key, onPressed) => IconButton(
+                    key: key,
+                    onPressed: onPressed,
+                    icon: const Icon(
+                      Icons.schedule,
                     ),
                   ),
+                  dateTimeConstraint: DateTimeConstraint(
+                    min: DateConstraint(date: DateTime.now()),
+                    max: DateConstraint(
+                      date: DateTime(
+                        DateTime.now().year,
+                        DateTime.now().month + 4,
+                        DateTime.now().day,
+                      ),
+                    ),
+                  ),
+                  onNextPageButtonBuilder: (onPressed) {
+                    return IconButton(
+                        onPressed: onPressed, icon: const Icon(Icons.add));
+                  },
+                  onPreviousPageButtonBuilder: (onPressed) {
+                    return IconButton(
+                        onPressed: onPressed, icon: const Icon(Icons.minimize));
+                  },
+                )
+              ],
+            ),
+          ),
+          DragDownDateTimePicker(
+            dateTimePickerTheme: const DateTimePickerTheme(
+              backgroundColor: Colors.white,
+              markedIndicatorColor: Colors.red,
+              baseTheme: DateBoxBaseTheme(
+                Colors.white,
+                TextStyle(color: Colors.black),
+              ),
+              selectedTheme: DateBoxSelectedTheme(
+                Color(0x4BF44336),
+                TextStyle(
+                  color: Colors.red,
                 ),
-                onNextPageButtonChild: const Icon(Icons.add),
-                onPreviousPageButtonChild: const Icon(Icons.minimize),
-              )
-            ],
-          ),
-        ),
-        DragDownDateTimePicker(
-          dateTimePickerTheme: const DateTimePickerTheme(
-            backgroundColor: Colors.white,
-            markedIndicatorColor: Colors.red,
-            baseTheme: DateBoxBaseTheme(
-              Colors.white,
-              TextStyle(color: Colors.black),
-            ),
-            selectedTheme: DateBoxSelectedTheme(
-              Color(0x4BF44336),
-              TextStyle(
-                color: Colors.red,
+              ),
+              highlightTheme: DateBoxHighlightTheme(
+                Colors.red,
+                TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+              barTheme: DateTimePickerBarTheme(
+                barColor: Colors.black,
+                barOpacity: 1,
               ),
             ),
-            highlightTheme: DateBoxHighlightTheme(
-              Colors.red,
-              TextStyle(
-                color: Colors.white,
-              ),
-            ),
-            barTheme: DateTimePickerBarTheme(
-              barColor: Colors.black,
-              barOpacity: 1,
-            ),
-          ),
-          markedDates: [DateTime(2022, 9, 6)],
-        )
-      ],
+            markedDates: [DateTime(2022, 9, 6)],
+          )
+        ],
+      ),
     );
   }
 }
