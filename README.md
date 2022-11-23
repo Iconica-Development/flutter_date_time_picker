@@ -1,3 +1,4 @@
+[![pub package](https://img.shields.io/pub/v/flutter_date_time_picker.svg)](https://github.com/Iconica-Development) [![Build status](https://img.shields.io/github/workflow/status/Iconica-Development/flutter_date_time_picker/CI)](https://github.com/Iconica-Development/flutter_date_time_picker/actions/new) [![style: effective dart](https://img.shields.io/badge/style-effective_dart-40c4ff.svg)](https://github.com/tenhobi/effective_dart) 
 # DateTime Picker
 
 Fluter DateTime Picker is a package you can use to implement an Calandar to pick dates and ust them in your Flutter app.
