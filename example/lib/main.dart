@@ -68,6 +68,33 @@ class DatePickerDemo extends StatelessWidget {
         barOpacity: 1,
       ),
       paginationSize: 50,
+    );
+
+    const popupDateTimePickerTheme = DateTimePickerTheme(
+      dateBoxShape: DateBoxShape.roundedRectangle,
+      backgroundColor: Colors.white,
+      markedIndicatorColor: Colors.red,
+      baseTheme: DateBoxBaseTheme(
+        Colors.white,
+        TextStyle(color: Colors.black),
+      ),
+      selectedTheme: DateBoxSelectedTheme(
+        Color(0x4BF44336),
+        TextStyle(
+          color: Colors.red,
+        ),
+      ),
+      highlightTheme: DateBoxHighlightTheme(
+        Colors.red,
+        TextStyle(
+          color: Colors.white,
+        ),
+      ),
+      barTheme: DateTimePickerBarTheme(
+        barColor: Colors.black,
+        barOpacity: 1,
+      ),
+      paginationSize: 50,
       shapeBorder: ArrowedBorder(),
     );
 
@@ -101,7 +128,7 @@ class DatePickerDemo extends StatelessWidget {
                   ),
                 ),
                 OverlayDateTimePicker(
-                  theme: dateTimePickerTheme,
+                  theme: popupDateTimePickerTheme,
                   alignment: Alignment.topCenter,
                   buttonBuilder: (key, onPressed) => IconButton(
                     key: key,
