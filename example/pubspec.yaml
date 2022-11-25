@@ -1,7 +1,7 @@
 name: datetime_picker_example
 description: DateTimePicker Widget
 
-publish_to: 'none'
+publish_to: "none"
 
 version: 1.0.0+1
 
@@ -12,13 +12,15 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
-  flutter_date_time_picker: 
+  flutter_date_time_picker:
     path: ../
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.17.0 # Add this line
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
 flutter:
-
   uses-material-design: true

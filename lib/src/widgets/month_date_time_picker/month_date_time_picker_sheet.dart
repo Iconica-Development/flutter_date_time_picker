@@ -33,11 +33,11 @@ class MonthDateTimePickerSheet extends StatelessWidget {
           height: 10,
         ),
         Text(
-          DateFormat.yMMMM().format(
+          // use localization to get the month name
+          DateFormat.yMMMM(Localizations.localeOf(context).toString()).format(
             dateTimePickerController.browsingDate,
           ),
-          style: theme.baseTheme.textStyle!
-              .copyWith(fontSize: 25),
+          style: theme.baseTheme.textStyle!.copyWith(fontSize: 25),
         ),
         SizedBox(
           width: MediaQuery.of(context).size.width,
