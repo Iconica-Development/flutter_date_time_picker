@@ -141,8 +141,8 @@ class DatePickerDemo extends StatelessWidget {
                     min: DateConstraint(date: DateTime.now()),
                     max: DateConstraint(
                       date: DateTime(
-                        DateTime.now().year,
-                        DateTime.now().month + 4,
+                        DateTime.now().year + 1,
+                        DateTime.now().month,
                         DateTime.now().day,
                       ),
                     ),
