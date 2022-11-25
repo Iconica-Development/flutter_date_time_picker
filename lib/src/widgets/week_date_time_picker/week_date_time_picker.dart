@@ -43,7 +43,7 @@ class WeekDateTimePicker extends StatelessWidget {
                 : () async {
                     TimeOfDay? timeOfDay;
 
-                    DateTime selectedDate = date.daysOfWeek()[index];
+                    var selectedDate = date.daysOfWeek()[index];
 
                     timeOfDay = const TimeOfDay(hour: 0, minute: 0);
 
@@ -65,7 +65,7 @@ class WeekDateTimePicker extends StatelessWidget {
                       }
                     }
 
-                    DateTime selectedDateTime = DateTime(
+                    var selectedDateTime = DateTime(
                       selectedDate.year,
                       selectedDate.month,
                       selectedDate.day,
@@ -82,7 +82,7 @@ class WeekDateTimePicker extends StatelessWidget {
                 children: [
                   const Spacer(),
                   Text(
-                    DateFormat.E()
+                    DateFormat.E(Localizations.localeOf(context).toString())
                         .format(
                           date.daysOfWeek().elementAt(index),
                         )

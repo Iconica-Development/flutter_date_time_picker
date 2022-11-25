@@ -2,8 +2,6 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_date_time_picker/src/models/date_time_picker_theme.dart';
 import 'package:flutter_date_time_picker/src/utils/date_time_picker_controller.dart';
@@ -15,110 +13,15 @@ class DragDownDateTimePicker extends StatefulWidget {
   /// A widget that displays a date picker from a sheet form the top of the screen.
   /// This sheet displays initially displays a week but can be dragged down to show a full month.
   /// Both views can be dragged sideways to show the next or previous week/month.
-  ///
-  /// Example:
-  /// ```dart
-  /// DatePicker(
-  ///   dateTimePickerTheme: const DateTimePickerTheme()
-  ///   initialDate: selectedDate,
-  ///   highlightToday: true,
-  ///   onTapDay: (date) {
-  ///     setState(() {
-  ///       selectedDate = date;
-  ///     });
-  ///   },
-  ///   markedDates: [
-  ///     DateTime(2022, 3, 14),
-  ///   ],
-  ///   wrongTimeDialog:
-  ///   AlertDialog(
-  ///     title: const Text('Invalid Time'),
-  ///     content: SingleChildScrollView(
-  ///     child: ListBody(
-  ///     children: const <Widget>[
-  ///     Text(
-  ///       'The time you try to choose is disabled, try to pick another time.'),
-  ///     ],
-  ///    ),
-  ///   ),
-  ///     actions: <Widget>[
-  ///       TextButton(
-  ///         child: const Text('OK'),
-  ///          onPressed: () {
-  ///           Navigator.pop(context);
-  ///          },
-  ///         ),
-  ///       ],
-  ///      ),
-  ///   header: Container(
-  ///     height: 100,
-  ///     width: MediaQuery.of(context).size.width,
-  ///     padding: const EdgeInsets.only(bottom: 10),
-  ///     child: Row(
-  ///       crossAxisAlignment: CrossAxisAlignment.end,
-  ///       mainAxisAlignment: MainAxisAlignment.center,
-  ///       children: [
-  ///         const SizedBox(
-  ///           width: 160,
-  ///           height: 34,
-  ///           child: Center(
-  ///             child: Text(
-  ///               'Personal calendar',
-  ///               style: TextStyle(
-  ///                 fontSize: 16,
-  ///                 fontWeight: FontWeight.w900,
-  ///               ),
-  ///             ),
-  ///           ),
-  ///         ),
-  ///         const SizedBox(
-  ///           width: 4,
-  ///         ),
-  ///         Container(
-  ///           width: 160,
-  ///           height: 34,
-  ///           decoration: BoxDecoration(
-  ///             color: const Color(0xFF00273D),
-  ///             borderRadius: const BorderRadius.all(
-  ///               Radius.circular(10),
-  ///             ),
-  ///             boxShadow: [
-  ///               BoxShadow(
-  ///                 color: const Color(0xFF000000).withOpacity(0.50),
-  ///                 offset: const Offset(0, 6),
-  ///                 blurRadius: 9,
-  ///               ),
-  ///             ],
-  ///           ),
-  ///           child: const Center(
-  ///             child: Text(
-  ///               'Work calendar',
-  ///               style: TextStyle(
-  ///                 color: Colors.white,
-  ///                 fontSize: 16,
-  ///                 fontWeight: FontWeight.w900,
-  ///               ),
-  ///             ),
-  ///           ),
-  ///         ),
-  ///       ],
-  ///     ),
-  ///   ),
-  ///   child: Container(
-  ///     margin: const EdgeInsets.only(
-  ///       top: 195,
-  ///     ),
-  ///     child: HolidayRoster(),
-  ///   ),
-  /// ),
-  ///```
-  DragDownDateTimePicker({
+
+  const DragDownDateTimePicker({
     this.dateTimePickerTheme = const DateTimePickerTheme(),
     this.header,
+    this.onTimerPickerSheetChange,
     this.onTapDay,
     this.highlightToday = true,
     this.wrongTimeDialog,
-    bool? use24HourFormat,
+    this.alwaysUse24HourFormat,
     this.pickTime = false,
     this.initialDate,
     this.markedDates,
@@ -126,9 +29,7 @@ class DragDownDateTimePicker extends StatefulWidget {
     this.disabledTimes,
     this.child,
     super.key,
-  }) {
-    alwaysUse24HourFormat = use24HourFormat ?? _useTimeFormatBasedOnLocale();
-  }
+  });
 
   /// The child contained by the DatePicker.
   final Widget? child;
@@ -149,8 +50,8 @@ class DragDownDateTimePicker extends StatefulWidget {
   final bool highlightToday;
 
   /// a [bool] to set de clock on [TimePickerDialog] to a fixed 24 or 12-hour format.
-  /// By default this gets determined by the [Locale] on the device.
-  late final bool alwaysUse24HourFormat;
+  /// By default this gets determined by the settings on the user device.
+  final bool? alwaysUse24HourFormat;
 
   /// [pickTime] is a [bool] that determines if the user is able to pick a time after picking a date using the [TimePickerDialog].
   final bool pickTime;
@@ -166,6 +67,10 @@ class DragDownDateTimePicker extends StatefulWidget {
 
   /// a [List] of [TimeOfDay] objects that cannot be picked in the [TimePickerDialog].
   final List<TimeOfDay>? disabledTimes;
+
+  /// Function that gets called when the view changes from week to month or vice versa.
+  /// The value is the amount of scrolledpixels.
+  final Function(double)? onTimerPickerSheetChange;
 
   @override
   State<StatefulWidget> createState() => _DragDownDateTimePickerState();
@@ -198,6 +103,9 @@ class _DragDownDateTimePickerState extends State<DragDownDateTimePicker> {
 
     _dateTimePickerController.addListener(() {
       setState(() {});
+    });
+    _dragController.addListener(() {
+      widget.onTimerPickerSheetChange?.call(_dragController.pixels);
     });
   }
 
@@ -277,26 +185,5 @@ class _DragDownDateTimePickerState extends State<DragDownDateTimePicker> {
         ),
       ],
     );
-  }
-}
-
-bool _useTimeFormatBasedOnLocale() {
-  // Get LocaleName of current platform and split language- and countryCode in 2 List values.
-  List<String> deviceLocale = Platform.localeName.split('_');
-
-  // Make LocaleName of current platform in a Locale Object
-  Locale defaultLocale = Locale.fromSubtags(
-    languageCode: deviceLocale[0],
-    countryCode: deviceLocale[1],
-  );
-
-  // Determine Country.
-  switch (defaultLocale.countryCode) {
-    case 'NL':
-      return true;
-    case 'US':
-      return false;
-    default:
-      return true;
   }
 }

@@ -20,16 +20,17 @@ class WeekDateTimePickerSheet extends StatelessWidget {
   final bool showHeader;
   final double weekDateBoxSize;
 
-  String getDateHeader() {
-    List<DateTime> weekDays =
+  String _getDateHeader(BuildContext context) {
+    var weekDays =
         dateTimePickerController.browsingDate.daysOfWeek();
 
-    String firstDay = weekDays.first.day.toString();
+    var firstDay = weekDays.first.day.toString();
 
-    String lastDay = weekDays.last.day.toString();
+    var lastDay = weekDays.last.day.toString();
 
-    String monthYear =
-        DateFormat("MMMM, yyyy").format(dateTimePickerController.browsingDate);
+    var monthYear =
+        DateFormat("MMMM, yyyy", Localizations.localeOf(context).toString())
+            .format(dateTimePickerController.browsingDate);
 
     return '$firstDay - $lastDay $monthYear';
   }
@@ -50,7 +51,7 @@ class WeekDateTimePickerSheet extends StatelessWidget {
         ),
         if (showHeader) ...[
           Text(
-            getDateHeader(),
+            _getDateHeader(context),
             style: theme.baseTheme.textStyle!.copyWith(fontSize: 9),
           ),
           const SizedBox(
