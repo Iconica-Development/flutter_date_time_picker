@@ -5,6 +5,7 @@
 import 'package:datetime_picker_example/shaped_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_date_time_picker/flutter_date_time_picker.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,6 +18,17 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      // set locale to dutch
+      localizationsDelegates: const [
+        GlobalWidgetsLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      locale: const Locale('nl', 'NL'),
+      supportedLocales: const [
+        Locale('nl', 'NL'),
+        Locale('en', 'US'),
+      ],
       title: 'Demo drag down date time picker',
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -28,8 +40,10 @@ class MyApp extends StatelessWidget {
 
 class DatePickerDemo extends StatelessWidget {
   const DatePickerDemo({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
+    // set locale to Dutch
     const dateTimePickerTheme = DateTimePickerTheme(
       dateBoxShape: DateBoxShape.roundedRectangle,
       backgroundColor: Colors.white,
@@ -120,6 +134,8 @@ class DatePickerDemo extends StatelessWidget {
             ),
           ),
           DragDownDateTimePicker(
+            onTimerPickerSheetChange: (value) {},
+            alwaysUse24HourFormat: true,
             dateTimePickerTheme: const DateTimePickerTheme(
               backgroundColor: Colors.white,
               markedIndicatorColor: Colors.red,
@@ -145,7 +161,7 @@ class DatePickerDemo extends StatelessWidget {
               ),
             ),
             markedDates: [DateTime(2022, 9, 6)],
-          )
+          ),
         ],
       ),
     );

@@ -1,3 +1,10 @@
+## 2.1.0
+* Fixed internalization of the package
+* Added dragcallback to the draggablesheet
+
+## 2.0.0
+* Added overlay variant of datetimepicker
+
 ## 1.2.0
 * Made date time picker height customizable
 

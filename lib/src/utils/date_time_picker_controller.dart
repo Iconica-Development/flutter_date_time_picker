@@ -9,10 +9,10 @@ class DateTimePickerController extends ChangeNotifier {
   DateTimePickerController({
     required this.theme,
     required this.highlightToday,
-    required this.alwaysUse24HourFormat,
     required this.pickTime,
     required this.browsingDate,
     required this.selectedDate,
+    this.alwaysUse24HourFormat,
     this.header,
     this.wrongTimeDialog,
     this.markedDates,
