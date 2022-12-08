@@ -36,6 +36,7 @@ class DateTimePickerTheme {
       TextStyle(color: Colors.white),
     ),
     this.barTheme = const DateTimePickerBarTheme(),
+    this.monthWeekDayHeaders = false,
   });
 
   /// enum to define a shape dor the date. use [DateBoxShape.circle].
@@ -83,4 +84,7 @@ class DateTimePickerTheme {
 
   /// The shape of the border using a [ShapeBorder]
   final ShapeBorder? shapeBorder;
+
+  /// If true the first letters of the weekdays will be displayed above the days of the month
+  final bool monthWeekDayHeaders;
 }
