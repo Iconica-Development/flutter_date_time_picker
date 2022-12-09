@@ -86,6 +86,10 @@ class DatePicker extends StatelessWidget {
                 return Padding(
                   padding: const EdgeInsets.all(2.0),
                   child: PickableDate(
+                    isMarked: controller.markedDates?.any(
+                          (e) => isSameDay(e, todayDate),
+                        ) ??
+                        false,
                     isOffMonth: date.month != todayDate.month,
                     isDisabled:
                         isDisabled(addedIndex + index, daysToSkip, todayDate),
@@ -106,10 +110,11 @@ class DatePicker extends StatelessWidget {
 
   bool isToday(DateTime date) {
     DateTime now = DateTime.now();
-    return date.year == now.year &&
-        date.month == now.month &&
-        date.day == now.day;
+    return isSameDay(date, now);
   }
+
+  bool isSameDay(DateTime a, DateTime b) =>
+      a.year == b.year && a.month == b.month && a.day == b.day;
 
   bool isDisabled(int index, int daysToSkip, DateTime date) {
     return DateTime(

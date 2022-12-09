@@ -1,3 +1,6 @@
+## 2.2.1
+- Added marking to datetimepicker
+
 ## 2.2.0
 
 - Added the abilty to add the weekday letters above the months

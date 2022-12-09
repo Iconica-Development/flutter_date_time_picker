@@ -84,12 +84,14 @@ class DatePickerDemo extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 OverlayDateTimePicker(
+                  markedDates: [DateTime.now().add(const Duration(days: 1))],
                   theme: dateTimePickerTheme,
                   alignment: Alignment.bottomCenter,
                   child: const Text("Select Day"),
                   onTapDay: (date) {},
                 ),
                 OverlayDateTimePicker(
+                  markedDates: [DateTime.now().add(const Duration(days: 3))],
                   theme: dateTimePickerTheme,
                   alignment: Alignment.center,
                   buttonBuilder: (key, onPressed) => TextButton(
@@ -160,7 +162,7 @@ class DatePickerDemo extends StatelessWidget {
                 barOpacity: 1,
               ),
             ),
-            markedDates: [DateTime(2022, 9, 6)],
+            markedDates: [DateTime.now().subtract(const Duration(days: 1))],
           ),
         ],
       ),

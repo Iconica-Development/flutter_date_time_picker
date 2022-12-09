@@ -8,6 +8,7 @@ import 'package:flutter_date_time_picker/src/extensions/date_time.dart';
 import 'package:flutter_date_time_picker/src/extensions/time_of_day.dart';
 import 'package:flutter_date_time_picker/src/models/date_box_current_theme.dart';
 import 'package:flutter_date_time_picker/src/utils/date_time_picker_controller.dart';
+import 'package:flutter_date_time_picker/src/widgets/marked_icon.dart';
 import 'package:intl/intl.dart';
 
 class WeekDateTimePicker extends StatelessWidget {
@@ -107,20 +108,12 @@ class WeekDateTimePicker extends StatelessWidget {
                           ),
                         ),
                         if (shouldMark(index)) ...[
-                          Align(
-                            alignment: Alignment.bottomRight,
-                            child: Container(
-                              width: weekDateBoxSize / 3,
-                              height: weekDateBoxSize / 3,
-                              decoration: BoxDecoration(
-                                color: dateTimePickerController
-                                        .theme.markedIndicatorColor ??
-                                    Theme.of(context).indicatorColor,
-                                borderRadius:
-                                    BorderRadius.circular(weekDateBoxSize * 2),
-                              ),
-                            ),
-                          ),
+                          MarkedIcon(
+                            width: weekDateBoxSize / 3,
+                            height: weekDateBoxSize / 3,
+                            color: dateTimePickerController
+                                .theme.markedIndicatorColor,
+                          )
                         ],
                       ],
                     ),
