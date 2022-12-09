@@ -4,10 +4,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_date_time_picker/flutter_date_time_picker.dart';
+import 'package:flutter_date_time_picker/src/widgets/marked_icon.dart';
 
 class PickableDate extends StatelessWidget {
   const PickableDate({
     super.key,
+    required this.isMarked,
     required this.isSelected,
     required this.isDisabled,
     required this.theme,
@@ -17,6 +19,7 @@ class PickableDate extends StatelessWidget {
     required this.isToday,
   });
 
+  final bool isMarked;
   final bool isSelected;
   final bool isDisabled;
   final bool isToday;
@@ -33,26 +36,37 @@ class PickableDate extends StatelessWidget {
         if (isDisabled) return;
         onPressed.call(date);
       },
-      child: Container(
-        decoration: BoxDecoration(
-          color: getColor(
-            isToday,
-            isSelected,
-          ),
-          borderRadius: getBorder(theme.dateBoxShape),
-        ),
-        child: Center(
-          child: Opacity(
-            opacity: (isDisabled || isOffMonth) ? 0.5 : 1,
-            child: Text(
-              date.day.toString(),
-              style: getStyle(
+      child: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              color: getColor(
                 isToday,
                 isSelected,
               ),
+              borderRadius: getBorder(theme.dateBoxShape),
+            ),
+            child: Center(
+              child: Opacity(
+                opacity: (isDisabled || isOffMonth) ? 0.5 : 1,
+                child: Text(
+                  date.day.toString(),
+                  style: getStyle(
+                    isToday,
+                    isSelected,
+                  ),
+                ),
+              ),
             ),
           ),
-        ),
+          if (isMarked) ...[
+            MarkedIcon(
+              color: theme.markedIndicatorColor,
+              width: theme.monthDateBoxSize / 4,
+              height: theme.monthDateBoxSize / 4,
+            ),
+          ],
+        ],
       ),
     );
   }

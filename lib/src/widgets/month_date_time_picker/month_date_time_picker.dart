@@ -9,6 +9,7 @@ import 'package:flutter_date_time_picker/src/extensions/time_of_day.dart';
 import 'package:flutter_date_time_picker/src/models/date_box_current_theme.dart';
 import 'package:flutter_date_time_picker/src/models/date_time_picker_theme.dart';
 import 'package:flutter_date_time_picker/src/utils/date_time_picker_controller.dart';
+import 'package:flutter_date_time_picker/src/widgets/marked_icon.dart';
 import 'package:intl/intl.dart';
 
 class MonthDateTimePicker extends StatelessWidget {
@@ -150,21 +151,11 @@ class MonthDateTimePicker extends StatelessWidget {
                               addedIndex,
                               daysToSkip,
                             )) ...[
-                              Align(
-                                alignment: Alignment.bottomRight,
-                                child: IgnorePointer(
-                                  child: Container(
-                                    width: monthDateBoxSize / 4,
-                                    height: monthDateBoxSize / 4,
-                                    decoration: BoxDecoration(
-                                      color: dateTimePickerController
-                                              .theme.markedIndicatorColor ??
-                                          Theme.of(context).indicatorColor,
-                                      borderRadius: BorderRadius.circular(
-                                          (monthDateBoxSize / 4) * 2),
-                                    ),
-                                  ),
-                                ),
+                              MarkedIcon(
+                                width: monthDateBoxSize / 4,
+                                height: monthDateBoxSize / 4,
+                                color: dateTimePickerController
+                                    .theme.markedIndicatorColor,
                               ),
                             ],
                           ],
