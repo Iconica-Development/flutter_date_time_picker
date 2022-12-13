@@ -93,7 +93,8 @@ class _OverlayDateTimeContentState extends State<OverlayDateTimeContent> {
                     iconSize: widget.theme.paginationSize,
                   ),
             Text(
-              DateFormat.yMMMM().format(
+              DateFormat.yMMMM(Localizations.localeOf(context).toString())
+                  .format(
                 widget.controller.browsingDate,
               ),
               style: widget.theme.barTheme.textStyle,

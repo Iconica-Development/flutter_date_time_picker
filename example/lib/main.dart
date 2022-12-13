@@ -24,7 +24,6 @@ class MyApp extends StatelessWidget {
         GlobalMaterialLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      locale: const Locale('nl', 'NL'),
       supportedLocales: const [
         Locale('nl', 'NL'),
         Locale('en', 'US'),
@@ -45,6 +44,33 @@ class DatePickerDemo extends StatelessWidget {
   Widget build(BuildContext context) {
     // set locale to Dutch
     const dateTimePickerTheme = DateTimePickerTheme(
+      dateBoxShape: DateBoxShape.roundedRectangle,
+      backgroundColor: Colors.white,
+      markedIndicatorColor: Colors.red,
+      baseTheme: DateBoxBaseTheme(
+        Colors.white,
+        TextStyle(color: Colors.black),
+      ),
+      selectedTheme: DateBoxSelectedTheme(
+        Color(0x4BF44336),
+        TextStyle(
+          color: Colors.red,
+        ),
+      ),
+      highlightTheme: DateBoxHighlightTheme(
+        Colors.red,
+        TextStyle(
+          color: Colors.white,
+        ),
+      ),
+      barTheme: DateTimePickerBarTheme(
+        barColor: Colors.black,
+        barOpacity: 1,
+      ),
+      paginationSize: 50,
+    );
+
+    const popupDateTimePickerTheme = DateTimePickerTheme(
       dateBoxShape: DateBoxShape.roundedRectangle,
       backgroundColor: Colors.white,
       markedIndicatorColor: Colors.red,
@@ -104,7 +130,7 @@ class DatePickerDemo extends StatelessWidget {
                   ),
                 ),
                 OverlayDateTimePicker(
-                  theme: dateTimePickerTheme,
+                  theme: popupDateTimePickerTheme,
                   alignment: Alignment.topCenter,
                   buttonBuilder: (key, onPressed) => IconButton(
                     key: key,
@@ -117,8 +143,8 @@ class DatePickerDemo extends StatelessWidget {
                     min: DateConstraint(date: DateTime.now()),
                     max: DateConstraint(
                       date: DateTime(
-                        DateTime.now().year,
-                        DateTime.now().month + 4,
+                        DateTime.now().year + 1,
+                        DateTime.now().month,
                         DateTime.now().day,
                       ),
                     ),

@@ -53,7 +53,8 @@ class DatePicker extends StatelessWidget {
             padding: const EdgeInsets.only(top: 8),
             child: Row(
               children: List.generate(DateTime.daysPerWeek, (index) {
-                DateFormat dateFormatter = DateFormat("EE");
+                DateFormat dateFormatter =
+                    DateFormat.E(Localizations.localeOf(context).toString());
                 return Expanded(
                   child: Center(
                     child: Padding(
