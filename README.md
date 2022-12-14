@@ -10,7 +10,7 @@ A picker that is placed in the top of the screen.
 You are able to select a day for a given week.
 When it is dragged down you are able to select a day for a given month.
 
-![Dragdown date time picker GIF](dragdown_date_time_picker.gif)
+![Dragdown date time picker GIF](dropdown_date_time_picker.gif)
 
 ### OverlayDateTimePicker
 

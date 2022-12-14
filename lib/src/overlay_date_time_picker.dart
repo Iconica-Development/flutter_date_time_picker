@@ -102,29 +102,8 @@ class _OverlayDateTimePickerState extends State<OverlayDateTimePicker> {
 
   bool _isShown = false;
 
-  late OverlayState? _overlayState;
+  _DropdownRoute? _dropdownRoute;
 
-  late final OverlayEntry _overlay = OverlayEntry(
-    builder: (context) {
-      var box = buttonKey.currentContext?.findRenderObject() as RenderBox;
-      var offset = _calculateOffset(
-        alignment: widget.alignment,
-        position: box.localToGlobal(
-          const Offset(0, 0),
-        ),
-        buttonSize: box.size,
-        overlaySize: widget.size,
-      );
-      return Positioned(
-        top: offset.dy,
-        left: offset.dx,
-        child: Material(
-          color: Colors.transparent,
-          child: _buildOverlay(context),
-        ),
-      );
-    },
-  );
   late final DateTimePickerController _dateTimePickerController =
       DateTimePickerController(
     highlightToday: widget.highlightToday,
@@ -137,7 +116,7 @@ class _OverlayDateTimePickerState extends State<OverlayDateTimePicker> {
     onTapDayCallBack: (date) {
       widget.onTapDay?.call(date);
       if (widget.closeOnSelectDate) {
-        _toggleOverlay();
+        Navigator.of(context).pop();
       }
     },
     browsingDate: widget.initialDate ?? DateTime.now(),
@@ -146,65 +125,61 @@ class _OverlayDateTimePickerState extends State<OverlayDateTimePicker> {
 
   @override
   void dispose() {
-    if (_overlay.mounted) _overlay.remove();
-    _overlay.dispose();
-    _overlayState = null;
     _dateTimePickerController.dispose();
     super.dispose();
   }
 
-  void _toggleOverlay() {
-    if (mounted && (_overlayState?.mounted ?? false)) {
-      setState(() {
-        if (!_isShown) {
-          _overlayState?.insert(_overlay);
-        } else {
-          _overlay.remove();
-        }
-        _isShown = !_isShown;
-      });
+  void _onPressed() async {
+    if (!mounted) return;
+    setState(() {
+      _isShown = !_isShown;
+    });
+    final TextDirection? textDirection = Directionality.maybeOf(context);
+
+    final NavigatorState navigator = Navigator.of(context);
+
+    final RenderBox buttonBox = context.findRenderObject()! as RenderBox;
+    final Rect buttonRect = buttonBox.localToGlobal(Offset.zero,
+            ancestor: navigator.context.findRenderObject()) &
+        buttonBox.size;
+
+    _dropdownRoute = _DropdownRoute(
+      child: _buildOverlay(context),
+      barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+      buttonRect:
+          EdgeInsets.zero.resolve(textDirection).inflateRect(buttonRect),
+      alignment: widget.alignment,
+      menuSize: widget.size,
+    );
+    await navigator.push(_dropdownRoute!);
+    if (!mounted) {
+      return;
     }
+
+    _close();
   }
 
-  Offset _calculateOffset({
-    required Alignment alignment,
-    required Offset position,
-    required Size buttonSize,
-    required Size overlaySize,
-  }) {
-    double offsetX = 0;
-    double offsetY = 0;
-
-    offsetX = position.dx + // adds the world x position of the button
-        buttonSize.width *
-            0.5 - // centers the pivot of the button of the calculation to the center of the button
-        overlaySize.width *
-            0.5 + // centers the pivot of the overlay of the calculation to the center of the overlay
-        (overlaySize.width + buttonSize.width) * 0.5 * alignment.x;
-    offsetY = position.dy + // adds the world y position of the button
-        buttonSize.height * 0.5 -
-        overlaySize.height * 0.5 +
-        (overlaySize.height + buttonSize.height) * 0.5 * alignment.y;
-
-    return Offset(offsetX, offsetY);
+  void _close() {
+    if (!mounted) return;
+    setState(() {
+      _isShown = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    _overlayState = Overlay.of(context);
-
     if (widget.buttonBuilder != null) {
       return widget.buttonBuilder!.call(
         buttonKey,
         () {
-          _toggleOverlay();
+          _onPressed();
         },
       );
     }
     return ElevatedButton(
         key: buttonKey,
         onPressed: () {
-          _toggleOverlay();
+          _onPressed();
         },
         child: widget.child);
   }
@@ -282,5 +257,88 @@ class _OverlayDateTimePickerState extends State<OverlayDateTimePicker> {
         ),
       );
     });
+  }
+}
+
+class _DropdownRoute extends PopupRoute<Widget> {
+  _DropdownRoute({
+    required this.barrierLabel,
+    required this.child,
+    required this.alignment,
+    required this.menuSize,
+    required this.buttonRect,
+  });
+
+  final Widget child;
+  final Alignment alignment;
+  final Size menuSize;
+  final Rect buttonRect;
+
+  @override
+  Color? get barrierColor => null;
+
+  @override
+  bool get barrierDismissible => true;
+
+  @override
+  final String? barrierLabel;
+
+  @override
+  Widget buildPage(BuildContext context, Animation<double> animation,
+      Animation<double> secondaryAnimation) {
+    return CustomSingleChildLayout(
+      delegate: _DropdownMenuLayoutDelegate(
+        buttonRect: buttonRect,
+        menuSize: menuSize,
+        alignment: alignment,
+      ),
+      child: Material(child: child),
+    );
+  }
+
+  @override
+  Duration get transitionDuration => const Duration(milliseconds: 100);
+
+  void dismiss() {
+    navigator?.pop();
+  }
+}
+
+class _DropdownMenuLayoutDelegate extends SingleChildLayoutDelegate {
+  _DropdownMenuLayoutDelegate({
+    required this.buttonRect,
+    required this.menuSize,
+    required this.alignment,
+  });
+
+  final Rect buttonRect;
+  final Size menuSize;
+  final Alignment alignment;
+
+  @override
+  BoxConstraints getConstraintsForChild(BoxConstraints constraints) {
+    return BoxConstraints(
+      minWidth: menuSize.width,
+      maxWidth: menuSize.width,
+      minHeight: menuSize.height,
+      maxHeight: menuSize.height,
+    );
+  }
+
+  @override
+  Offset getPositionForChild(Size size, Size childSize) {
+    Rect pop = Offset.zero & childSize;
+    pop.center;
+    return buttonRect.center -
+        pop.center +
+        Offset(
+          (childSize.width + buttonRect.width) * 0.5 * alignment.x,
+          (childSize.height + buttonRect.height) * 0.5 * alignment.y,
+        );
+  }
+
+  @override
+  bool shouldRelayout(_DropdownMenuLayoutDelegate oldDelegate) {
+    return buttonRect != oldDelegate.buttonRect;
   }
 }

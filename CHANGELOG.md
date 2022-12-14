@@ -1,4 +1,9 @@
+## 2.2.2
+
+- Made the popup dismissible
+
 ## 2.2.1
+
 - Added marking to datetimepicker
 
 ## 2.2.0
