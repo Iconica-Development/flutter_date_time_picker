@@ -21,8 +21,7 @@ class WeekDateTimePickerSheet extends StatelessWidget {
   final double weekDateBoxSize;
 
   String _getDateHeader(BuildContext context) {
-    var weekDays =
-        dateTimePickerController.browsingDate.daysOfWeek();
+    var weekDays = dateTimePickerController.browsingDate.daysOfWeek();
 
     var firstDay = weekDays.first.day.toString();
 
