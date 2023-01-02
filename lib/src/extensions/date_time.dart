@@ -31,7 +31,6 @@ extension DateTimeExtension on DateTime {
   bool get isLeapYear =>
       (year % 4 == 0) && (year % 100 != 0) || (year % 400 == 0);
 
-
   /// Returns the amount of days in the current month of the [DateTime] object
   int daysInMonth() {
     return DateTime(year, month + 1, 0).day;

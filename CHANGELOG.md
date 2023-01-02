@@ -1,3 +1,7 @@
+## 2.2.3
+
+- Fixed skipping month bug
+
 ## 2.2.2
 
 - Made the popup dismissible

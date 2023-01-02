@@ -3,8 +3,4 @@
 // SPDX-License-Identifier: BSD-3-Clause
 
 /// Defines the shape of a specific date.
-enum DateBoxShape {
-  circle,
-  rectangle,
-  roundedRectangle
-}
+enum DateBoxShape { circle, rectangle, roundedRectangle }

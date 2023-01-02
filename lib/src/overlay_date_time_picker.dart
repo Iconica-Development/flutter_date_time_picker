@@ -3,7 +3,6 @@
 // SPDX-License-Identifier: BSD-3-Clause
 
 import 'package:flutter/material.dart';
-import 'package:flutter_date_time_picker/src/extensions/date_time.dart';
 import 'package:flutter_date_time_picker/src/models/date_time_picker_theme.dart';
 import 'package:flutter_date_time_picker/src/utils/date_time_picker_controller.dart';
 import 'package:flutter_date_time_picker/src/models/date_constraint.dart';
@@ -232,14 +231,10 @@ class _OverlayDateTimePickerState extends State<OverlayDateTimePicker> {
   void nextDate() {
     if (!mounted) return;
     setState(() {
-      _dateTimePickerController.browsingDate =
-          _dateTimePickerController.browsingDate.add(
-        Duration(
-          days: DateTime(
-            _dateTimePickerController.browsingDate.year,
-            _dateTimePickerController.browsingDate.month,
-          ).daysInMonth(),
-        ),
+      _dateTimePickerController.browsingDate = DateTime(
+        _dateTimePickerController.browsingDate.year,
+        _dateTimePickerController.browsingDate.month + 1,
+        _dateTimePickerController.browsingDate.day,
       );
     });
   }
@@ -247,14 +242,10 @@ class _OverlayDateTimePickerState extends State<OverlayDateTimePicker> {
   void previousDate() {
     if (!mounted) return;
     setState(() {
-      _dateTimePickerController.browsingDate =
-          _dateTimePickerController.browsingDate.subtract(
-        Duration(
-          days: DateTime(
-            _dateTimePickerController.browsingDate.year,
-            _dateTimePickerController.browsingDate.month,
-          ).daysInMonth(),
-        ),
+      _dateTimePickerController.browsingDate = DateTime(
+        _dateTimePickerController.browsingDate.year,
+        _dateTimePickerController.browsingDate.month - 1,
+        _dateTimePickerController.browsingDate.day,
       );
     });
   }
