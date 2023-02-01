@@ -106,6 +106,7 @@ class _DragDownDateTimePickerState extends State<DragDownDateTimePicker> {
     });
     _dragController.addListener(() {
       widget.onTimerPickerSheetChange?.call(_dragController.pixels);
+      setState(() {});
     });
   }
 
