@@ -1,41 +1,9 @@
-// SPDX-FileCopyrightText: 2022 Iconica
-//
-// SPDX-License-Identifier: BSD-3-Clause
-
 import 'package:flutter/material.dart';
-import 'package:flutter_date_time_picker/src/models/date_time_picker_theme.dart';
+import 'package:flutter_date_time_picker/flutter_date_time_picker.dart';
 import 'package:flutter_date_time_picker/src/utils/date_time_picker_controller.dart';
-import 'package:flutter_date_time_picker/src/models/date_constraint.dart';
 import 'package:flutter_date_time_picker/src/widgets/overlay_date_time_picker/overlay.dart';
 
-class OverlayDateTimePicker extends StatefulWidget {
-  const OverlayDateTimePicker({
-    this.theme = const DateTimePickerTheme(),
-    this.textStyle = const TextStyle(),
-    this.alignment = Alignment.bottomRight,
-    this.initialDate,
-    this.size = const Size(325, 375),
-    this.onTapDay,
-    this.highlightToday = true,
-    this.alwaysUse24HourFormat = true,
-    this.pickTime = false,
-    this.markedDates,
-    this.disabledDates,
-    this.disabledTimes,
-    this.child,
-    super.key,
-    this.buttonBuilder,
-    this.closeOnSelectDate = true,
-    this.showWeekDays = true,
-    this.dateTimeConstraint = const DateTimeConstraint(),
-    this.onNextPageButtonBuilder,
-    this.onPreviousPageButtonBuilder,
-    this.isShown = false,
-  }) : assert(child != null || buttonBuilder != null);
-
-  /// Determines wether the datepicker is shown at start.
-  final bool isShown;
-
+class DateTimePicker extends StatefulWidget {
   /// The child contained by the DatePicker.
   final Widget? child;
 
@@ -69,9 +37,6 @@ class OverlayDateTimePicker extends StatefulWidget {
   /// a [List] of [TimeOfDay] objects that cannot be picked in the [TimePickerDialog].
   final List<TimeOfDay>? disabledTimes;
 
-  /// an [Alignment] to align the overlay relative to the button
-  final Alignment alignment;
-
   /// a [Size] that indicates the size of the overlay
   final Size size;
 
@@ -94,19 +59,32 @@ class OverlayDateTimePicker extends StatefulWidget {
   final Widget Function(void Function()? onPressed)?
       onPreviousPageButtonBuilder;
 
+  const DateTimePicker(
+      {super.key,
+      this.child,
+      required this.theme,
+      this.textStyle = const TextStyle(),
+      this.onTapDay,
+      this.highlightToday = true,
+      this.alwaysUse24HourFormat = true,
+      this.pickTime = false,
+      this.initialDate,
+      this.markedDates,
+      this.disabledDates,
+      this.disabledTimes,
+      required this.size,
+      this.buttonBuilder,
+      this.closeOnSelectDate = false,
+      this.showWeekDays = true,
+      this.dateTimeConstraint = const DateTimeConstraint(),
+      this.onNextPageButtonBuilder,
+      this.onPreviousPageButtonBuilder});
+
   @override
-  State<OverlayDateTimePicker> createState() => _OverlayDateTimePickerState();
+  State<DateTimePicker> createState() => _DateTimePickerState();
 }
 
-class _OverlayDateTimePickerState extends State<OverlayDateTimePicker> {
-  final GlobalKey buttonKey = GlobalKey(
-    debugLabel: "Overlay Date Time Picker - Button",
-  );
-
-  late bool _isShown = widget.isShown;
-
-  _DropdownRoute? _dropdownRoute;
-
+class _DateTimePickerState extends State<DateTimePicker> {
   late final DateTimePickerController _dateTimePickerController =
       DateTimePickerController(
     highlightToday: widget.highlightToday,
@@ -127,67 +105,7 @@ class _OverlayDateTimePickerState extends State<OverlayDateTimePicker> {
   );
 
   @override
-  void dispose() {
-    _dateTimePickerController.dispose();
-    super.dispose();
-  }
-
-  void _onPressed() async {
-    if (!mounted) return;
-    setState(() {
-      _isShown = !_isShown;
-    });
-    final TextDirection? textDirection = Directionality.maybeOf(context);
-
-    final NavigatorState navigator = Navigator.of(context);
-
-    final RenderBox buttonBox = context.findRenderObject()! as RenderBox;
-    final Rect buttonRect = buttonBox.localToGlobal(Offset.zero,
-            ancestor: navigator.context.findRenderObject()) &
-        buttonBox.size;
-
-    _dropdownRoute = _DropdownRoute(
-      child: _buildOverlay(context),
-      barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
-      buttonRect:
-          EdgeInsets.zero.resolve(textDirection).inflateRect(buttonRect),
-      alignment: widget.alignment,
-      menuSize: widget.size,
-    );
-    await navigator.push(_dropdownRoute!);
-    if (!mounted) {
-      return;
-    }
-
-    _close();
-  }
-
-  void _close() {
-    if (!mounted) return;
-    setState(() {
-      _isShown = false;
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
-    if (widget.buttonBuilder != null) {
-      return widget.buttonBuilder!.call(
-        buttonKey,
-        () {
-          _onPressed();
-        },
-      );
-    }
-    return ElevatedButton(
-        key: buttonKey,
-        onPressed: () {
-          _onPressed();
-        },
-        child: widget.child);
-  }
-
-  Widget _buildOverlay(BuildContext context) {
     return Container(
       decoration: (widget.theme.shapeBorder == null)
           ? BoxDecoration(
@@ -252,88 +170,5 @@ class _OverlayDateTimePickerState extends State<OverlayDateTimePicker> {
         _dateTimePickerController.browsingDate.day,
       );
     });
-  }
-}
-
-class _DropdownRoute extends PopupRoute<Widget> {
-  _DropdownRoute({
-    required this.barrierLabel,
-    required this.child,
-    required this.alignment,
-    required this.menuSize,
-    required this.buttonRect,
-  });
-
-  final Widget child;
-  final Alignment alignment;
-  final Size menuSize;
-  final Rect buttonRect;
-
-  @override
-  Color? get barrierColor => null;
-
-  @override
-  bool get barrierDismissible => true;
-
-  @override
-  final String? barrierLabel;
-
-  @override
-  Widget buildPage(BuildContext context, Animation<double> animation,
-      Animation<double> secondaryAnimation) {
-    return CustomSingleChildLayout(
-      delegate: _DropdownMenuLayoutDelegate(
-        buttonRect: buttonRect,
-        menuSize: menuSize,
-        alignment: alignment,
-      ),
-      child: Material(child: child),
-    );
-  }
-
-  @override
-  Duration get transitionDuration => const Duration(milliseconds: 100);
-
-  void dismiss() {
-    navigator?.pop();
-  }
-}
-
-class _DropdownMenuLayoutDelegate extends SingleChildLayoutDelegate {
-  _DropdownMenuLayoutDelegate({
-    required this.buttonRect,
-    required this.menuSize,
-    required this.alignment,
-  });
-
-  final Rect buttonRect;
-  final Size menuSize;
-  final Alignment alignment;
-
-  @override
-  BoxConstraints getConstraintsForChild(BoxConstraints constraints) {
-    return BoxConstraints(
-      minWidth: menuSize.width,
-      maxWidth: menuSize.width,
-      minHeight: menuSize.height,
-      maxHeight: menuSize.height,
-    );
-  }
-
-  @override
-  Offset getPositionForChild(Size size, Size childSize) {
-    Rect pop = Offset.zero & childSize;
-    pop.center;
-    return buttonRect.center -
-        pop.center +
-        Offset(
-          (childSize.width + buttonRect.width) * 0.5 * alignment.x,
-          (childSize.height + buttonRect.height) * 0.5 * alignment.y,
-        );
-  }
-
-  @override
-  bool shouldRelayout(_DropdownMenuLayoutDelegate oldDelegate) {
-    return buttonRect != oldDelegate.buttonRect;
   }
 }

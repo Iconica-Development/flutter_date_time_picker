@@ -58,11 +58,13 @@ class WeekDateTimePicker extends StatelessWidget {
                           timeOfDay.containsAny(
                             dateTimePickerController.disabledTimes ?? [],
                           )) {
-                        showDialog(
-                          context: context,
-                          builder: (context) =>
-                              dateTimePickerController.wrongTimeDialog!,
-                        );
+                        if (context.mounted) {
+                          showDialog(
+                            context: context,
+                            builder: (context) =>
+                                dateTimePickerController.wrongTimeDialog!,
+                          );
+                        }
                       }
                     }
 

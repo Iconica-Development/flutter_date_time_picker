@@ -79,6 +79,14 @@ class DatePickerDemo extends StatelessWidget {
       ),
       body: Stack(
         children: [
+          Align(
+            alignment: Alignment.centerLeft,
+            child: DateTimePicker(
+              theme: dateTimePickerTheme,
+              size: const Size(270, 340),
+              onTapDay: (date) {},
+            ),
+          ),
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
