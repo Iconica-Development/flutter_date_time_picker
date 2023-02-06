@@ -1,6 +1,11 @@
+## 2.3.0
+
+- Added availability of datetimepicker without button
+
 ## 2.2.4
 
 - Fixed drag down date time picker not rebuilding
+
 
 ## 2.2.3
 

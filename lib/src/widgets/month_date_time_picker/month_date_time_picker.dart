@@ -111,11 +111,14 @@ class MonthDateTimePicker extends StatelessWidget {
                                       dateTimePickerController.disabledTimes ??
                                           [],
                                     )) {
-                                  showDialog(
+                                  if (context.mounted) {
+                                    showDialog(
                                       context: context,
                                       builder: (context) =>
                                           dateTimePickerController
-                                              .wrongTimeDialog!);
+                                              .wrongTimeDialog!,
+                                    );
+                                  }
                                 }
                               }
 
