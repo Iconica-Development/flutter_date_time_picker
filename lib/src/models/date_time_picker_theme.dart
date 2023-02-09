@@ -9,6 +9,10 @@ class DateTimePickerTheme {
   /// The [DateTimePickerTheme] to style [DragDownDateTimePicker] in. Define a custom shape for the dates and specifically style
   /// a basic, highlighted, selected and disabled date.
   const DateTimePickerTheme({
+    this.prevIcon,
+    this.nextIcon,
+    this.dateFormatMonth,
+    this.dateFormatWeekday,
     this.paginationSize = 25,
     this.weekDateBoxSize = 35,
     this.monthDateBoxSize = 45,
@@ -87,4 +91,14 @@ class DateTimePickerTheme {
 
   /// If true the first letters of the weekdays will be displayed above the days of the month
   final bool monthWeekDayHeaders;
+
+  /// This function allows you to change formatting of the month-text
+  final String Function(String date)? dateFormatMonth;
+
+  /// This function allows you to change formatting of weekday-text
+  final String Function(String date)? dateFormatWeekday;
+
+  final WidgetBuilder? nextIcon;
+
+  final WidgetBuilder? prevIcon;
 }

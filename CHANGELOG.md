@@ -1,3 +1,7 @@
+## 2.3.1
+
+- Added extra customization options for datetimepicker (Customizable buttons, text formatting for weekday and month)
+
 ## 2.3.0
 
 - Added availability of datetimepicker without button

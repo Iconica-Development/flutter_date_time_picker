@@ -54,6 +54,11 @@ class DatePicker extends StatelessWidget {
             child: Row(
               children: List.generate(DateTime.daysPerWeek, (index) {
                 DateFormat dateFormatter = DateFormat("EE");
+                var date = dateFormatter.format(DateTime(2022, 11, index));
+                if (theme.dateFormatWeekday != null) {
+                  date = theme.dateFormatWeekday!
+                      .call(dateFormatter.format(DateTime(2022, 11, index)));
+                }
                 return Expanded(
                   child: Center(
                     child: Padding(
@@ -61,7 +66,7 @@ class DatePicker extends StatelessWidget {
                       child: Text(
                         // The first day in November 2022 is monday
                         // We use it to properly show monday as the first day and sunday as the last one
-                        dateFormatter.format(DateTime(2022, 11, index)),
+                        date,
                         style: textStyle.copyWith(fontWeight: FontWeight.bold),
                       ),
                     ),

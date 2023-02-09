@@ -71,6 +71,18 @@ class _OverlayDateTimeContentState extends State<OverlayDateTimeContent> {
 
   @override
   Widget build(BuildContext context) {
+    var monthText = DateFormat.yMMMM().format(
+      widget.controller.browsingDate,
+    );
+    if (widget.theme.dateFormatMonth != null) {
+      monthText = widget.theme.dateFormatMonth!.call(monthText);
+    }
+
+    Widget nextIcon = widget.theme.nextIcon?.call(context) ??
+        const Icon(Icons.arrow_circle_right_outlined);
+    Widget prevIcon = widget.theme.prevIcon?.call(context) ??
+        const Icon(Icons.arrow_circle_left_outlined);
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -88,14 +100,12 @@ class _OverlayDateTimeContentState extends State<OverlayDateTimeContent> {
                         (widget.dateTimeConstraint.inMonthRange(previousDate))
                             ? _goToPreviousPage
                             : null,
-                    icon: const Icon(Icons.arrow_circle_left_outlined),
+                    icon: prevIcon,
                     color: widget.theme.barTheme.barColor,
                     iconSize: widget.theme.paginationSize,
                   ),
             Text(
-              DateFormat.yMMMM().format(
-                widget.controller.browsingDate,
-              ),
+              monthText,
               style: widget.theme.barTheme.textStyle,
             ),
             (widget.onNextPageButtonChild != null)
@@ -109,7 +119,7 @@ class _OverlayDateTimeContentState extends State<OverlayDateTimeContent> {
                         (widget.dateTimeConstraint.inMonthRange(nextDate))
                             ? _goToNextPage
                             : null,
-                    icon: const Icon(Icons.arrow_circle_right_outlined),
+                    icon: nextIcon,
                     color: widget.theme.barTheme.barColor,
                     iconSize: widget.theme.paginationSize,
                   ),
