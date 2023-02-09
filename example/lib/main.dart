@@ -44,32 +44,37 @@ class DatePickerDemo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // set locale to Dutch
-    const dateTimePickerTheme = DateTimePickerTheme(
-      dateBoxShape: DateBoxShape.roundedRectangle,
+    DateTimePickerTheme dateTimePickerTheme = DateTimePickerTheme(
+      dateFormatWeekday: (value) =>
+          value[0].toUpperCase() + value.substring(1).toLowerCase(),
+      dateFormatMonth: (value) => value.toUpperCase(),
+      prevIcon: (context) => const Icon(Icons.chevron_left_sharp),
+      nextIcon: (context) => const Icon(Icons.chevron_right_sharp),
+      dateBoxShape: DateBoxShape.circle,
       backgroundColor: Colors.white,
       markedIndicatorColor: Colors.red,
-      baseTheme: DateBoxBaseTheme(
+      baseTheme: const DateBoxBaseTheme(
         Colors.white,
         TextStyle(color: Colors.black),
       ),
-      selectedTheme: DateBoxSelectedTheme(
+      selectedTheme: const DateBoxSelectedTheme(
         Color(0x4BF44336),
         TextStyle(
-          color: Colors.red,
+          color: Colors.black,
         ),
       ),
-      highlightTheme: DateBoxHighlightTheme(
+      highlightTheme: const DateBoxHighlightTheme(
         Colors.red,
         TextStyle(
           color: Colors.white,
         ),
       ),
-      barTheme: DateTimePickerBarTheme(
-        barColor: Colors.black,
-        barOpacity: 1,
-      ),
-      paginationSize: 50,
-      shapeBorder: ArrowedBorder(),
+      barTheme: const DateTimePickerBarTheme(
+          barColor: Colors.pinkAccent,
+          barOpacity: 1,
+          textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+      paginationSize: 25,
+      shapeBorder: const ArrowedBorder(),
     );
 
     return Scaffold(
@@ -139,7 +144,7 @@ class DatePickerDemo extends StatelessWidget {
                     return IconButton(
                         onPressed: onPressed, icon: const Icon(Icons.minimize));
                   },
-                )
+                ),
               ],
             ),
           ),
