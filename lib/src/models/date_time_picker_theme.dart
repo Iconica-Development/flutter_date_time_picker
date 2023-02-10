@@ -22,7 +22,7 @@ class DateTimePickerTheme {
     this.weekViewSize = 0.2,
     this.monthViewSize = 0.6,
     this.weekMonthTriggerSize = 0.3,
-    this.shapeBorder,
+    this.shapeDecoration,
     this.baseTheme = const DateBoxBaseTheme(
       Colors.white,
       TextStyle(color: Colors.black),
@@ -86,8 +86,10 @@ class DateTimePickerTheme {
   /// The size of the buttons for navigation the different pages
   final double paginationSize;
 
-  /// The shape of the border using a [ShapeBorder]
-  final ShapeBorder? shapeBorder;
+  /// The decoration of the box that encapsulates the date picker
+  /// Requires [ShapeBorder], default shadow and backgroundcolor implemented
+  /// Image and gradient optional
+  final ShapeDecoration? shapeDecoration;
 
   /// If true the first letters of the weekdays will be displayed above the days of the month
   final bool monthWeekDayHeaders;

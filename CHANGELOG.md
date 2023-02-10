@@ -1,3 +1,6 @@
+## 2.3.2
+
+- Added customization options for box encapsulating the datetimepicker (Customize shadow, add image or gradient)
 ## 2.3.1
 
 - Added extra customization options for datetimepicker (Customizable buttons, text formatting for weekday and month)

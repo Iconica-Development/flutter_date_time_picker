@@ -189,7 +189,7 @@ class _OverlayDateTimePickerState extends State<OverlayDateTimePicker> {
 
   Widget _buildOverlay(BuildContext context) {
     return Container(
-      decoration: (widget.theme.shapeBorder == null)
+      decoration: (widget.theme.shapeDecoration == null)
           ? BoxDecoration(
               color: widget.theme.backgroundColor,
               borderRadius: const BorderRadius.all(Radius.circular(16)),
@@ -201,14 +201,20 @@ class _OverlayDateTimePickerState extends State<OverlayDateTimePicker> {
               ],
             )
           : ShapeDecoration(
-              shape: widget.theme.shapeBorder!,
+              shape: widget.theme.shapeDecoration!.shape,
               color: widget.theme.backgroundColor,
-              shadows: [
-                BoxShadow(
-                  blurRadius: 5,
-                  color: Colors.black.withOpacity(0.25),
-                ),
-              ],
+              image: (widget.theme.shapeDecoration!.image) ??
+                  widget.theme.shapeDecoration!.image,
+              gradient: (widget.theme.shapeDecoration!.gradient) ??
+                  widget.theme.shapeDecoration!.gradient,
+              shadows: (widget.theme.shapeDecoration!.shadows == null)
+                  ? [
+                      BoxShadow(
+                        blurRadius: 5,
+                        color: Colors.black.withOpacity(0.25),
+                      ),
+                    ]
+                  : widget.theme.shapeDecoration!.shadows,
             ),
       child: SizedBox(
         width: widget.size.width,
