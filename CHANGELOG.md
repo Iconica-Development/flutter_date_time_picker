@@ -1,6 +1,7 @@
-## 2.3.2
+## 3.0.0
 
 - Added customization options for box encapsulating the datetimepicker (Customize shadow, add image or gradient)
+- Removed ability to specify ShapeBorder directly in date_time_picker_theme. Specifying ShapeBorder now part of ShapeDecoration-customization. 
 ## 2.3.1
 
 - Added extra customization options for datetimepicker (Customizable buttons, text formatting for weekday and month)
