@@ -50,6 +50,9 @@ class DatePickerDemo extends StatelessWidget {
       dateFormatMonth: (value) => value.toUpperCase(),
       prevIcon: (context) => const Icon(Icons.chevron_left_sharp),
       nextIcon: (context) => const Icon(Icons.chevron_right_sharp),
+      shapeDecoration: const ShapeDecoration(
+        shape: ArrowedBorder(),
+      ),
       dateBoxShape: DateBoxShape.circle,
       backgroundColor: Colors.white,
       markedIndicatorColor: Colors.red,
@@ -74,7 +77,6 @@ class DatePickerDemo extends StatelessWidget {
           barOpacity: 1,
           textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
       paginationSize: 25,
-      shapeBorder: const ArrowedBorder(),
     );
 
     return Scaffold(
