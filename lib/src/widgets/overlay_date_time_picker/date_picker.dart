@@ -14,7 +14,7 @@ class DatePicker extends StatelessWidget {
     super.key,
     required this.controller,
     required this.theme,
-    required this.textStyle,
+    required this.weekdayTextStyle,
     required this.onSelectDate,
     required this.date,
     required this.showWeekDays,
@@ -23,7 +23,7 @@ class DatePicker extends StatelessWidget {
 
   final DateTimePickerController controller;
   final DateTimePickerTheme theme;
-  final TextStyle textStyle;
+  final TextStyle weekdayTextStyle;
   final void Function(DateTime date) onSelectDate;
   final DateTime date;
   final bool showWeekDays;
@@ -64,11 +64,14 @@ class DatePicker extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(2.0),
                       child: Text(
-                        // The first day in November 2022 is monday
-                        // We use it to properly show monday as the first day and sunday as the last one
-                        date,
-                        style: textStyle.copyWith(fontWeight: FontWeight.bold),
-                      ),
+                          // The first day in November 2022 is monday
+                          // We use it to properly show monday as the first day and sunday as the last one
+                          date,
+                          style: weekdayTextStyle
+                          // .copyWith(
+                          // fontStyle: FontStyle.italic,
+                          // fontWeight: FontWeight.w200),
+                          ),
                     ),
                   ),
                 );

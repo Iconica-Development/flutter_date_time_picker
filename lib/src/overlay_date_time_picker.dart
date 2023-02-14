@@ -223,7 +223,7 @@ class _OverlayDateTimePickerState extends State<OverlayDateTimePicker> {
           padding: const EdgeInsets.all(8.0),
           child: OverlayDateTimeContent(
             theme: widget.theme,
-            textStyle: widget.textStyle,
+            weekdayTextStyle: widget.textStyle,
             size: widget.size,
             controller: _dateTimePickerController,
             showWeekDays: true,

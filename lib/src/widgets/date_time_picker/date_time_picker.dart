@@ -11,7 +11,7 @@ class DateTimePicker extends StatefulWidget {
   final DateTimePickerTheme theme;
 
   /// Style to base the text on
-  final TextStyle textStyle;
+  final TextStyle weekdayTextStyle;
 
   /// Callback that provides the date tapped on as a [DateTime] object.
   final Function(DateTime date)? onTapDay;
@@ -63,7 +63,7 @@ class DateTimePicker extends StatefulWidget {
       {super.key,
       this.child,
       required this.theme,
-      this.textStyle = const TextStyle(),
+      this.weekdayTextStyle = const TextStyle(),
       this.onTapDay,
       this.highlightToday = true,
       this.alwaysUse24HourFormat = true,
@@ -138,10 +138,10 @@ class _DateTimePickerState extends State<DateTimePicker> {
         width: widget.size.width,
         height: widget.size.height,
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: widget.theme.calenderPadding,
           child: OverlayDateTimeContent(
             theme: widget.theme,
-            textStyle: widget.textStyle,
+            weekdayTextStyle: widget.weekdayTextStyle,
             size: widget.size,
             controller: _dateTimePickerController,
             showWeekDays: true,

@@ -14,7 +14,7 @@ class OverlayDateTimeContent extends StatefulWidget {
   const OverlayDateTimeContent({
     super.key,
     required this.theme,
-    required this.textStyle,
+    required this.weekdayTextStyle,
     required this.size,
     required this.controller,
     required this.showWeekDays,
@@ -26,7 +26,7 @@ class OverlayDateTimeContent extends StatefulWidget {
   });
 
   final DateTimePickerTheme theme;
-  final TextStyle textStyle;
+  final TextStyle weekdayTextStyle;
   final Size size;
   final DateTimePickerController controller;
   final bool showWeekDays;
@@ -151,7 +151,7 @@ class _OverlayDateTimeContentState extends State<OverlayDateTimeContent> {
                 controller: widget.controller,
                 onSelectDate: _onSelectDate,
                 theme: widget.theme,
-                textStyle: widget.textStyle,
+                weekdayTextStyle: widget.weekdayTextStyle,
                 date: previousDate,
                 dateTimeConstraint: widget.dateTimeConstraint,
                 showWeekDays: widget.showWeekDays,
@@ -160,7 +160,7 @@ class _OverlayDateTimeContentState extends State<OverlayDateTimeContent> {
                 controller: widget.controller,
                 onSelectDate: _onSelectDate,
                 theme: widget.theme,
-                textStyle: widget.textStyle,
+                weekdayTextStyle: widget.weekdayTextStyle,
                 date: widget.controller.browsingDate,
                 showWeekDays: widget.showWeekDays,
                 dateTimeConstraint: widget.dateTimeConstraint,
@@ -169,7 +169,7 @@ class _OverlayDateTimeContentState extends State<OverlayDateTimeContent> {
                 controller: widget.controller,
                 onSelectDate: _onSelectDate,
                 theme: widget.theme,
-                textStyle: widget.textStyle,
+                weekdayTextStyle: widget.weekdayTextStyle,
                 date: nextDate,
                 dateTimeConstraint: widget.dateTimeConstraint,
                 showWeekDays: widget.showWeekDays,

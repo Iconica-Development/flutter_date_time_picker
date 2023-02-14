@@ -40,11 +40,15 @@ class PickableDate extends StatelessWidget {
         children: [
           Container(
             decoration: BoxDecoration(
+              border: getBorder(
+                isToday,
+                isSelected,
+              ),
               color: getColor(
                 isToday,
                 isSelected,
               ),
-              borderRadius: getBorder(theme.dateBoxShape),
+              borderRadius: getBorderRadius(theme.dateBoxShape),
             ),
             child: Center(
               child: Opacity(
@@ -71,7 +75,7 @@ class PickableDate extends StatelessWidget {
     );
   }
 
-  BorderRadiusGeometry? getBorder(DateBoxShape shape) {
+  BorderRadiusGeometry? getBorderRadius(DateBoxShape shape) {
     switch (shape) {
       case DateBoxShape.circle:
         return BorderRadius.all(Radius.circular(theme.monthDateBoxSize));
@@ -83,8 +87,8 @@ class PickableDate extends StatelessWidget {
   }
 
   Color? getColor(bool isToday, bool isSelected) {
-    if (isToday) return theme.highlightTheme.backgroundColor;
     if (isSelected) return theme.selectedTheme.backgroundColor;
+    if (isToday) return theme.highlightTheme.backgroundColor;
     return null;
   }
 
@@ -92,5 +96,19 @@ class PickableDate extends StatelessWidget {
     if (isToday) return theme.highlightTheme.textStyle;
     if (isSelected) return theme.selectedTheme.textStyle;
     return theme.baseTheme.textStyle;
+  }
+
+  BoxBorder getBorder(bool isToday, bool isSelected) {
+    if (isToday) {
+      if (theme.highlightTheme.borderStyle != null) {
+        return theme.highlightTheme.borderStyle!;
+      }
+    }
+    if (isSelected) {
+      if (theme.selectedTheme.borderStyle != null) {
+        return theme.selectedTheme.borderStyle!;
+      }
+    }
+    return Border.all(color: const Color.fromARGB(0, 255, 255, 255));
   }
 }
