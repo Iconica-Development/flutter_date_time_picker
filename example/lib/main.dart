@@ -56,26 +56,30 @@ class DatePickerDemo extends StatelessWidget {
       dateBoxShape: DateBoxShape.circle,
       backgroundColor: Colors.white,
       markedIndicatorColor: Colors.red,
-      baseTheme: const DateBoxBaseTheme(
-        Colors.white,
-        TextStyle(color: Colors.black),
+      baseTheme: const DateBoxTheme(
+        backgroundColor: Colors.white,
+        textStyle: TextStyle(color: Colors.black),
       ),
-      selectedTheme: const DateBoxSelectedTheme(
-        Color(0x4BF44336),
-        TextStyle(
+      selectedTheme: const DateBoxTheme(
+        backgroundColor: Colors.red,
+        textStyle: TextStyle(
           color: Colors.black,
         ),
       ),
-      highlightTheme: const DateBoxHighlightTheme(
-        Colors.red,
-        TextStyle(
+      highlightTheme: DateBoxTheme(
+        borderStyle: Border.all(
+          color: Colors.black,
+          width: 3,
+        ),
+        backgroundColor: Colors.red,
+        textStyle: const TextStyle(
           color: Colors.white,
         ),
       ),
       barTheme: const DateTimePickerBarTheme(
-          barColor: Colors.pinkAccent,
+          barColor: Colors.red,
           barOpacity: 1,
-          textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          textStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
       paginationSize: 25,
     );
 
@@ -156,19 +160,19 @@ class DatePickerDemo extends StatelessWidget {
             dateTimePickerTheme: const DateTimePickerTheme(
               backgroundColor: Colors.white,
               markedIndicatorColor: Colors.red,
-              baseTheme: DateBoxBaseTheme(
-                Colors.white,
-                TextStyle(color: Colors.black),
+              baseTheme: DateBoxTheme(
+                backgroundColor: Colors.white,
+                textStyle: TextStyle(color: Colors.black),
               ),
-              selectedTheme: DateBoxSelectedTheme(
-                Color(0x4BF44336),
-                TextStyle(
+              selectedTheme: DateBoxTheme(
+                backgroundColor: Color(0x4BF44336),
+                textStyle: TextStyle(
                   color: Colors.red,
                 ),
               ),
-              highlightTheme: DateBoxHighlightTheme(
-                Colors.red,
-                TextStyle(
+              highlightTheme: DateBoxTheme(
+                backgroundColor: Colors.red,
+                textStyle: TextStyle(
                   color: Colors.white,
                 ),
               ),

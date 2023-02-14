@@ -23,24 +23,24 @@ class DateTimePickerTheme {
     this.monthViewSize = 0.6,
     this.weekMonthTriggerSize = 0.3,
     this.shapeDecoration,
-    this.baseTheme = const DateBoxBaseTheme(
-      Colors.white,
-      TextStyle(color: Colors.black),
+    this.baseTheme = const DateBoxTheme(
+        backgroundColor: Colors.white,
+        textStyle: TextStyle(color: Colors.black)),
+    this.highlightTheme = const DateBoxTheme(
+      backgroundColor: Colors.blue,
+      textStyle: TextStyle(color: Colors.white),
     ),
-    this.highlightTheme = const DateBoxHighlightTheme(
-      Colors.blue,
-      TextStyle(color: Colors.white),
+    this.selectedTheme = const DateBoxTheme(
+      backgroundColor: Color(0xFFBBDEFB),
+      textStyle: TextStyle(color: Colors.blue),
     ),
-    this.selectedTheme = const DateBoxSelectedTheme(
-      Color(0xFFBBDEFB),
-      TextStyle(color: Colors.blue),
-    ),
-    this.disabledTheme = const DateBoxDisabledTheme(
-      Colors.grey,
-      TextStyle(color: Colors.white),
+    this.disabledTheme = const DateBoxTheme(
+      backgroundColor: Colors.grey,
+      textStyle: TextStyle(color: Colors.white),
     ),
     this.barTheme = const DateTimePickerBarTheme(),
     this.monthWeekDayHeaders = false,
+    this.calenderPadding = const EdgeInsets.all(8.0),
   });
 
   /// enum to define a shape dor the date. use [DateBoxShape.circle].
@@ -48,16 +48,16 @@ class DateTimePickerTheme {
   final DateBoxShape dateBoxShape;
 
   /// This theme is used to style a default look for the dates.
-  final DateBoxBaseTheme baseTheme;
+  final DateBoxTheme baseTheme;
 
   /// This theme is used for when a specific date is highlighted.
-  final DateBoxHighlightTheme highlightTheme;
+  final DateBoxTheme highlightTheme;
 
   /// This theme is used for when a specific date is slected by the user.
-  final DateBoxSelectedTheme selectedTheme;
+  final DateBoxTheme selectedTheme;
 
   /// This theme is used for when a specific date is disabled.
-  final DateBoxDisabledTheme disabledTheme;
+  final DateBoxTheme disabledTheme;
 
   /// This theme is used for the bar of the date picker.
   final DateTimePickerBarTheme barTheme;
@@ -103,4 +103,7 @@ class DateTimePickerTheme {
   final WidgetBuilder? nextIcon;
 
   final WidgetBuilder? prevIcon;
+
+  /// The padding surrounding the calendar
+  final EdgeInsetsGeometry calenderPadding;
 }
