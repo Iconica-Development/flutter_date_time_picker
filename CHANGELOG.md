@@ -1,3 +1,6 @@
+## 3.1.0
+- Add compatibility with flutter 3.10
+
 ## 3.0.0
 
 - Added customization options for box encapsulating the datetimepicker (Customize shadow, add image or gradient)
