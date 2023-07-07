@@ -227,9 +227,17 @@ class _OverlayDateTimeContentState extends State<OverlayDateTimeContent> {
 
   void _movePage(int direction) {
     if (direction < 0) {
-      _nextPage();
+      if (direction == -11) {
+        _previousPage();
+      } else {
+        _nextPage();
+      }
     } else if (direction > 0) {
-      _previousPage();
+      if (direction == 11) {
+        _nextPage();
+      } else {
+        _previousPage();
+      }
     }
   }
 
