@@ -59,27 +59,32 @@ class DateTimePicker extends StatefulWidget {
   final Widget Function(void Function()? onPressed)?
       onPreviousPageButtonBuilder;
 
-  const DateTimePicker(
-      {super.key,
-      this.child,
-      required this.theme,
-      this.weekdayTextStyle = const TextStyle(),
-      this.onTapDay,
-      this.highlightToday = true,
-      this.alwaysUse24HourFormat = true,
-      this.pickTime = false,
-      this.initialDate,
-      this.markedDates,
-      this.disabledDates,
-      this.disabledTimes,
-      required this.size,
-      this.buttonBuilder,
-      this.closeOnSelectDate = false,
-      this.showWeekDays = true,
-      this.dateTimeConstraint = const DateTimeConstraint(),
-      this.onNextPageButtonBuilder,
-      this.onPreviousPageButtonBuilder});
+  //final DateTime MonthChangeCallback = void Function(DateTime newMonth);
+  final void Function(DateTime newMonth)? onMonthChanged;
 
+  const DateTimePicker({
+    super.key,
+    this.child,
+    required this.theme,
+    this.weekdayTextStyle = const TextStyle(),
+    this.onTapDay,
+    this.highlightToday = true,
+    this.alwaysUse24HourFormat = true,
+    this.pickTime = false,
+    this.initialDate,
+    this.markedDates,
+    this.disabledDates,
+    this.disabledTimes,
+    required this.size,
+    this.buttonBuilder,
+    this.closeOnSelectDate = false,
+    this.showWeekDays = true,
+    this.dateTimeConstraint = const DateTimeConstraint(),
+    this.onNextPageButtonBuilder,
+    this.onPreviousPageButtonBuilder,
+    this.onMonthChanged,
+  });
+  //final MonthChangeCallback? onMonthChanged;
   @override
   State<DateTimePicker> createState() => _DateTimePickerState();
 }
@@ -103,7 +108,6 @@ class _DateTimePickerState extends State<DateTimePicker> {
     browsingDate: widget.initialDate ?? DateTime.now(),
     selectedDate: widget.initialDate ?? DateTime.now(),
   );
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -164,6 +168,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
         _dateTimePickerController.browsingDate.month + 1,
         _dateTimePickerController.browsingDate.day,
       );
+      widget.onMonthChanged?.call(_dateTimePickerController.browsingDate);
     });
   }
 
@@ -175,6 +180,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
         _dateTimePickerController.browsingDate.month - 1,
         _dateTimePickerController.browsingDate.day,
       );
+      widget.onMonthChanged?.call(_dateTimePickerController.browsingDate);
     });
   }
 }
