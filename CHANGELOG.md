@@ -1,3 +1,6 @@
+## 3.2.0
+- Added call back for whenever the user navigates to a different month
+
 ## 3.1.0
 - Add compatibility with flutter 3.10
 
