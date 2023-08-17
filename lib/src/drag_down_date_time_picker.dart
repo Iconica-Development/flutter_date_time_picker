@@ -174,6 +174,8 @@ class _DragDownDateTimePickerState extends State<DragDownDateTimePicker> {
                                       _dateTimePickerController,
                                   monthDateBoxSize: widget
                                       .dateTimePickerTheme.monthDateBoxSize,
+                                  monthDatePadding: widget
+                                      .dateTimePickerTheme.monthDatePadding,
                                 ),
                         ),
                       ),

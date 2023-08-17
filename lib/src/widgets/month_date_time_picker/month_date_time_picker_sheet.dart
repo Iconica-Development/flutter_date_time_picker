@@ -12,39 +12,41 @@ class MonthDateTimePickerSheet extends StatelessWidget {
   const MonthDateTimePickerSheet({
     required this.dateTimePickerController,
     required this.monthDateBoxSize,
-    Key? key,
-  }) : super(key: key);
+    required this.monthDatePadding,
+    super.key,
+  });
 
   final DateTimePickerController dateTimePickerController;
   final double monthDateBoxSize;
+  final EdgeInsetsGeometry monthDatePadding;
 
   @override
   Widget build(BuildContext context) {
     var theme = dateTimePickerController.theme;
+    var size = MediaQuery.of(context).size;
 
     return Column(
       children: [
-        if (dateTimePickerController.header != null)
+        if (dateTimePickerController.header != null) ...[
           Align(
             alignment: Alignment.topCenter,
             child: dateTimePickerController.header!,
           ),
-        const SizedBox(
-          height: 10,
-        ),
-        Text(
-          // use localization to get the month name
-          DateFormat.yMMMM(Localizations.localeOf(context).toString()).format(
-            dateTimePickerController.browsingDate,
+        ],
+        Padding(
+          padding: monthDatePadding,
+          child: Text(
+            // use localization to get the month name
+            DateFormat.yMMMM(Localizations.localeOf(context).toString()).format(
+              dateTimePickerController.browsingDate,
+            ),
+            style: theme.baseTheme.textStyle!.copyWith(fontSize: 25),
           ),
-          style: theme.baseTheme.textStyle!.copyWith(fontSize: 25),
         ),
         SizedBox(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height * 0.33 +
-              ((theme.monthWeekDayHeaders)
-                  ? MediaQuery.of(context).size.height * 0.04
-                  : 0),
+          width: size.width,
+          height: size.height * 0.33 +
+              ((theme.monthWeekDayHeaders) ? size.height * 0.04 : 0),
           child: PageView(
             controller: dateTimePickerController.pageController,
             onPageChanged: (i) {

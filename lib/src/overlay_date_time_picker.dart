@@ -7,6 +7,7 @@ import 'package:flutter_date_time_picker/src/models/date_time_picker_theme.dart'
 import 'package:flutter_date_time_picker/src/utils/date_time_picker_controller.dart';
 import 'package:flutter_date_time_picker/src/models/date_constraint.dart';
 import 'package:flutter_date_time_picker/src/widgets/overlay_date_time_picker/overlay.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 class OverlayDateTimePicker extends StatefulWidget {
   const OverlayDateTimePicker({
@@ -104,27 +105,32 @@ class _OverlayDateTimePickerState extends State<OverlayDateTimePicker> {
   );
 
   late bool _isShown = widget.isShown;
+  late final DateTimePickerController _dateTimePickerController;
 
   _DropdownRoute? _dropdownRoute;
 
-  late final DateTimePickerController _dateTimePickerController =
-      DateTimePickerController(
-    highlightToday: widget.highlightToday,
-    alwaysUse24HourFormat: widget.alwaysUse24HourFormat,
-    pickTime: widget.pickTime,
-    theme: widget.theme,
-    markedDates: widget.markedDates,
-    disabledDates: widget.disabledDates,
-    disabledTimes: widget.disabledTimes,
-    onTapDayCallBack: (date) {
-      widget.onTapDay?.call(date);
-      if (widget.closeOnSelectDate) {
-        Navigator.of(context).pop();
-      }
-    },
-    browsingDate: widget.initialDate ?? DateTime.now(),
-    selectedDate: widget.initialDate ?? DateTime.now(),
-  );
+  @override
+  void initState() {
+    super.initState();
+    initializeDateFormatting();
+    _dateTimePickerController = DateTimePickerController(
+      highlightToday: widget.highlightToday,
+      alwaysUse24HourFormat: widget.alwaysUse24HourFormat,
+      pickTime: widget.pickTime,
+      theme: widget.theme,
+      markedDates: widget.markedDates,
+      disabledDates: widget.disabledDates,
+      disabledTimes: widget.disabledTimes,
+      onTapDayCallBack: (date) {
+        widget.onTapDay?.call(date);
+        if (widget.closeOnSelectDate) {
+          Navigator.of(context).pop();
+        }
+      },
+      browsingDate: widget.initialDate ?? DateTime.now(),
+      selectedDate: widget.initialDate ?? DateTime.now(),
+    );
+  }
 
   @override
   void dispose() {

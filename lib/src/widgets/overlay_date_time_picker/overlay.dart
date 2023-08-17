@@ -71,7 +71,9 @@ class _OverlayDateTimeContentState extends State<OverlayDateTimeContent> {
 
   @override
   Widget build(BuildContext context) {
-    var monthText = DateFormat.yMMMM().format(
+    var monthText =
+        DateFormat.yMMMM(Localizations.localeOf(context).toLanguageTag())
+            .format(
       widget.controller.browsingDate,
     );
     if (widget.theme.dateFormatMonth != null) {

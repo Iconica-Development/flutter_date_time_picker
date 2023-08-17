@@ -41,6 +41,7 @@ class DateTimePickerTheme {
     this.barTheme = const DateTimePickerBarTheme(),
     this.monthWeekDayHeaders = false,
     this.calenderPadding = const EdgeInsets.all(8.0),
+    this.monthDatePadding = const EdgeInsets.symmetric(vertical: 12.0),
   });
 
   /// enum to define a shape dor the date. use [DateBoxShape.circle].
@@ -67,6 +68,9 @@ class DateTimePickerTheme {
 
   /// Size of date box in a month view.
   final double monthDateBoxSize;
+
+  /// The Padding around the month name in the month view.
+  final EdgeInsetsGeometry monthDatePadding;
 
   /// The color used for a indicator for a marked date.
   final Color? markedIndicatorColor;
