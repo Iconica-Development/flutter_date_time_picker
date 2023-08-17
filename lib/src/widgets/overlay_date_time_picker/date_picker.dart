@@ -53,7 +53,8 @@ class DatePicker extends StatelessWidget {
             padding: const EdgeInsets.only(top: 8),
             child: Row(
               children: List.generate(DateTime.daysPerWeek, (index) {
-                DateFormat dateFormatter = DateFormat("EE");
+                DateFormat dateFormatter = DateFormat(
+                    "EE", Localizations.localeOf(context).toLanguageTag());
                 var date = dateFormatter.format(DateTime(2022, 11, index));
                 if (theme.dateFormatWeekday != null) {
                   date = theme.dateFormatWeekday!

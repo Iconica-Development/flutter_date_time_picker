@@ -1,7 +1,14 @@
+## 3.3.0
+
+- Fixed localization bug for the overlay variant of the datetimepicker
+- Added option to modify padding around the month name in the calendar of the datetimepicker
+
 ## 3.2.0
+
 - Added call back for whenever the user navigates to a different month
 
 ## 3.1.0
+
 - Add compatibility with flutter 3.10
 
 ## 3.0.0
