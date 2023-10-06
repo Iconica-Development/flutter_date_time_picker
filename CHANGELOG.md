@@ -1,3 +1,7 @@
+## 3.3.2
+
+- Fixed size of Date_Time_Picker
+
 ## 3.3.1
 
 - Fixed seperated bar theme from icon color
