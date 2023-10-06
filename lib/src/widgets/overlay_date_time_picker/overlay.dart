@@ -103,7 +103,6 @@ class _OverlayDateTimeContentState extends State<OverlayDateTimeContent> {
                             ? _goToPreviousPage
                             : null,
                     icon: prevIcon,
-                    color: widget.theme.barTheme.barColor,
                     iconSize: widget.theme.paginationSize,
                   ),
             Text(
@@ -122,7 +121,6 @@ class _OverlayDateTimeContentState extends State<OverlayDateTimeContent> {
                             ? _goToNextPage
                             : null,
                     icon: nextIcon,
-                    color: widget.theme.barTheme.barColor,
                     iconSize: widget.theme.paginationSize,
                   ),
           ],

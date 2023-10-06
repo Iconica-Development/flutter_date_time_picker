@@ -1,3 +1,7 @@
+## 3.3.1
+
+- Fixed seperated bar theme from icon color
+
 ## 3.3.0
 
 - Fixed localization bug for the overlay variant of the datetimepicker
@@ -19,7 +23,7 @@
 - Renamed ambiguously named textStyle-property of DatePicker that only affected weekday-styling as weekdayTextStyle
 - Added custimzation option to change border of days
 - Added customization option to change padding of calendar
- 
+
 ## 2.3.1
 
 - Added extra customization options for datetimepicker (Customizable buttons, text formatting for weekday and month)
@@ -31,7 +35,6 @@
 ## 2.2.4
 
 - Fixed drag down date time picker not rebuilding
-
 
 ## 2.2.3
 
