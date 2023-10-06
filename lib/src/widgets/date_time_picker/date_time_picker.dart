@@ -38,7 +38,7 @@ class DateTimePicker extends StatefulWidget {
   final List<TimeOfDay>? disabledTimes;
 
   /// a [Size] that indicates the size of the overlay
-  final Size size;
+  final Size? size;
 
   /// [buttonBuilder] is a method for building the button that can trigger the overlay to appear
   final Widget Function(Key key, void Function() onPressed)? buttonBuilder;
@@ -75,7 +75,7 @@ class DateTimePicker extends StatefulWidget {
     this.markedDates,
     this.disabledDates,
     this.disabledTimes,
-    required this.size,
+    this.size,
     this.buttonBuilder,
     this.closeOnSelectDate = false,
     this.showWeekDays = true,
@@ -110,6 +110,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
   );
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     return Container(
       decoration: (widget.theme.shapeDecoration == null)
           ? BoxDecoration(
@@ -139,14 +140,14 @@ class _DateTimePickerState extends State<DateTimePicker> {
                   : widget.theme.shapeDecoration!.shadows,
             ),
       child: SizedBox(
-        width: widget.size.width,
-        height: widget.size.height,
+        width: widget.size?.width ?? size.width,
+        height: widget.size?.height ?? size.height,
         child: Padding(
           padding: widget.theme.calenderPadding,
           child: OverlayDateTimeContent(
             theme: widget.theme,
             weekdayTextStyle: widget.weekdayTextStyle,
-            size: widget.size,
+            size: widget.size ?? Size(size.width, size.height),
             controller: _dateTimePickerController,
             showWeekDays: true,
             onNextDate: nextDate,
