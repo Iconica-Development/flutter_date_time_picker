@@ -1,3 +1,7 @@
+## 3.3.3
+
+- Added option for date box theme for marked dates and a boolean to use it
+
 ## 3.3.2
 
 - Fixed size of Date_Time_Picker

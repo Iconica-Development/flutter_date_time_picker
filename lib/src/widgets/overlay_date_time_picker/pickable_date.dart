@@ -64,11 +64,36 @@ class PickableDate extends StatelessWidget {
             ),
           ),
           if (isMarked) ...[
-            MarkedIcon(
-              color: theme.markedIndicatorColor,
-              width: theme.monthDateBoxSize / 4,
-              height: theme.monthDateBoxSize / 4,
-            ),
+            if (theme.useMarkedTheme) ...[
+              Container(
+                decoration: BoxDecoration(
+                  border: getMarkedBorder(
+                    isMarked,
+                  ),
+                  color: getMarkedColor(
+                    isMarked,
+                  ),
+                  borderRadius: getBorderRadius(theme.dateBoxShape),
+                ),
+                child: Center(
+                  child: Opacity(
+                    opacity: (isDisabled || isOffMonth) ? 0.5 : 1,
+                    child: Text(
+                      date.day.toString(),
+                      style: getMarkedStyle(
+                        isMarked,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ] else ...[
+              MarkedIcon(
+                color: theme.markedIndicatorColor,
+                width: theme.monthDateBoxSize / 4,
+                height: theme.monthDateBoxSize / 4,
+              ),
+            ]
           ],
         ],
       ),
@@ -107,6 +132,25 @@ class PickableDate extends StatelessWidget {
     if (isSelected) {
       if (theme.selectedTheme.borderStyle != null) {
         return theme.selectedTheme.borderStyle!;
+      }
+    }
+    return Border.all(color: const Color.fromARGB(0, 255, 255, 255));
+  }
+
+  Color? getMarkedColor(bool isMarked) {
+    if (isMarked) return theme.markedTheme.backgroundColor;
+    return null;
+  }
+
+  TextStyle? getMarkedStyle(bool isMarked) {
+    if (isMarked) return theme.markedTheme.textStyle;
+    return theme.baseTheme.textStyle;
+  }
+
+  BoxBorder getMarkedBorder(bool isMarked) {
+    if (isMarked) {
+      if (theme.markedTheme.borderStyle != null) {
+        return theme.markedTheme.borderStyle!;
       }
     }
     return Border.all(color: const Color.fromARGB(0, 255, 255, 255));

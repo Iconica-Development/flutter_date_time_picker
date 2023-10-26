@@ -16,7 +16,12 @@ class DateTimePickerTheme {
     this.paginationSize = 25,
     this.weekDateBoxSize = 35,
     this.monthDateBoxSize = 45,
-    this.markedIndicatorColor,
+    this.markedIndicatorColor = Colors.blue,
+    this.markedTheme = const DateBoxTheme(
+      backgroundColor: Colors.blue,
+      textStyle: TextStyle(color: Colors.white),
+    ),
+    this.useMarkedTheme = false,
     this.dateBoxShape = DateBoxShape.roundedRectangle,
     this.backgroundColor = Colors.white,
     this.weekViewSize = 0.2,
@@ -74,6 +79,12 @@ class DateTimePickerTheme {
 
   /// The color used for a indicator for a marked date.
   final Color? markedIndicatorColor;
+
+  /// This theme is used for marked dates
+  final DateBoxTheme markedTheme;
+
+  /// This boolean is to determine if the markedTheme should be used for the marked dates
+  final bool useMarkedTheme;
 
   /// The color used for a background of the date picker.
   final Color backgroundColor;
