@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: BSD-3-Clause
 
 import 'package:flutter/material.dart';
-import 'package:flutter_date_time_picker/src/models/date_time_picker_theme.dart';
+
 import 'package:flutter_date_time_picker/src/utils/date_time_picker_controller.dart';
 import 'package:flutter_date_time_picker/src/widgets/month_date_time_picker/month_date_time_picker_sheet.dart';
 import 'package:flutter_date_time_picker/src/widgets/week_date_time_picker/week_date_time_picker_sheet.dart';
@@ -15,58 +15,20 @@ class DragDownDateTimePicker extends StatefulWidget {
   /// Both views can be dragged sideways to show the next or previous week/month.
 
   const DragDownDateTimePicker({
-    this.dateTimePickerTheme = const DateTimePickerTheme(),
-    this.header,
+    required this.controller,
     this.onTimerPickerSheetChange,
-    this.onTapDay,
-    this.highlightToday = true,
     this.wrongTimeDialog,
-    this.alwaysUse24HourFormat,
-    this.pickTime = false,
-    this.initialDate,
-    this.markedDates,
-    this.disabledDates,
-    this.disabledTimes,
     this.child,
     super.key,
   });
+
+  final DateTimePickerController controller;
 
   /// The child contained by the DatePicker.
   final Widget? child;
 
   /// A [Widget] to display when the user picks a disabled time in the [TimePickerDialog]
   final Widget? wrongTimeDialog;
-
-  /// Visual properties for the [DragDownDateTimePicker]
-  final DateTimePickerTheme dateTimePickerTheme;
-
-  /// Widget shown at the top of the [DragDownDateTimePicker]
-  final Widget? header;
-
-  /// Callback that provides the date tapped on as a [DateTime] object.
-  final Function(DateTime)? onTapDay;
-
-  /// Whether the current day should be highlighted in the [DragDownDateTimePicker]
-  final bool highlightToday;
-
-  /// a [bool] to set de clock on [TimePickerDialog] to a fixed 24 or 12-hour format.
-  /// By default this gets determined by the settings on the user device.
-  final bool? alwaysUse24HourFormat;
-
-  /// [pickTime] is a [bool] that determines if the user is able to pick a time after picking a date using the [TimePickerDialog].
-  final bool pickTime;
-
-  /// indicates the starting date. Default is [DateTime.now()]
-  final DateTime? initialDate;
-
-  /// [markedDates] contain the dates [DateTime] that will be marked in the [DragDownDateTimePicker] by a small dot.
-  final List<DateTime>? markedDates;
-
-  /// a [List] of [DateTime] objects that will be disabled and cannot be interacted with whatsoever.
-  final List<DateTime>? disabledDates;
-
-  /// a [List] of [TimeOfDay] objects that cannot be picked in the [TimePickerDialog].
-  final List<TimeOfDay>? disabledTimes;
 
   /// Function that gets called when the view changes from week to month or vice versa.
   /// The value is the amount of scrolledpixels.
@@ -77,7 +39,8 @@ class DragDownDateTimePicker extends StatefulWidget {
 }
 
 class _DragDownDateTimePickerState extends State<DragDownDateTimePicker> {
-  late DateTimePickerController _dateTimePickerController;
+  late final DateTimePickerController _dateTimePickerController =
+      widget.controller;
 
   final DraggableScrollableController _dragController =
       DraggableScrollableController();
@@ -86,20 +49,6 @@ class _DragDownDateTimePickerState extends State<DragDownDateTimePicker> {
   void initState() {
     super.initState();
     initializeDateFormatting();
-
-    _dateTimePickerController = DateTimePickerController(
-      highlightToday: widget.highlightToday,
-      alwaysUse24HourFormat: widget.alwaysUse24HourFormat,
-      pickTime: widget.pickTime,
-      theme: widget.dateTimePickerTheme,
-      header: widget.header,
-      markedDates: widget.markedDates,
-      disabledDates: widget.disabledDates,
-      disabledTimes: widget.disabledTimes,
-      onTapDayCallBack: widget.onTapDay,
-      browsingDate: widget.initialDate ?? DateTime.now(),
-      selectedDate: widget.initialDate ?? DateTime.now(),
-    );
 
     _dateTimePickerController.addListener(() {
       setState(() {});
@@ -166,16 +115,16 @@ class _DragDownDateTimePickerState extends State<DragDownDateTimePicker> {
                               ? WeekDateTimePickerSheet(
                                   dateTimePickerController:
                                       _dateTimePickerController,
-                                  weekDateBoxSize: widget
-                                      .dateTimePickerTheme.weekDateBoxSize,
+                                  weekDateBoxSize:
+                                      widget.controller.theme.weekDateBoxSize,
                                 )
                               : MonthDateTimePickerSheet(
                                   dateTimePickerController:
                                       _dateTimePickerController,
-                                  monthDateBoxSize: widget
-                                      .dateTimePickerTheme.monthDateBoxSize,
-                                  monthDatePadding: widget
-                                      .dateTimePickerTheme.monthDatePadding,
+                                  monthDateBoxSize:
+                                      widget.controller.theme.monthDateBoxSize,
+                                  monthDatePadding:
+                                      widget.controller.theme.monthDatePadding,
                                 ),
                         ),
                       ),

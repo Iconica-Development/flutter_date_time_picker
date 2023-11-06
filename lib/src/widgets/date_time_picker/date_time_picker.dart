@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_date_time_picker/flutter_date_time_picker.dart';
-import 'package:flutter_date_time_picker/src/utils/date_time_picker_controller.dart';
 import 'package:flutter_date_time_picker/src/widgets/overlay_date_time_picker/overlay.dart';
 
 class DateTimePicker extends StatefulWidget {
@@ -105,8 +104,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
         Navigator.of(context).pop();
       }
     },
-    browsingDate: widget.initialDate ?? DateTime.now(),
-    selectedDate: widget.initialDate ?? DateTime.now(),
+    initialDate: widget.initialDate ?? DateTime.now(),
   );
   @override
   Widget build(BuildContext context) {

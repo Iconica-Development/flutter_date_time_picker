@@ -7,7 +7,6 @@ import 'package:flutter_date_time_picker/flutter_date_time_picker.dart';
 import 'package:flutter_date_time_picker/src/extensions/date_time.dart';
 import 'package:flutter_date_time_picker/src/extensions/time_of_day.dart';
 import 'package:flutter_date_time_picker/src/models/date_box_current_theme.dart';
-import 'package:flutter_date_time_picker/src/utils/date_time_picker_controller.dart';
 import 'package:flutter_date_time_picker/src/widgets/marked_icon.dart';
 import 'package:intl/intl.dart';
 

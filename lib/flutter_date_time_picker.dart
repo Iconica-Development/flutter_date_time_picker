@@ -5,6 +5,7 @@
 library flutter_date_time_picker;
 
 export 'src/drag_down_date_time_picker.dart' show DragDownDateTimePicker;
+export 'src/utils/date_time_picker_controller.dart';
 export 'src/overlay_date_time_picker.dart' show OverlayDateTimePicker;
 export 'src/models/date_constraint.dart';
 export 'src/enums/date_box_shape.dart';

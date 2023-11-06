@@ -127,8 +127,7 @@ class _OverlayDateTimePickerState extends State<OverlayDateTimePicker> {
           Navigator.of(context).pop();
         }
       },
-      browsingDate: widget.initialDate ?? DateTime.now(),
-      selectedDate: widget.initialDate ?? DateTime.now(),
+      initialDate: widget.initialDate ?? DateTime.now(),
     );
   }
 

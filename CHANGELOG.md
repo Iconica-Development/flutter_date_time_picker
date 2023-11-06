@@ -1,3 +1,7 @@
+## 4.0.0
+
+- Controller has to be specified given to the [DragDownDateTimePicker] so the date can be changed outside of the widget itself.
+
 ## 3.3.3
 
 - Added option for date box theme for marked dates and a boolean to use it

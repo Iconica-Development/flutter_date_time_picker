@@ -13,7 +13,12 @@ void main() {
       home: Scaffold(
         appBar: AppBar(),
         body: DragDownDateTimePicker(
-          pickTime: false,
+          controller: DateTimePickerController(
+            theme: const DateTimePickerTheme(),
+            highlightToday: true,
+            initialDate: DateTime.now(),
+            pickTime: false,
+          ),
           child: Container(),
         ),
       ),
@@ -27,7 +32,12 @@ void main() {
       home: Scaffold(
         appBar: AppBar(),
         body: DragDownDateTimePicker(
-          pickTime: false,
+          controller: DateTimePickerController(
+            theme: const DateTimePickerTheme(),
+            highlightToday: true,
+            initialDate: DateTime.now(),
+            pickTime: false,
+          ),
           child: Container(),
         ),
       ),
