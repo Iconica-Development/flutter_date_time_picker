@@ -4,6 +4,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_date_time_picker/src/extensions/date_time.dart';
+import 'package:flutter_date_time_picker/src/utils/date_time_picker_config.dart';
 import 'package:flutter_date_time_picker/src/utils/date_time_picker_controller.dart';
 import 'package:flutter_date_time_picker/src/widgets/month_date_time_picker/month_date_time_picker.dart';
 import 'package:intl/intl.dart';
@@ -11,26 +12,28 @@ import 'package:intl/intl.dart';
 class MonthDateTimePickerSheet extends StatelessWidget {
   const MonthDateTimePickerSheet({
     required this.dateTimePickerController,
+    required this.dateTimePickerConfiguration,
     required this.monthDateBoxSize,
     required this.monthDatePadding,
     super.key,
   });
 
   final DateTimePickerController dateTimePickerController;
+  final DateTimePickerConfiguration dateTimePickerConfiguration;
   final double monthDateBoxSize;
   final EdgeInsetsGeometry monthDatePadding;
 
   @override
   Widget build(BuildContext context) {
-    var theme = dateTimePickerController.theme;
+    var theme = dateTimePickerConfiguration.theme;
     var size = MediaQuery.of(context).size;
 
     return Column(
       children: [
-        if (dateTimePickerController.header != null) ...[
+        if (dateTimePickerConfiguration.header != null) ...[
           Align(
             alignment: Alignment.topCenter,
-            child: dateTimePickerController.header!,
+            child: dateTimePickerConfiguration.header!,
           ),
         ],
         Padding(
@@ -74,13 +77,15 @@ class MonthDateTimePickerSheet extends StatelessWidget {
             },
             children: [
               MonthDateTimePicker(
-                  date: dateTimePickerController.browsingDate.month == 1
-                      ? DateTime(
-                          dateTimePickerController.browsingDate.year - 1, 12, 1)
-                      : DateTime(dateTimePickerController.browsingDate.year,
-                          dateTimePickerController.browsingDate.month - 1, 1),
-                  monthDateBoxSize: monthDateBoxSize,
-                  dateTimePickerController: dateTimePickerController),
+                date: dateTimePickerController.browsingDate.month == 1
+                    ? DateTime(
+                        dateTimePickerController.browsingDate.year - 1, 12, 1)
+                    : DateTime(dateTimePickerController.browsingDate.year,
+                        dateTimePickerController.browsingDate.month - 1, 1),
+                monthDateBoxSize: monthDateBoxSize,
+                dateTimePickerController: dateTimePickerController,
+                dateTimePickerConfiguration: dateTimePickerConfiguration,
+              ),
               MonthDateTimePicker(
                   date: DateTime(
                     dateTimePickerController.browsingDate.year,
@@ -88,6 +93,7 @@ class MonthDateTimePickerSheet extends StatelessWidget {
                     1,
                   ),
                   dateTimePickerController: dateTimePickerController,
+                  dateTimePickerConfiguration: dateTimePickerConfiguration,
                   monthDateBoxSize: monthDateBoxSize),
               MonthDateTimePicker(
                   date: dateTimePickerController.browsingDate.month == 12
@@ -99,6 +105,7 @@ class MonthDateTimePickerSheet extends StatelessWidget {
                       : DateTime(dateTimePickerController.browsingDate.year,
                           dateTimePickerController.browsingDate.month + 1, 1),
                   dateTimePickerController: dateTimePickerController,
+                  dateTimePickerConfiguration: dateTimePickerConfiguration,
                   monthDateBoxSize: monthDateBoxSize),
             ],
           ),

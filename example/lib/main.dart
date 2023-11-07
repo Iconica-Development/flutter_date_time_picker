@@ -156,32 +156,38 @@ class DatePickerDemo extends StatelessWidget {
           ),
           DragDownDateTimePicker(
             onTimerPickerSheetChange: (value) {},
-            alwaysUse24HourFormat: true,
-            dateTimePickerTheme: const DateTimePickerTheme(
-              backgroundColor: Colors.white,
-              markedIndicatorColor: Colors.red,
-              baseTheme: DateBoxTheme(
+            controller: DateTimePickerController(
+              initialDate: DateTime.now(),
+            ),
+            configuration: DateTimePickerConfiguration(
+              highlightToday: true,
+              alwaysUse24HourFormat: true,
+              markedDates: [DateTime.now().subtract(const Duration(days: 1))],
+              theme: const DateTimePickerTheme(
                 backgroundColor: Colors.white,
-                textStyle: TextStyle(color: Colors.black),
-              ),
-              selectedTheme: DateBoxTheme(
-                backgroundColor: Color(0x4BF44336),
-                textStyle: TextStyle(
-                  color: Colors.red,
+                markedIndicatorColor: Colors.red,
+                baseTheme: DateBoxTheme(
+                  backgroundColor: Colors.white,
+                  textStyle: TextStyle(color: Colors.black),
                 ),
-              ),
-              highlightTheme: DateBoxTheme(
-                backgroundColor: Colors.red,
-                textStyle: TextStyle(
-                  color: Colors.white,
+                selectedTheme: DateBoxTheme(
+                  backgroundColor: Color(0x4BF44336),
+                  textStyle: TextStyle(
+                    color: Colors.red,
+                  ),
                 ),
-              ),
-              barTheme: DateTimePickerBarTheme(
-                barColor: Colors.black,
-                barOpacity: 1,
+                highlightTheme: DateBoxTheme(
+                  backgroundColor: Colors.red,
+                  textStyle: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+                barTheme: DateTimePickerBarTheme(
+                  barColor: Colors.black,
+                  barOpacity: 1,
+                ),
               ),
             ),
-            markedDates: [DateTime.now().subtract(const Duration(days: 1))],
           ),
         ],
       ),

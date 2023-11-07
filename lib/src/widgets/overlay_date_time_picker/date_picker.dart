@@ -5,7 +5,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_date_time_picker/flutter_date_time_picker.dart';
 import 'package:flutter_date_time_picker/src/extensions/date_time.dart';
-import 'package:flutter_date_time_picker/src/utils/date_time_picker_controller.dart';
 import 'package:flutter_date_time_picker/src/widgets/overlay_date_time_picker/pickable_date.dart';
 import 'package:intl/intl.dart';
 
@@ -13,6 +12,7 @@ class DatePicker extends StatelessWidget {
   const DatePicker({
     super.key,
     required this.controller,
+    required this.configuration,
     required this.theme,
     required this.weekdayTextStyle,
     required this.onSelectDate,
@@ -22,6 +22,7 @@ class DatePicker extends StatelessWidget {
   });
 
   final DateTimePickerController controller;
+  final DateTimePickerConfiguration configuration;
   final DateTimePickerTheme theme;
   final TextStyle weekdayTextStyle;
   final void Function(DateTime date) onSelectDate;
@@ -95,7 +96,7 @@ class DatePicker extends StatelessWidget {
                 return Padding(
                   padding: const EdgeInsets.all(2.0),
                   child: PickableDate(
-                    isMarked: controller.markedDates?.any(
+                    isMarked: configuration.markedDates?.any(
                           (e) => isSameDay(e, todayDate),
                         ) ??
                         false,
@@ -103,7 +104,7 @@ class DatePicker extends StatelessWidget {
                     isDisabled:
                         isDisabled(addedIndex + index, daysToSkip, todayDate),
                     isSelected: controller.selectedDate == todayDate,
-                    isToday: isToday(todayDate) && controller.highlightToday,
+                    isToday: isToday(todayDate) && configuration.highlightToday,
                     theme: theme,
                     date: todayDate,
                     onPressed: onSelectDate,
@@ -131,7 +132,7 @@ class DatePicker extends StatelessWidget {
           date.month,
           index + 1 - daysToSkip,
         ).containsAny(
-          controller.disabledDates ?? [],
+          configuration.disabledDates ?? [],
         ) ||
         !dateTimeConstraint.inRange(date);
   }

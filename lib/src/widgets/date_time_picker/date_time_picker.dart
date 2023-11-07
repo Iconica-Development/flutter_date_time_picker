@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_date_time_picker/flutter_date_time_picker.dart';
-import 'package:flutter_date_time_picker/src/utils/date_time_picker_controller.dart';
 import 'package:flutter_date_time_picker/src/widgets/overlay_date_time_picker/overlay.dart';
 
 class DateTimePicker extends StatefulWidget {
@@ -92,6 +91,15 @@ class DateTimePicker extends StatefulWidget {
 class _DateTimePickerState extends State<DateTimePicker> {
   late final DateTimePickerController _dateTimePickerController =
       DateTimePickerController(
+    onTapDayCallBack: (date) {
+      widget.onTapDay?.call(date);
+      if (widget.closeOnSelectDate) {
+        Navigator.of(context).pop();
+      }
+    },
+    initialDate: widget.initialDate ?? DateTime.now(),
+  );
+  late final _dateTimePickerConfiguration = DateTimePickerConfiguration(
     highlightToday: widget.highlightToday,
     alwaysUse24HourFormat: widget.alwaysUse24HourFormat,
     pickTime: widget.pickTime,
@@ -99,15 +107,8 @@ class _DateTimePickerState extends State<DateTimePicker> {
     markedDates: widget.markedDates,
     disabledDates: widget.disabledDates,
     disabledTimes: widget.disabledTimes,
-    onTapDayCallBack: (date) {
-      widget.onTapDay?.call(date);
-      if (widget.closeOnSelectDate) {
-        Navigator.of(context).pop();
-      }
-    },
-    browsingDate: widget.initialDate ?? DateTime.now(),
-    selectedDate: widget.initialDate ?? DateTime.now(),
   );
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -149,6 +150,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
             weekdayTextStyle: widget.weekdayTextStyle,
             size: widget.size ?? Size(size.width, size.height),
             controller: _dateTimePickerController,
+            configuration: _dateTimePickerConfiguration,
             showWeekDays: true,
             onNextDate: nextDate,
             onPreviousDate: previousDate,

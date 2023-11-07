@@ -3,44 +3,26 @@
 // SPDX-License-Identifier: BSD-3-Clause
 
 import 'package:flutter/material.dart';
-import 'package:flutter_date_time_picker/src/models/date_time_picker_theme.dart';
 
 class DateTimePickerController extends ChangeNotifier {
   DateTimePickerController({
-    required this.theme,
-    required this.highlightToday,
-    required this.pickTime,
-    required this.browsingDate,
-    required this.selectedDate,
-    this.alwaysUse24HourFormat,
-    this.header,
-    this.wrongTimeDialog,
-    this.markedDates,
-    this.disabledDates,
-    this.disabledTimes,
+    required this.initialDate,
     this.onTapDayCallBack,
+    this.onBorderScrollCallback,
   });
+
+  /// Callback that provides the date tapped on as a [DateTime] object.
+  final Function(DateTime)? onTapDayCallBack;
+
+  /// Callback that provides the new date which is scroll to. If this is null the scroll feature is disabled.
+  final Function(DateTime)? onBorderScrollCallback;
+
+  final DateTime initialDate;
 
   final PageController _pageController = PageController(initialPage: 1);
 
-  final bool highlightToday;
-  final bool? alwaysUse24HourFormat;
-
-  final Widget? header;
-
-  final Widget? wrongTimeDialog;
-
-  final DateTimePickerTheme theme;
-
-  final List<DateTime>? markedDates;
-  final List<DateTime>? disabledDates;
-  final List<TimeOfDay>? disabledTimes;
-  final bool pickTime;
-
-  final Function(DateTime)? onTapDayCallBack;
-
-  DateTime browsingDate;
-  DateTime selectedDate;
+  late DateTime browsingDate = initialDate;
+  late DateTime selectedDate = initialDate;
 
   @override
   void dispose() {
@@ -72,6 +54,17 @@ class DateTimePickerController extends ChangeNotifier {
         date,
       );
     }
+  }
+
+  void onBorderScroll(DateTime date) {
+    browsingDate = date;
+    selectedDate = date;
+
+    notifyListeners();
+
+    onBorderScrollCallback?.call(
+      date,
+    );
   }
 
   PageController get pageController => _pageController;
