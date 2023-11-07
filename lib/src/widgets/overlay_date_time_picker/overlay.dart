@@ -4,6 +4,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_date_time_picker/src/models/date_time_picker_theme.dart';
+import 'package:flutter_date_time_picker/src/utils/date_time_picker_config.dart';
 import 'package:flutter_date_time_picker/src/utils/date_time_picker_controller.dart';
 import 'package:flutter_date_time_picker/src/utils/locking_page_scroll_physics.dart';
 import 'package:flutter_date_time_picker/src/widgets/overlay_date_time_picker/date_picker.dart';
@@ -17,6 +18,7 @@ class OverlayDateTimeContent extends StatefulWidget {
     required this.weekdayTextStyle,
     required this.size,
     required this.controller,
+    required this.configuration,
     required this.showWeekDays,
     required this.onNextDate,
     required this.onPreviousDate,
@@ -29,6 +31,7 @@ class OverlayDateTimeContent extends StatefulWidget {
   final TextStyle weekdayTextStyle;
   final Size size;
   final DateTimePickerController controller;
+  final DateTimePickerConfiguration configuration;
   final bool showWeekDays;
   final DateTimeConstraint dateTimeConstraint;
 
@@ -149,6 +152,7 @@ class _OverlayDateTimeContentState extends State<OverlayDateTimeContent> {
             children: [
               DatePicker(
                 controller: widget.controller,
+                configuration: widget.configuration,
                 onSelectDate: _onSelectDate,
                 theme: widget.theme,
                 weekdayTextStyle: widget.weekdayTextStyle,
@@ -158,6 +162,7 @@ class _OverlayDateTimeContentState extends State<OverlayDateTimeContent> {
               ),
               DatePicker(
                 controller: widget.controller,
+                configuration: widget.configuration,
                 onSelectDate: _onSelectDate,
                 theme: widget.theme,
                 weekdayTextStyle: widget.weekdayTextStyle,
@@ -167,6 +172,7 @@ class _OverlayDateTimeContentState extends State<OverlayDateTimeContent> {
               ),
               DatePicker(
                 controller: widget.controller,
+                configuration: widget.configuration,
                 onSelectDate: _onSelectDate,
                 theme: widget.theme,
                 weekdayTextStyle: widget.weekdayTextStyle,

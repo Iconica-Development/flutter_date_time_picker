@@ -4,6 +4,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_date_time_picker/flutter_date_time_picker.dart';
+import 'package:flutter_date_time_picker/src/utils/date_time_picker_config.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -14,9 +15,11 @@ void main() {
         appBar: AppBar(),
         body: DragDownDateTimePicker(
           controller: DateTimePickerController(
+            initialDate: DateTime.now(),
+          ),
+          configuration: DateTimePickerConfiguration(
             theme: const DateTimePickerTheme(),
             highlightToday: true,
-            initialDate: DateTime.now(),
             pickTime: false,
           ),
           child: Container(),
@@ -33,9 +36,11 @@ void main() {
         appBar: AppBar(),
         body: DragDownDateTimePicker(
           controller: DateTimePickerController(
+            initialDate: DateTime.now(),
+          ),
+          configuration: DateTimePickerConfiguration(
             theme: const DateTimePickerTheme(),
             highlightToday: true,
-            initialDate: DateTime.now(),
             pickTime: false,
           ),
           child: Container(),

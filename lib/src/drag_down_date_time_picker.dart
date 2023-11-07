@@ -3,6 +3,7 @@
 // SPDX-License-Identifier: BSD-3-Clause
 
 import 'package:flutter/material.dart';
+import 'package:flutter_date_time_picker/src/utils/date_time_picker_config.dart';
 
 import 'package:flutter_date_time_picker/src/utils/date_time_picker_controller.dart';
 import 'package:flutter_date_time_picker/src/widgets/month_date_time_picker/month_date_time_picker_sheet.dart';
@@ -16,6 +17,7 @@ class DragDownDateTimePicker extends StatefulWidget {
 
   const DragDownDateTimePicker({
     required this.controller,
+    required this.configuration,
     this.onTimerPickerSheetChange,
     this.wrongTimeDialog,
     this.child,
@@ -23,6 +25,7 @@ class DragDownDateTimePicker extends StatefulWidget {
   });
 
   final DateTimePickerController controller;
+  final DateTimePickerConfiguration configuration;
 
   /// The child contained by the DatePicker.
   final Widget? child;
@@ -78,9 +81,9 @@ class _DragDownDateTimePickerState extends State<DragDownDateTimePicker> {
           child: DraggableScrollableSheet(
             controller: _dragController,
             snap: true,
-            minChildSize: _dateTimePickerController.theme.weekViewSize,
-            initialChildSize: _dateTimePickerController.theme.weekViewSize,
-            maxChildSize: _dateTimePickerController.theme.monthViewSize,
+            minChildSize: widget.configuration.theme.weekViewSize,
+            initialChildSize: widget.configuration.theme.weekViewSize,
+            maxChildSize: widget.configuration.theme.monthViewSize,
             builder: (context, scrollController) {
               double dragSize =
                   _dragController.isAttached ? _dragController.size : 0;
@@ -96,8 +99,7 @@ class _DragDownDateTimePickerState extends State<DragDownDateTimePicker> {
                         padding: const EdgeInsets.only(bottom: 12.5),
                         child: Container(
                           decoration: BoxDecoration(
-                            color:
-                                _dateTimePickerController.theme.backgroundColor,
+                            color: widget.configuration.theme.backgroundColor,
                             borderRadius: const BorderRadius.only(
                               bottomLeft: Radius.circular(20),
                               bottomRight: Radius.circular(20),
@@ -110,21 +112,25 @@ class _DragDownDateTimePickerState extends State<DragDownDateTimePicker> {
                             ],
                           ),
                           child: dragSize <
-                                  _dateTimePickerController
-                                      .theme.weekMonthTriggerSize
+                                  widget
+                                      .configuration.theme.weekMonthTriggerSize
                               ? WeekDateTimePickerSheet(
                                   dateTimePickerController:
                                       _dateTimePickerController,
-                                  weekDateBoxSize:
-                                      widget.controller.theme.weekDateBoxSize,
+                                  dateTimePickerConfiguration:
+                                      widget.configuration,
+                                  weekDateBoxSize: widget
+                                      .configuration.theme.weekDateBoxSize,
                                 )
                               : MonthDateTimePickerSheet(
                                   dateTimePickerController:
                                       _dateTimePickerController,
-                                  monthDateBoxSize:
-                                      widget.controller.theme.monthDateBoxSize,
-                                  monthDatePadding:
-                                      widget.controller.theme.monthDatePadding,
+                                  dateTimePickerConfiguration:
+                                      widget.configuration,
+                                  monthDateBoxSize: widget
+                                      .configuration.theme.monthDateBoxSize,
+                                  monthDatePadding: widget
+                                      .configuration.theme.monthDatePadding,
                                 ),
                         ),
                       ),

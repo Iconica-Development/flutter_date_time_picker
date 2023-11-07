@@ -7,18 +7,21 @@ import 'package:flutter_date_time_picker/flutter_date_time_picker.dart';
 import 'package:flutter_date_time_picker/src/extensions/date_time.dart';
 import 'package:flutter_date_time_picker/src/extensions/time_of_day.dart';
 import 'package:flutter_date_time_picker/src/models/date_box_current_theme.dart';
+import 'package:flutter_date_time_picker/src/utils/date_time_picker_config.dart';
 import 'package:flutter_date_time_picker/src/widgets/marked_icon.dart';
 import 'package:intl/intl.dart';
 
 class WeekDateTimePicker extends StatelessWidget {
   const WeekDateTimePicker({
     required this.dateTimePickerController,
+    required this.dateTimePickerConfiguration,
     required this.date,
     required this.weekDateBoxSize,
     Key? key,
   }) : super(key: key);
 
   final DateTimePickerController dateTimePickerController;
+  final DateTimePickerConfiguration dateTimePickerConfiguration;
 
   final DateTime date;
 
@@ -34,7 +37,7 @@ class WeekDateTimePicker extends StatelessWidget {
           late DateBoxCurrentTheme currentDateBoxTheme;
 
           currentDateBoxTheme = determineCurrentDateBoxTheme(
-              context, index, dateTimePickerController.theme);
+              context, index, dateTimePickerConfiguration.theme);
           return GestureDetector(
             onTap: isDisabled(
               index,
@@ -47,21 +50,21 @@ class WeekDateTimePicker extends StatelessWidget {
 
                     timeOfDay = const TimeOfDay(hour: 0, minute: 0);
 
-                    if (dateTimePickerController.pickTime) {
+                    if (dateTimePickerConfiguration.pickTime) {
                       timeOfDay = await displayTimePicker(
                           context, dateTimePickerController);
                     }
 
-                    if (dateTimePickerController.wrongTimeDialog != null) {
+                    if (dateTimePickerConfiguration.wrongTimeDialog != null) {
                       if (timeOfDay != null &&
                           timeOfDay.containsAny(
-                            dateTimePickerController.disabledTimes ?? [],
+                            dateTimePickerConfiguration.disabledTimes ?? [],
                           )) {
                         if (context.mounted) {
                           showDialog(
                             context: context,
                             builder: (context) =>
-                                dateTimePickerController.wrongTimeDialog!,
+                                dateTimePickerConfiguration.wrongTimeDialog!,
                           );
                         }
                       }
@@ -89,7 +92,7 @@ class WeekDateTimePicker extends StatelessWidget {
                           date.daysOfWeek().elementAt(index),
                         )
                         .toUpperCase()[0],
-                    style: dateTimePickerController.theme.baseTheme.textStyle,
+                    style: dateTimePickerConfiguration.theme.baseTheme.textStyle,
                   ),
                   const Spacer(),
                   Container(
@@ -98,7 +101,7 @@ class WeekDateTimePicker extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: currentDateBoxTheme.backgroundColor,
                       borderRadius:
-                          _determineBorderRadius(dateTimePickerController),
+                          _determineBorderRadius(dateTimePickerConfiguration),
                     ),
                     child: Stack(
                       children: [
@@ -112,7 +115,7 @@ class WeekDateTimePicker extends StatelessWidget {
                           MarkedIcon(
                             width: weekDateBoxSize / 3,
                             height: weekDateBoxSize / 3,
-                            color: dateTimePickerController
+                            color: dateTimePickerConfiguration
                                 .theme.markedIndicatorColor,
                           )
                         ],
@@ -165,7 +168,7 @@ class WeekDateTimePicker extends StatelessWidget {
 
   bool shouldHighlight(int index) {
     return date.daysOfWeek().elementAt(index).equals(
-          dateTimePickerController.highlightToday
+          dateTimePickerConfiguration.highlightToday
               ? DateTime.now()
               : dateTimePickerController.selectedDate,
         );
@@ -182,24 +185,24 @@ class WeekDateTimePicker extends StatelessWidget {
     return date
         .daysOfWeek()
         .elementAt(index)
-        .containsAny(dateTimePickerController.disabledDates ?? []);
+        .containsAny(dateTimePickerConfiguration.disabledDates ?? []);
   }
 
   bool shouldMark(int index) {
     return !date.daysOfWeek().elementAt(index).equals(
-              dateTimePickerController.highlightToday
+              dateTimePickerConfiguration.highlightToday
                   ? DateTime.now()
                   : dateTimePickerController.selectedDate,
             ) &&
         date
             .daysOfWeek()
             .elementAt(index)
-            .containsAny(dateTimePickerController.markedDates ?? []);
+            .containsAny(dateTimePickerConfiguration.markedDates ?? []);
   }
 
   BorderRadius _determineBorderRadius(
-      DateTimePickerController dateTimePickerController) {
-    switch (dateTimePickerController.theme.dateBoxShape) {
+      DateTimePickerConfiguration dateTimePickerConfiguration) {
+    switch (dateTimePickerConfiguration.theme.dateBoxShape) {
       case DateBoxShape.circle:
         return BorderRadius.circular(weekDateBoxSize * 2);
       case DateBoxShape.rectangle:
@@ -218,7 +221,7 @@ class WeekDateTimePicker extends StatelessWidget {
           return MediaQuery(
             data: MediaQuery.of(context).copyWith(
                 alwaysUse24HourFormat:
-                    dateTimePickerController.alwaysUse24HourFormat),
+                    dateTimePickerConfiguration.alwaysUse24HourFormat),
             child: child!,
           );
         });

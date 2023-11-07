@@ -158,6 +158,8 @@ class DatePickerDemo extends StatelessWidget {
             onTimerPickerSheetChange: (value) {},
             controller: DateTimePickerController(
               initialDate: DateTime.now(),
+            ),
+            configuration: DateTimePickerConfiguration(
               highlightToday: true,
               alwaysUse24HourFormat: true,
               markedDates: [DateTime.now().subtract(const Duration(days: 1))],

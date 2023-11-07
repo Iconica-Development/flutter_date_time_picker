@@ -4,6 +4,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_date_time_picker/src/extensions/date_time.dart';
+import 'package:flutter_date_time_picker/src/utils/date_time_picker_config.dart';
 import 'package:flutter_date_time_picker/src/utils/date_time_picker_controller.dart';
 import 'package:flutter_date_time_picker/src/widgets/week_date_time_picker/week_date_time_picker.dart';
 import 'package:intl/intl.dart';
@@ -11,12 +12,14 @@ import 'package:intl/intl.dart';
 class WeekDateTimePickerSheet extends StatelessWidget {
   const WeekDateTimePickerSheet({
     required this.dateTimePickerController,
+    required this.dateTimePickerConfiguration,
     required this.weekDateBoxSize,
     this.showHeader = false,
     Key? key,
   }) : super(key: key);
 
   final DateTimePickerController dateTimePickerController;
+  final DateTimePickerConfiguration dateTimePickerConfiguration;
   final bool showHeader;
   final double weekDateBoxSize;
 
@@ -36,14 +39,14 @@ class WeekDateTimePickerSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var theme = dateTimePickerController.theme;
+    var theme = dateTimePickerConfiguration.theme;
 
     return Column(
       children: [
-        if (dateTimePickerController.header != null)
+        if (dateTimePickerConfiguration.header != null)
           Align(
             alignment: Alignment.topCenter,
-            child: dateTimePickerController.header!,
+            child: dateTimePickerConfiguration.header!,
           ),
         const SizedBox(
           height: 10,
@@ -80,6 +83,7 @@ class WeekDateTimePickerSheet extends StatelessWidget {
             children: [
               WeekDateTimePicker(
                 dateTimePickerController: dateTimePickerController,
+                dateTimePickerConfiguration: dateTimePickerConfiguration,
                 date: dateTimePickerController.browsingDate.subtract(
                   const Duration(days: 7),
                 ),
@@ -87,11 +91,13 @@ class WeekDateTimePickerSheet extends StatelessWidget {
               ),
               WeekDateTimePicker(
                 dateTimePickerController: dateTimePickerController,
+                dateTimePickerConfiguration: dateTimePickerConfiguration,
                 date: dateTimePickerController.browsingDate,
                 weekDateBoxSize: weekDateBoxSize,
               ),
               WeekDateTimePicker(
                 dateTimePickerController: dateTimePickerController,
+                dateTimePickerConfiguration: dateTimePickerConfiguration,
                 date: dateTimePickerController.browsingDate.add(
                   const Duration(days: 7),
                 ),

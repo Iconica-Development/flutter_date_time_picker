@@ -8,6 +8,7 @@ import 'package:flutter_date_time_picker/src/extensions/date_time.dart';
 import 'package:flutter_date_time_picker/src/extensions/time_of_day.dart';
 import 'package:flutter_date_time_picker/src/models/date_box_current_theme.dart';
 import 'package:flutter_date_time_picker/src/models/date_time_picker_theme.dart';
+import 'package:flutter_date_time_picker/src/utils/date_time_picker_config.dart';
 import 'package:flutter_date_time_picker/src/utils/date_time_picker_controller.dart';
 import 'package:flutter_date_time_picker/src/widgets/marked_icon.dart';
 import 'package:intl/intl.dart';
@@ -17,11 +18,13 @@ class MonthDateTimePicker extends StatelessWidget {
     required this.date,
     required this.dateTimePickerController,
     required this.monthDateBoxSize,
+    required this.dateTimePickerConfiguration,
     Key? key,
   }) : super(key: key);
 
   final DateTime date;
   final DateTimePickerController dateTimePickerController;
+  final DateTimePickerConfiguration dateTimePickerConfiguration;
   final double monthDateBoxSize;
 
   @override
@@ -39,7 +42,7 @@ class MonthDateTimePicker extends StatelessWidget {
       child: Center(
         child: Column(
           children: [
-            if (dateTimePickerController.theme.monthWeekDayHeaders)
+            if (dateTimePickerConfiguration.theme.monthWeekDayHeaders)
               Row(
                 children: List.generate(
                   7,
@@ -51,8 +54,8 @@ class MonthDateTimePicker extends StatelessWidget {
                               date.daysOfWeek().elementAt(index),
                             )
                             .toUpperCase()[0],
-                        style:
-                            dateTimePickerController.theme.baseTheme.textStyle,
+                        style: dateTimePickerConfiguration
+                            .theme.baseTheme.textStyle,
                       ),
                     ),
                   ),
@@ -79,8 +82,11 @@ class MonthDateTimePicker extends StatelessWidget {
                       return const SizedBox.shrink();
                     }
 
-                    currentDateBoxTheme = determineCurrentDateBoxTheme(context,
-                        addedIndex, daysToSkip, dateTimePickerController.theme);
+                    currentDateBoxTheme = determineCurrentDateBoxTheme(
+                        context,
+                        addedIndex,
+                        daysToSkip,
+                        dateTimePickerConfiguration.theme);
 
                     return GestureDetector(
                       onTap: isDisabled(
@@ -99,23 +105,24 @@ class MonthDateTimePicker extends StatelessWidget {
 
                               timeOfDay = const TimeOfDay(hour: 0, minute: 0);
 
-                              if (dateTimePickerController.pickTime) {
+                              if (dateTimePickerConfiguration.pickTime) {
                                 timeOfDay = await displayTimePicker(
-                                    context, dateTimePickerController);
+                                    context, dateTimePickerConfiguration);
                               }
 
-                              if (dateTimePickerController.wrongTimeDialog !=
+                              if (dateTimePickerConfiguration.wrongTimeDialog !=
                                   null) {
                                 if (timeOfDay != null &&
                                     timeOfDay.containsAny(
-                                      dateTimePickerController.disabledTimes ??
+                                      dateTimePickerConfiguration
+                                              .disabledTimes ??
                                           [],
                                     )) {
                                   if (context.mounted) {
                                     showDialog(
                                       context: context,
                                       builder: (context) =>
-                                          dateTimePickerController
+                                          dateTimePickerConfiguration
                                               .wrongTimeDialog!,
                                     );
                                   }
@@ -138,8 +145,8 @@ class MonthDateTimePicker extends StatelessWidget {
                             vertical: 5, horizontal: 5),
                         decoration: BoxDecoration(
                           color: currentDateBoxTheme.backgroundColor,
-                          borderRadius:
-                              _determineBorderRadius(dateTimePickerController),
+                          borderRadius: _determineBorderRadius(
+                              dateTimePickerConfiguration),
                         ),
                         height: monthDateBoxSize,
                         width: monthDateBoxSize,
@@ -157,7 +164,7 @@ class MonthDateTimePicker extends StatelessWidget {
                               MarkedIcon(
                                 width: monthDateBoxSize / 4,
                                 height: monthDateBoxSize / 4,
-                                color: dateTimePickerController
+                                color: dateTimePickerConfiguration
                                     .theme.markedIndicatorColor,
                               ),
                             ],
@@ -181,7 +188,7 @@ class MonthDateTimePicker extends StatelessWidget {
       date.month,
       index + 1 - daysToSkip,
     ).equals(
-      dateTimePickerController.highlightToday
+      dateTimePickerConfiguration.highlightToday
           ? DateTime.now()
           : dateTimePickerController.selectedDate,
     );
@@ -228,7 +235,7 @@ class MonthDateTimePicker extends StatelessWidget {
       date.month,
       index + 1 - daysToSkip,
     ).containsAny(
-      dateTimePickerController.disabledDates ?? [],
+      dateTimePickerConfiguration.disabledDates ?? [],
     );
   }
 
@@ -246,7 +253,7 @@ class MonthDateTimePicker extends StatelessWidget {
           date.month,
           index + 1 - daysToSkip,
         ).equals(
-          dateTimePickerController.highlightToday
+          dateTimePickerConfiguration.highlightToday
               ? DateTime.now()
               : dateTimePickerController.selectedDate,
         ) &&
@@ -255,13 +262,13 @@ class MonthDateTimePicker extends StatelessWidget {
           date.month,
           index + 1 - daysToSkip,
         ).containsAny(
-          dateTimePickerController.markedDates ?? [],
+          dateTimePickerConfiguration.markedDates ?? [],
         );
   }
 
   BorderRadius _determineBorderRadius(
-      DateTimePickerController dateTimePickerController) {
-    switch (dateTimePickerController.theme.dateBoxShape) {
+      DateTimePickerConfiguration dateTimePickerConfiguration) {
+    switch (dateTimePickerConfiguration.theme.dateBoxShape) {
       case DateBoxShape.circle:
         return BorderRadius.circular(monthDateBoxSize * 2);
       case DateBoxShape.rectangle:
@@ -273,7 +280,7 @@ class MonthDateTimePicker extends StatelessWidget {
 }
 
 displayTimePicker(BuildContext context,
-    DateTimePickerController dateTimePickerController) async {
+    DateTimePickerConfiguration dateTimePickerConfiguration) async {
   return await showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
@@ -281,7 +288,7 @@ displayTimePicker(BuildContext context,
         return MediaQuery(
           data: MediaQuery.of(context).copyWith(
               alwaysUse24HourFormat:
-                  dateTimePickerController.alwaysUse24HourFormat),
+                  dateTimePickerConfiguration.alwaysUse24HourFormat),
           child: child!,
         );
       });
