@@ -91,7 +91,8 @@ class WeekDateTimePicker extends StatelessWidget {
                           date.daysOfWeek().elementAt(index),
                         )
                         .toUpperCase()[0],
-                    style: dateTimePickerConfiguration.theme.baseTheme.textStyle,
+                    style:
+                        dateTimePickerConfiguration.theme.baseTheme.textStyle,
                   ),
                   const Spacer(),
                   Container(
