@@ -32,6 +32,7 @@ class OverlayDateTimePicker extends StatefulWidget {
     this.dateTimeConstraint = const DateTimeConstraint(),
     this.onNextPageButtonBuilder,
     this.onPreviousPageButtonBuilder,
+    this.extraWidgetBuilder,
     this.isShown = false,
   }) : assert(child != null || buttonBuilder != null);
 
@@ -95,6 +96,9 @@ class OverlayDateTimePicker extends StatefulWidget {
   /// a [Function] that determents the icon of the button for going to the previous page
   final Widget Function(void Function()? onPressed)?
       onPreviousPageButtonBuilder;
+
+  /// a [Widget] that can add custom widgets beneath the [OverlayDateTimeContent] for enhanced functionality
+  final Widget? extraWidgetBuilder;
 
   @override
   State<OverlayDateTimePicker> createState() => _OverlayDateTimePickerState();
@@ -241,6 +245,7 @@ class _OverlayDateTimePickerState extends State<OverlayDateTimePicker> {
             dateTimeConstraint: widget.dateTimeConstraint,
             onNextPageButtonChild: widget.onNextPageButtonBuilder,
             onPreviousPageButtonChild: widget.onPreviousPageButtonBuilder,
+            extraWidgetBuilder: widget.extraWidgetBuilder,
           ),
         ),
       ),

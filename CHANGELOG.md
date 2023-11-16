@@ -1,3 +1,7 @@
+## 4.0.1
+
+- Added an extra widget builder to add more customizability, for example to add 'today' and 'close' buttons.
+
 ## 4.0.0
 
 - Controller has to be specified given to the [DragDownDateTimePicker] so the date can be changed outside of the widget itself.

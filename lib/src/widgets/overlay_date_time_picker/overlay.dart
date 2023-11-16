@@ -25,6 +25,7 @@ class OverlayDateTimeContent extends StatefulWidget {
     required this.dateTimeConstraint,
     required this.onPreviousPageButtonChild,
     required this.onNextPageButtonChild,
+    this.extraWidgetBuilder,
   });
 
   final DateTimePickerTheme theme;
@@ -35,6 +36,7 @@ class OverlayDateTimeContent extends StatefulWidget {
   final bool showWeekDays;
   final DateTimeConstraint dateTimeConstraint;
 
+  final Widget? extraWidgetBuilder;
   final Widget Function(void Function()? onPressed)? onNextPageButtonChild;
   final Widget Function(void Function()? onPressed)? onPreviousPageButtonChild;
 
@@ -182,7 +184,8 @@ class _OverlayDateTimeContentState extends State<OverlayDateTimeContent> {
               ),
             ],
           ),
-        )
+        ),
+        if (widget.extraWidgetBuilder != null) widget.extraWidgetBuilder!,
       ],
     );
   }
