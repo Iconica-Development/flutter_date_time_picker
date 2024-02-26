@@ -10,7 +10,17 @@ import 'package:flutter_date_time_picker/src/models/date_box_current_theme.dart'
 import 'package:flutter_date_time_picker/src/widgets/marked_icon.dart';
 import 'package:intl/intl.dart';
 
+/// `WeekDateTimePicker` is a StatelessWidget that represents a picker for a date within a week.
+/// It provides a row of dates for the week and allows the user to select a date.
 class WeekDateTimePicker extends StatelessWidget {
+  /// Creates a new instance of `WeekDateTimePicker`.
+  ///
+  /// The [dateTimePickerController], [dateTimePickerConfiguration], [date], and [weekDateBoxSize] parameters must not be null.
+  ///
+  /// * [dateTimePickerController]: The controller for the date time picker.
+  /// * [dateTimePickerConfiguration]: The configuration for the date time picker.
+  /// * [date]: The date that this widget represents.
+  /// * [weekDateBoxSize]: The size of the box for each date in the week.
   const WeekDateTimePicker({
     required this.dateTimePickerController,
     required this.dateTimePickerConfiguration,

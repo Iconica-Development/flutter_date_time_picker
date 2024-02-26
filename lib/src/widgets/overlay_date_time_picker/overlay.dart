@@ -11,7 +11,10 @@ import 'package:flutter_date_time_picker/src/widgets/overlay_date_time_picker/da
 import 'package:flutter_date_time_picker/src/models/date_constraint.dart';
 import 'package:intl/intl.dart';
 
+/// `OverlayDateTimeContent` is a StatefulWidget that represents the content of a date time overlay.
+/// It provides a way to select a date and navigate between dates within the overlay.
 class OverlayDateTimeContent extends StatefulWidget {
+  /// Creates a new instance of `OverlayDateTimeContent`.
   const OverlayDateTimeContent({
     super.key,
     required this.theme,
@@ -28,19 +31,40 @@ class OverlayDateTimeContent extends StatefulWidget {
     this.extraWidgetBuilder,
   });
 
+  /// The theme for the date time picker.
   final DateTimePickerTheme theme;
+
+  /// The text style for displaying the weekday names.
   final TextStyle weekdayTextStyle;
+
+  /// The size of the content.
   final Size size;
+
+  /// The controller for managing date selection.
   final DateTimePickerController controller;
+
+  /// The configuration for the date time picker.
   final DateTimePickerConfiguration configuration;
+
+  /// Whether to show the weekday names.
   final bool showWeekDays;
+
+  /// The constraint for selecting dates.
   final DateTimeConstraint dateTimeConstraint;
 
+  /// A widget builder for adding an extra widget.
   final Widget? extraWidgetBuilder;
+
+  /// A function to provide the next page button.
   final Widget Function(void Function()? onPressed)? onNextPageButtonChild;
+
+  /// A function to provide the previous page button.
   final Widget Function(void Function()? onPressed)? onPreviousPageButtonChild;
 
+  /// Callback function invoked when moving to the next date.
   final void Function() onNextDate;
+
+  /// Callback function invoked when moving to the previous date.
   final void Function() onPreviousDate;
 
   @override
