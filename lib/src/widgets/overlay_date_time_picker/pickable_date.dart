@@ -6,7 +6,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_date_time_picker/flutter_date_time_picker.dart';
 import 'package:flutter_date_time_picker/src/widgets/marked_icon.dart';
 
+/// `PickableDate` is a StatelessWidget that represents a selectable date.
+/// It provides visual feedback based on its state (marked, selected, disabled, etc.).
 class PickableDate extends StatelessWidget {
+  /// Creates a new instance of `PickableDate`.
+  ///
+  /// The [isMarked], [isSelected], [isDisabled], [isToday], [isOffMonth], [date], [theme], and [onPressed] parameters must not be null.
+  ///
+  /// * [isMarked]: Indicates whether the date is marked.
+  /// * [isSelected]: Indicates whether the date is selected.
+  /// * [isDisabled]: Indicates whether the date is disabled.
+  /// * [isToday]: Indicates whether the date is the current date.
+  /// * [isOffMonth]: Indicates whether the date is in the off-month.
+  /// * [date]: The date that this widget represents.
+  /// * [theme]: The theme used for styling the widget.
+  /// * [onPressed]: The callback that is called when the date is pressed.
   const PickableDate({
     super.key,
     required this.isMarked,

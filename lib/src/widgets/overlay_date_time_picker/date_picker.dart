@@ -8,7 +8,10 @@ import 'package:flutter_date_time_picker/src/extensions/date_time.dart';
 import 'package:flutter_date_time_picker/src/widgets/overlay_date_time_picker/pickable_date.dart';
 import 'package:intl/intl.dart';
 
+/// `DatePicker` is a StatelessWidget that represents a date picker.
+/// It provides a way to select a date from a calendar-like interface.
 class DatePicker extends StatelessWidget {
+  /// Creates a new instance of `DatePicker`.
   const DatePicker({
     super.key,
     required this.controller,
@@ -21,13 +24,28 @@ class DatePicker extends StatelessWidget {
     required this.dateTimeConstraint,
   });
 
+  /// The controller for managing date selection.
   final DateTimePickerController controller;
+
+  /// The configuration for the date picker.
   final DateTimePickerConfiguration configuration;
+
+  /// The theme for the date picker.
   final DateTimePickerTheme theme;
+
+  /// The text style for displaying the weekday names.
   final TextStyle weekdayTextStyle;
+
+  /// Callback function invoked when a date is selected.
   final void Function(DateTime date) onSelectDate;
+
+  /// The date to display in the picker.
   final DateTime date;
+
+  /// Whether to show the weekday names.
   final bool showWeekDays;
+
+  /// The constraint for selecting dates.
   final DateTimeConstraint dateTimeConstraint;
 
   @override

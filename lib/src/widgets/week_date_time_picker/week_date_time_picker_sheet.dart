@@ -9,7 +9,17 @@ import 'package:flutter_date_time_picker/src/utils/date_time_picker_controller.d
 import 'package:flutter_date_time_picker/src/widgets/week_date_time_picker/week_date_time_picker.dart';
 import 'package:intl/intl.dart';
 
+/// `WeekDateTimePickerSheet` is a StatelessWidget that represents a sheet for picking a date within a week.
+/// It provides a header showing the date range for the current week and a PageView of `WeekDateTimePicker` widgets for the previous, current, and next week.
 class WeekDateTimePickerSheet extends StatelessWidget {
+  /// Creates a new instance of `WeekDateTimePickerSheet`.
+  ///
+  /// The [dateTimePickerController], [dateTimePickerConfiguration], and [weekDateBoxSize] parameters must not be null.
+  ///
+  /// * [dateTimePickerController]: The controller for the date time picker.
+  /// * [dateTimePickerConfiguration]: The configuration for the date time picker.
+  /// * [weekDateBoxSize]: The size of the box for each date in the week.
+  /// * [showHeader]: Whether to show the header with the date range for the current week. Defaults to false.
   const WeekDateTimePickerSheet({
     required this.dateTimePickerController,
     required this.dateTimePickerConfiguration,
