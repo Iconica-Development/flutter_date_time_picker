@@ -5,7 +5,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_date_time_picker/flutter_date_time_picker.dart';
 
+/// `DateTimePickerConfiguration` is a class that holds the configuration for a DateTimePicker.
+/// It provides various options to customize the behavior and appearance of the DateTimePicker.
 class DateTimePickerConfiguration {
+  /// Creates a new instance of `DateTimePickerConfiguration`.
   DateTimePickerConfiguration({
     required this.theme,
     this.pickTime = false,

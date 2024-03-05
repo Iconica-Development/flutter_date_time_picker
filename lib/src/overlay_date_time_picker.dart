@@ -10,7 +10,10 @@ import 'package:flutter_date_time_picker/src/models/date_constraint.dart';
 import 'package:flutter_date_time_picker/src/widgets/overlay_date_time_picker/overlay.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
+/// `OverlayDateTimePicker` is a StatefulWidget that represents a date time picker overlay.
+/// It provides a way to select a date and time from an overlay that can be positioned relative to other widgets.
 class OverlayDateTimePicker extends StatefulWidget {
+  /// Creates a new instance of `OverlayDateTimePicker`.
   const OverlayDateTimePicker({
     this.theme = const DateTimePickerTheme(),
     this.textStyle = const TextStyle(),

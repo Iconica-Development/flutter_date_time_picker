@@ -2,15 +2,21 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 
+/// Class representing date constraints for DateTime values.
 class DateTimeConstraint {
+  /// Minimum date constraint.
   final DateConstraint min;
+
+  /// Maximum date constraint.
   final DateConstraint max;
 
+  /// Constructs a DateTimeConstraint instance.
   const DateTimeConstraint({
     this.min = DateConstraint.infinity,
     this.max = DateConstraint.infinity,
   });
 
+  /// Checks if the given date is within the range specified by min and max constraints.
   bool inRange(DateTime date) {
     return _checkDate(
           min,
@@ -22,6 +28,7 @@ class DateTimeConstraint {
         );
   }
 
+  /// Checks if the given date is within the date range (ignoring time) specified by min and max constraints.
   bool inDateRange(DateTime date) {
     return _checkDate(
           min,
@@ -33,6 +40,7 @@ class DateTimeConstraint {
         );
   }
 
+  /// Checks if the given date is within the month range specified by min and max constraints.
   bool inMonthRange(DateTime date) {
     return _checkDate(
           min,
@@ -46,6 +54,7 @@ class DateTimeConstraint {
         );
   }
 
+  /// Checks if the given date is within the year range specified by min and max constraints.
   bool inYearRange(DateTime date) {
     return _checkDate(
           min,
@@ -57,6 +66,7 @@ class DateTimeConstraint {
         );
   }
 
+  /// Strips the given date to date only (no time information).
   DateTime _stripToDateOnly(DateTime date) {
     return DateTime(
       date.year,
@@ -65,6 +75,7 @@ class DateTimeConstraint {
     );
   }
 
+  /// Strips the given date to month only.
   DateTime _stripToMonthsOnly(DateTime date) {
     return DateTime(
       date.year,
@@ -73,6 +84,7 @@ class DateTimeConstraint {
     );
   }
 
+  /// Strips the given date to year only.
   DateTime _stripToYearsOnly(DateTime date) {
     return DateTime(
       date.year,
@@ -81,6 +93,7 @@ class DateTimeConstraint {
     );
   }
 
+  /// Checks if the date constraint is met.
   bool _checkDate(DateConstraint constraint, bool Function() checker) {
     if (!constraint.isInfinite) {
       return checker();
@@ -89,12 +102,19 @@ class DateTimeConstraint {
   }
 }
 
+/// Class representing a date constraint.
 class DateConstraint {
+  /// Date constraint representing infinity.
   static const DateConstraint infinity =
       DateConstraint(date: null, isInfinite: true);
+
+  /// The date associated with the constraint.
   final DateTime? date;
+
+  /// Indicates if the constraint is infinite.
   final bool isInfinite;
 
+  /// Constructs a DateConstraint instance.
   const DateConstraint({this.date, this.isInfinite = false})
       : assert(
           !(date != null && isInfinite),

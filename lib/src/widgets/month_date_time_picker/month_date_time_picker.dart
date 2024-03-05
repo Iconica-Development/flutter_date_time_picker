@@ -13,7 +13,10 @@ import 'package:flutter_date_time_picker/src/utils/date_time_picker_controller.d
 import 'package:flutter_date_time_picker/src/widgets/marked_icon.dart';
 import 'package:intl/intl.dart';
 
+/// `MonthDateTimePicker` is a StatelessWidget that represents a picker for a date within a month.
+/// It provides a grid of dates for the month and allows the user to select a date.
 class MonthDateTimePicker extends StatelessWidget {
+  /// Creates a new instance of `MonthDateTimePicker`.
   const MonthDateTimePicker({
     required this.date,
     required this.dateTimePickerController,
@@ -22,10 +25,17 @@ class MonthDateTimePicker extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
+  /// The date of the month to display.
   final DateTime date;
+
+  /// The controller for managing date and time selection.
   final DateTimePickerController dateTimePickerController;
-  final DateTimePickerConfiguration dateTimePickerConfiguration;
+
+  /// The size of each date box in the month grid.
   final double monthDateBoxSize;
+
+  /// The configuration for the date and time picker.
+  final DateTimePickerConfiguration dateTimePickerConfiguration;
 
   @override
   Widget build(BuildContext context) {

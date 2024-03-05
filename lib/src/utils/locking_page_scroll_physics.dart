@@ -4,10 +4,15 @@
 
 import 'package:flutter/material.dart';
 
+/// Custom scroll physics for locking page scroll.
 class LockingPageScrollPhysics extends ScrollPhysics {
+  /// Function to determine if scrolling to the next page is allowed.
   final bool Function() allowedNextPage;
+
+  /// Function to determine if scrolling to the previous page is allowed.
   final bool Function() allowedPreviousPage;
 
+  /// Constructs LockingPageScrollPhysics.
   const LockingPageScrollPhysics({
     required this.allowedNextPage,
     required this.allowedPreviousPage,
