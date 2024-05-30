@@ -28,6 +28,9 @@ class DateTimePickerTheme {
     this.monthViewSize = 0.6,
     this.weekMonthTriggerSize = 0.3,
     this.shapeDecoration,
+    this.border,
+    this.boxShadows,
+    this.borderRadius,
     this.baseTheme = const DateBoxTheme(
         backgroundColor: Colors.white,
         textStyle: TextStyle(color: Colors.black)),
@@ -121,4 +124,13 @@ class DateTimePickerTheme {
 
   /// The padding surrounding the calendar
   final EdgeInsetsGeometry calenderPadding;
+
+  /// Border for the container where the date picker is placed in
+  final Border? border;
+
+  /// BorderRadius for the container where the date picker is placed in
+  final BorderRadiusGeometry? borderRadius;
+
+  /// BoxShadow for the container where the date picker is placed in
+  final List<BoxShadow>? boxShadows;
 }

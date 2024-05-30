@@ -16,7 +16,7 @@ dependencies:
     path: ../
   flutter_localizations:
     sdk: flutter
-  intl: ^0.18.0 # Add this line
+  intl: any
 
 dev_dependencies:
   flutter_test:
