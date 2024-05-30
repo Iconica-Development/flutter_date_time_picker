@@ -116,13 +116,16 @@ class _DateTimePickerState extends State<DateTimePicker> {
       decoration: (widget.theme.shapeDecoration == null)
           ? BoxDecoration(
               color: widget.theme.backgroundColor,
-              borderRadius: const BorderRadius.all(Radius.circular(16)),
-              boxShadow: [
-                BoxShadow(
-                  blurRadius: 5,
-                  color: Colors.black.withOpacity(0.25),
-                ),
-              ],
+              borderRadius: widget.theme.borderRadius ??
+                  const BorderRadius.all(Radius.circular(16)),
+              border: widget.theme.border,
+              boxShadow: widget.theme.boxShadows ??
+                  [
+                    BoxShadow(
+                      blurRadius: 5,
+                      color: Colors.black.withOpacity(0.25),
+                    ),
+                  ],
             )
           : ShapeDecoration(
               shape: widget.theme.shapeDecoration!.shape,

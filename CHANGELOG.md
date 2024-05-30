@@ -1,3 +1,8 @@
+## 4.1.0
+
+- Fixed a bug where there would be an extra line for the week after the current month in the month_date_time_picker
+- Added more customization options for the container around the date_time_picker.dart
+
 ## 4.0.1
 
 - Added an extra widget builder to add more customizability, for example to add 'today' and 'close' buttons.

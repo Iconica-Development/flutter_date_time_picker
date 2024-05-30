@@ -45,8 +45,8 @@ class DatePicker extends StatelessWidget {
       addedIndex = DateTime.daysPerWeek;
     }
 
-    int length = DateTime(date.year, date.month).daysInMonth() + daysToSkip;
-    int daysToAdd = DateTime.daysPerWeek - length % DateTime.daysPerWeek;
+    int length = DateTime(date.year, date.month).daysInMonth() + daysToSkip % 7;
+    int daysToAdd = (DateTime.daysPerWeek - length) % DateTime.daysPerWeek;
     return Column(
       children: [
         if (showWeekDays) ...[
@@ -66,14 +66,11 @@ class DatePicker extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(2.0),
                       child: Text(
-                          // The first day in November 2022 is monday
-                          // We use it to properly show monday as the first day and sunday as the last one
-                          date,
-                          style: weekdayTextStyle
-                          // .copyWith(
-                          // fontStyle: FontStyle.italic,
-                          // fontWeight: FontWeight.w200),
-                          ),
+                        // The first day in November 2022 is monday
+                        // We use it to properly show monday as the first day and sunday as the last one
+                        date,
+                        style: weekdayTextStyle,
+                      ),
                     ),
                   ),
                 );

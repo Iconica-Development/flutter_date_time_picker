@@ -96,38 +96,35 @@ class _OverlayDateTimeContentState extends State<OverlayDateTimeContent> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            (widget.onPreviousPageButtonChild != null)
-                ? widget.onPreviousPageButtonChild!(
-                    (widget.dateTimeConstraint.inMonthRange(previousDate))
-                        ? _goToPreviousPage
-                        : null,
-                  )
-                : IconButton(
-                    onPressed:
-                        (widget.dateTimeConstraint.inMonthRange(previousDate))
-                            ? _goToPreviousPage
-                            : null,
-                    icon: prevIcon,
-                    iconSize: widget.theme.paginationSize,
-                  ),
+            widget.onPreviousPageButtonChild?.call(
+                  (widget.dateTimeConstraint.inMonthRange(previousDate))
+                      ? _goToPreviousPage
+                      : null,
+                ) ??
+                IconButton(
+                  onPressed:
+                      (widget.dateTimeConstraint.inMonthRange(previousDate))
+                          ? _goToPreviousPage
+                          : null,
+                  icon: prevIcon,
+                  iconSize: widget.theme.paginationSize,
+                ),
             Text(
               monthText,
               style: widget.theme.barTheme.textStyle,
             ),
-            (widget.onNextPageButtonChild != null)
-                ? widget.onNextPageButtonChild!(
-                    (widget.dateTimeConstraint.inMonthRange(nextDate))
-                        ? _goToNextPage
-                        : null,
-                  )
-                : IconButton(
-                    onPressed:
-                        (widget.dateTimeConstraint.inMonthRange(nextDate))
-                            ? _goToNextPage
-                            : null,
-                    icon: nextIcon,
-                    iconSize: widget.theme.paginationSize,
-                  ),
+            widget.onNextPageButtonChild?.call(
+                  (widget.dateTimeConstraint.inMonthRange(nextDate))
+                      ? _goToNextPage
+                      : null,
+                ) ??
+                IconButton(
+                  onPressed: (widget.dateTimeConstraint.inMonthRange(nextDate))
+                      ? _goToNextPage
+                      : null,
+                  icon: nextIcon,
+                  iconSize: widget.theme.paginationSize,
+                ),
           ],
         ),
         Container(
@@ -185,7 +182,7 @@ class _OverlayDateTimeContentState extends State<OverlayDateTimeContent> {
             ],
           ),
         ),
-        if (widget.extraWidgetBuilder != null) widget.extraWidgetBuilder!,
+        widget.extraWidgetBuilder ?? const SizedBox.shrink(),
       ],
     );
   }
