@@ -2,6 +2,8 @@ name: flutter_date_time_picker
 description: A Flutter package for date and time picker.
 version: 4.1.0
 
+publish_to: https://forgejo.internal.iconica.nl/api/packages/internal/pub
+
 environment:
   sdk: ">=3.0.0 <4.0.0"
   flutter: ">=2.0.0"
@@ -9,7 +11,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  intl: any
+  intl: ">0.18.0 <1.0.0"
 
 dev_dependencies:
   flutter_test:
